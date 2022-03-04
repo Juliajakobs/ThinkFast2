@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">HelloWorld</string>
-    <string name="Spurning">Er mamma þín heimsk eða klár?</string>
+    <string name="index">Velkomin í Think Fast</string>
     <string name="heimsk">Mamma þín er heimsk!</string>
     <string name="klar">Mamma þín er klár!</string>
-    <string name="heimsk_button">Heimsk</string>
-    <string name="klar_button">Klár</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
 </resources>
