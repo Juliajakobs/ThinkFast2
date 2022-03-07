@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.thinkFast;
 //import com.google.gson.annotations.SerializedName;
 public class Quiz {
 

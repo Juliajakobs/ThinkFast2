@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HelloWorld</string>
+    <string name="app_name">Think Fast</string>
     <string name="index">Velkomin í Think Fast</string>
     <string name="heimsk">Mamma þín er heimsk!</string>
     <string name="klar">Mamma þín er klár!</string>
@@ -8,4 +8,6 @@
     <string name="sign_up_msg">"No user found, would you like to sign up ?"</string>
     <string name="password">password</string>
     <string name="username">username</string>
+    <string name="statistics">Statistics</string>
+    <string name="play_quiz">Play Quiz</string>
 </resources>

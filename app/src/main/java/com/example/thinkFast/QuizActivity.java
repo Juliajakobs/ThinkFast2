@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.thinkFast;
 
 import android.os.Bundle;
 
@@ -11,4 +11,5 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
     }
+
 }

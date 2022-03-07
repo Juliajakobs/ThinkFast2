@@ -1,5 +1,6 @@
-package com.example.helloworld;
+package com.example.thinkFast;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ public class AccountActivity extends AppCompatActivity {
     private Button mLoginButton;
     private Button mSignUpButton;
     private EditText mUsername, mPassword;
+    //Intent i = new Intent(AccountActivity.this, QuizActivity.class);
     // Dummy data - user and admin
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
@@ -31,17 +33,18 @@ public class AccountActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Input box fyrir username og password
+                // TODO: Intent til að starta quiz
                 for (int i = 0; i < mAccounts.length; i++) {
                     if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
                         Toast.makeText(getApplicationContext(),
                                 "Redirecting...", Toast.LENGTH_SHORT).show();
                         Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
-                    } else {
+                        startActivity(new Intent(AccountActivity.this, QuizActivity.class));
+                    } /*else {
                         Toast.makeText(AccountActivity.this, R.string.sign_up_msg, Toast.LENGTH_SHORT).show();
                         Log.d("MyApp", "USER NOT FOUND "+mUsername.getText().toString() + " " + mAccounts[i].getUsername());
-                    }
+                    }*/
                 }
 
             }

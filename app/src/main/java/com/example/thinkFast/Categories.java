@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.thinkFast;
 
 
 import androidx.fragment.app.Fragment;
