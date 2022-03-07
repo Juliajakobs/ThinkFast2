@@ -3,30 +3,49 @@ package com.example.helloworld;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AccountActivity extends AppCompatActivity {
 
-    private Button mheimskButton;
-    private Button mklarButton;
+    private Button mLoginButton;
+    private Button mSignUpButton;
+    private EditText mUsername, mPassword;
+    // Dummy data - user and admin
+    private Account[] mAccounts = new Account[]{
+            new Account("user", "123", "api@hi.is", "User", false),
+            new Account("admin", "1234", "admin@hi.is", "Admin", true),
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mUsername = (EditText) findViewById(R.id.username);
+        mPassword = (EditText) findViewById(R.id.password);
 
-        mheimskButton = (Button) findViewById(R.id.login);
-        mheimskButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton = (Button) findViewById(R.id.login);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AccountActivity.this, R.string.heimsk, Toast.LENGTH_SHORT).show();
+                // TODO: Input box fyrir username og password
+                for (int i = 0; i < mAccounts.length; i++) {
+                    if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
+                            mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
+                        Toast.makeText(getApplicationContext(),
+                                "Redirecting...", Toast.LENGTH_SHORT).show();
+                    } else { Toast.makeText(AccountActivity.this, R.string.sign_up_msg, Toast.LENGTH_SHORT).show();}
+                }
+
             }
         });
-        mklarButton = (Button) findViewById(R.id.sign_up);
-        mklarButton.setOnClickListener(new View.OnClickListener() {
+        mSignUpButton = (Button) findViewById(R.id.sign_up);
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO: Input box fyrir register
                 Toast.makeText(AccountActivity.this, R.string.klar, Toast.LENGTH_SHORT).show();
             }
         });
