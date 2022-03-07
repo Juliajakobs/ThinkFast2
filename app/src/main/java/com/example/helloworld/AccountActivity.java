@@ -1,6 +1,7 @@
 package com.example.helloworld;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +23,7 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_account);
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
 
@@ -36,7 +37,11 @@ public class AccountActivity extends AppCompatActivity {
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
                         Toast.makeText(getApplicationContext(),
                                 "Redirecting...", Toast.LENGTH_SHORT).show();
-                    } else { Toast.makeText(AccountActivity.this, R.string.sign_up_msg, Toast.LENGTH_SHORT).show();}
+                        Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                    } else {
+                        Toast.makeText(AccountActivity.this, R.string.sign_up_msg, Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp", "USER NOT FOUND "+mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                    }
                 }
 
             }
