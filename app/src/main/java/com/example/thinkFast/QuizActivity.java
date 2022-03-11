@@ -1,10 +1,13 @@
 package com.example.thinkFast;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class QuizActivity extends AppCompatActivity{
+public class QuizActivity extends AppCompatActivity {
+    private Button mStatistics;
+    private Button mPlayQuiz;
 
     private Button cat1;
     private Button cat2;
@@ -28,6 +31,8 @@ public class QuizActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+        mStatistics = (Button) findViewById(R.id.button_statistics);
+        mPlayQuiz = (Button) findViewById(R.id.button_quiz);
     }
 
 }

@@ -4,14 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/katja/AndroidStudioProjects/ThinkFast2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
-        <entry key="..\:/Users/katja/AndroidStudioProjects/ThinkFast2/app/src/main/res/layout/activity_account.xml" value="0.264" />
-        <entry key="..\:/Users/katja/AndroidStudioProjects/ThinkFast2/app/src/main/res/layout/activity_quiz.xml" value="0.264" />
-        <entry key="..\:/Users/katja/AndroidStudioProjects/ThinkFast2/app/src/main/res/layout/activity_quiz_categories.xml" value="0.264" />
-        <entry key="..\:/Users/katja/AndroidStudioProjects/ThinkFast2/app/src/main/res/layout/activity_quiz_question.xml" value="0.2296875" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2085" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3881591796875" />
+        <entry key="app/src/main/res/layout/activity_account.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19230769230769232" />
+        <entry key="app/src/main/res/layout/activity_quiz.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.108" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.108" />
       </map>
     </option>
   </component>

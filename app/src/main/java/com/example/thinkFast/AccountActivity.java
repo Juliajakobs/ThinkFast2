@@ -14,8 +14,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mSignUpButton;
-    private EditText mUsername, mPassword;
-    //Intent i = new Intent(AccountActivity.this, QuizActivity.class);
+    private EditText mUsername, mPassword,mEmail,mName;
     // Dummy data - user and admin
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
@@ -28,12 +27,14 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
+        mEmail = (EditText) findViewById(R.id.name);
+        mName = (EditText) findViewById(R.id.email);
 
         mLoginButton = (Button) findViewById(R.id.login);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Intent til að starta quiz
+
                 for (int i = 0; i < mAccounts.length; i++) {
                     if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
@@ -53,9 +54,25 @@ public class AccountActivity extends AppCompatActivity {
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Input box fyrir register
-                Toast.makeText(AccountActivity.this, R.string.klar, Toast.LENGTH_SHORT).show();
+
+                mName.setVisibility(View.VISIBLE);
+                mEmail.setVisibility(View.VISIBLE);
+                mLoginButton.setVisibility(View.GONE);
+                if(mUsername.getText().length()!=0 && mEmail.getText().length()!=0 &&mName.getText().length()!=0&& mEmail.getText().length()!=0){
+                   mAccounts=saveAccount(mAccounts.length,mAccounts,new Account(mUsername.getText().toString(),mPassword.getText().toString(),mName.getText().toString(),mEmail.getText().toString(),false));
+                    startActivity(new Intent(AccountActivity.this, QuizActivity.class));
+                }
             }
         });
+    }
+
+    // Helper function to save account in dummy data array
+    public static Account[] saveAccount(int n, Account accounts[], Account acc) {
+        int i;
+        Account newArray[] = new Account[n + 1];
+        for (i = 0; i < n; i++)
+        newArray[i] = accounts[i];
+        newArray[n] = acc;
+        return newArray;
     }
 }
