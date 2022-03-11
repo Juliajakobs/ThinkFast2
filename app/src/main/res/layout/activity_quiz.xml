@@ -6,25 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".QuizActivity">
 
-    <Button
-        android:id="@+id/button_quiz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:layout_marginEnd="156dp"
-        android:text="@string/play_quiz"
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="625dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/statistics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="244dp"
-        android:layout_marginEnd="156dp"
-        android:text="@string/statistics"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:ignore="UnknownIdInLayout" />
+        <TextView
+            android:id="@+id/tThinkFast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20"
+            android:gravity="center"
+            android:text="Think Fast"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <Button
+            android:id="@+id/bQuiz"
+            android:layout_width="200"
+            android:layout_height="wrap_content"
+            android:text="@string/play_quiz" />
+
+        <Button
+            android:id="@+id/bStatistics"
+            android:layout_width="200"
+            android:layout_height="wrap_content"
+            android:text="@string/statistics"
+            tools:ignore="UnknownIdInLayout" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
