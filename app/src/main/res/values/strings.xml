@@ -15,4 +15,6 @@
     <string name="numPlayers">Number of Players</string>
     <string name="onePlayer">1 player</string>
     <string name="twoPlayers">2 player</string>
+    <string name="chooseCategory">Choose a category</string>
+    <string name="placeholder">Placeholder</string>
 </resources>

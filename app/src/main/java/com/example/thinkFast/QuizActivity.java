@@ -93,13 +93,6 @@ public class QuizActivity extends AppCompatActivity {
                     bPlay.setVisibility(View.GONE);
 
                     // Start quiz, display question text and buttons
-                    // Find question stuff in app
-                    questionText = (TextView)  findViewById(R.id.tQuestion);
-                    ans1 = (Button) findViewById(R.id.button4);
-                    ans2 = (Button) findViewById(R.id.button5);
-                    ans3 = (Button) findViewById(R.id.button6);
-                    ans4 = (Button) findViewById(R.id.button7);
-
                     // Make them visible
                     questionText.setVisibility(View.VISIBLE);
                     ans1.setVisibility(View.VISIBLE);
@@ -116,6 +109,13 @@ public class QuizActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Find question stuff in app
+        questionText = (TextView)  findViewById(R.id.tQuestion);
+        ans1 = (Button) findViewById(R.id.bAns1);
+        ans2 = (Button) findViewById(R.id.bAns2);
+        ans3 = (Button) findViewById(R.id.bAns3);
+        ans4 = (Button) findViewById(R.id.bAns4);
 
         ans1.setOnClickListener(new View.OnClickListener() {
             @Override
