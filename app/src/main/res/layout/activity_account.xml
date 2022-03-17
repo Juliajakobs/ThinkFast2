@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AccountActivity">
-
+    <include
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_above="@+id/textView"
+        layout="@layout/header"
+        />
 
     <TextView
         android:id="@+id/textView"
@@ -30,7 +37,7 @@
         android:hint="@string/username"
         android:inputType="text"
         android:minHeight="48dp"
-        android:textColorHint="#ffff299f"
+        android:textColorHint="#8C7E86"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:ignore="MissingConstraints,NotSibling" />
@@ -45,7 +52,7 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColorHint="#ffff299f"
+        android:textColorHint="#8C7E86"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:ignore="MissingConstraints,NotSibling" />
@@ -61,7 +68,7 @@
         android:inputType="text"
         android:minHeight="48dp"
         android:visibility="gone"
-        android:textColorHint="#ffff299f"
+        android:textColorHint="#8C7E86"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:ignore="MissingConstraints,NotSibling" />
@@ -76,7 +83,7 @@
         android:hint="@string/email"
         android:inputType="text"
         android:minHeight="48dp"
-        android:textColorHint="#ffff299f"
+        android:textColorHint="#8C7E86"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -106,6 +113,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
         app:layout_goneMarginTop="18dp"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
