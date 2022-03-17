@@ -1,9 +1,11 @@
 package com.example.thinkFast;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -32,6 +34,10 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans4;
     private int questionCounter = 0;
     private int catNum = 0;
+
+    private ProgressBar mProgressbar;
+    private CountDownTimer mCountDownTimer;
+    private int i=0;
 
     // dummy data - categories
     private Category[] categories = new Category[]{
@@ -63,6 +69,23 @@ public class QuizActivity extends AppCompatActivity {
         // Quiz or stats
         mStatistics = (Button) findViewById(R.id.button_statistics);
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
+        // Timer
+        mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
+        mProgressbar.setProgress(i);
+        mCountDownTimer=new CountDownTimer(100000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
+                i++;
+                mProgressbar.setProgress((int)i*100/(5000/1000));
+            }
+            @Override
+            public void onFinish() {
+                //Display next Question
+
+            }
+        };
+
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,12 +120,14 @@ public class QuizActivity extends AppCompatActivity {
                 int selPlayerNum = rgPlayerNum.getCheckedRadioButtonId();
                 int selCategory = rgCategory.getCheckedRadioButtonId();
 
+
                 // if button from both groups has been selected, "start quiz"
                 if (selCategory != -1 && selPlayerNum != -1) {
                     // Find radio button by returned id
                     // ekki notað alveg strax
                     rbPlayerNum = (RadioButton) findViewById(selPlayerNum);
                     chosenCategory = (RadioButton) findViewById(selCategory);
+                    Log.d("mayapp","value: "+chosenCategory);
 
                     // Hide setting buttons
                     rgPlayerNum.setVisibility(View.GONE);
@@ -138,6 +163,7 @@ public class QuizActivity extends AppCompatActivity {
                     ans2.setText(questions[catNum+questionCounter].getOptionB());
                     ans3.setText(questions[catNum+questionCounter].getOptionC());
                     ans4.setText(questions[catNum+questionCounter].getOptionD());
+                    mCountDownTimer.start();
                 }
             }
         });
@@ -149,10 +175,10 @@ public class QuizActivity extends AppCompatActivity {
         ans3 = (Button) findViewById(R.id.bAns3);
         ans4 = (Button) findViewById(R.id.bAns4);
 
+
         ans1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         });
 
@@ -175,8 +201,9 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
+
 
     /*
     public static Question[] getNextQuestion(Question[] questions, Question q, int count, int cat) {

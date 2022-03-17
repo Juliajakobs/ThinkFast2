@@ -14,7 +14,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mSignUpButton;
-    private EditText mUsername, mPassword,mEmail,mName;w
+    private EditText mUsername, mPassword,mEmail,mName;
     // Dummy data - user and admin
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
