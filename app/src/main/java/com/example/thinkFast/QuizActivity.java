@@ -1,5 +1,6 @@
 package com.example.thinkFast;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,6 @@ public class QuizActivity extends AppCompatActivity {
     private RadioGroup rgCategory;
     private RadioButton rbCategory;
     private Button bPlay;
-    private Boolean selected = false;
 
     private TextView questionText;
     private Button ans1;
@@ -77,13 +77,13 @@ public class QuizActivity extends AppCompatActivity {
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get selected radio button from radiogroup
+                // Get selected radio button from radio group
                 int selPlayerNum = rgPlayerNum.getCheckedRadioButtonId();
                 int selCategory = rgCategory.getCheckedRadioButtonId();
 
-                // if button from both groups has been selected, start quiz
+                // if button from both groups has been selected, "start quiz"
                 if (selCategory != -1 && selPlayerNum != -1) {
-                    // Find radio button by returned id, nota þetta til að stilla quiz
+                    // Find radio button by returned id
                     rbPlayerNum = (RadioButton) findViewById(selPlayerNum);
                     rbCategory = (RadioButton) findViewById(selCategory);
 
@@ -92,20 +92,22 @@ public class QuizActivity extends AppCompatActivity {
                     rgCategory.setVisibility(View.GONE);
                     bPlay.setVisibility(View.GONE);
 
-
                     // Start quiz, display question text and buttons
+                    // Find question stuff in app
                     questionText = (TextView)  findViewById(R.id.tQuestion);
                     ans1 = (Button) findViewById(R.id.button4);
                     ans2 = (Button) findViewById(R.id.button5);
                     ans3 = (Button) findViewById(R.id.button6);
                     ans4 = (Button) findViewById(R.id.button7);
 
+                    // Make them visible
                     questionText.setVisibility(View.VISIBLE);
                     ans1.setVisibility(View.VISIBLE);
                     ans2.setVisibility(View.VISIBLE);
                     ans3.setVisibility(View.VISIBLE);
                     ans4.setVisibility(View.VISIBLE);
 
+                    // Make text reflect the right question
                     questionText.setText(questions[questionCounter].getQuestionText());
                     ans1.setText(questions[questionCounter].getOptionA());
                     ans2.setText(questions[questionCounter].getOptionB());
@@ -132,14 +134,12 @@ public class QuizActivity extends AppCompatActivity {
         ans3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         });
 
         ans4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         });
 

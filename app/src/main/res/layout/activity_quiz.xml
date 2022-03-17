@@ -32,7 +32,7 @@
             android:clickable="false"
             android:gravity="center_horizontal"
             android:padding="5dp"
-            android:text="Think Fast"
+            android:text="@string/app_name"
             android:textAlignment="center"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -63,20 +63,20 @@
                 android:id="@+id/numPlayersTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Number of Players"
+                android:text="@string/numPlayers"
                 android:visibility="visible" />
 
             <RadioButton
                 android:id="@+id/rg_p1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1 player" />
+                android:text="@string/onePlayer" />
 
             <RadioButton
                 android:id="@+id/rg_p2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2 players" />
+                android:text="@string/twoPlayers" />
 
         </RadioGroup>
 
