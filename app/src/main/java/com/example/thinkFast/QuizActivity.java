@@ -18,7 +18,11 @@ public class QuizActivity extends AppCompatActivity {
     private RadioGroup rgPlayerNum;
     private RadioButton rbPlayerNum;
     private RadioGroup rgCategory;
-    private RadioButton rbCategory;
+    private RadioButton rbCategory1;
+    private RadioButton rbCategory2;
+    private RadioButton rbCategory3;
+    private RadioButton rbCategory4;
+    private RadioButton chosenCategory;
     private Button bPlay;
 
     private TextView questionText;
@@ -27,6 +31,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans3;
     private Button ans4;
     private int questionCounter = 0;
+    private int catNum = 0;
 
     // dummy data - categories
     private Category[] categories = new Category[]{
@@ -55,7 +60,7 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        // Default
+        // Quiz or stats
         mStatistics = (Button) findViewById(R.id.button_statistics);
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +72,17 @@ public class QuizActivity extends AppCompatActivity {
                 rgPlayerNum.setVisibility(View.VISIBLE);
                 rgCategory.setVisibility(View.VISIBLE);
                 bPlay.setVisibility(View.VISIBLE);
+
+                // Set name of categories
+                rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
+                rbCategory2 = (RadioButton) findViewById(R.id.rb_c2);
+                rbCategory3 = (RadioButton) findViewById(R.id.rb_c3);
+                rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
+
+                rbCategory1.setText(categories[0].getCategoryName());
+                rbCategory2.setText(categories[1].getCategoryName());
+                rbCategory3.setText(categories[2].getCategoryName());
+                rbCategory4.setText(categories[3].getCategoryName());
             }
         });
 
@@ -84,8 +100,9 @@ public class QuizActivity extends AppCompatActivity {
                 // if button from both groups has been selected, "start quiz"
                 if (selCategory != -1 && selPlayerNum != -1) {
                     // Find radio button by returned id
+                    // ekki notað alveg strax
                     rbPlayerNum = (RadioButton) findViewById(selPlayerNum);
-                    rbCategory = (RadioButton) findViewById(selCategory);
+                    chosenCategory = (RadioButton) findViewById(selCategory);
 
                     // Hide setting buttons
                     rgPlayerNum.setVisibility(View.GONE);
@@ -100,12 +117,27 @@ public class QuizActivity extends AppCompatActivity {
                     ans3.setVisibility(View.VISIBLE);
                     ans4.setVisibility(View.VISIBLE);
 
+                    // make sure we are in the right category
+                    switch(catNum) {
+                        case 1:
+                            catNum = 2;
+                            break;
+                        case 2:
+                            catNum = 4;
+                            break;
+                        case 3:
+                            catNum = 6;
+                            break;
+                        default:
+                            break;
+                    }
+
                     // Make text reflect the right question
-                    questionText.setText(questions[questionCounter].getQuestionText());
-                    ans1.setText(questions[questionCounter].getOptionA());
-                    ans2.setText(questions[questionCounter].getOptionB());
-                    ans3.setText(questions[questionCounter].getOptionC());
-                    ans4.setText(questions[questionCounter].getOptionD());
+                    questionText.setText(questions[catNum+questionCounter].getQuestionText());
+                    ans1.setText(questions[catNum+questionCounter].getOptionA());
+                    ans2.setText(questions[catNum+questionCounter].getOptionB());
+                    ans3.setText(questions[catNum+questionCounter].getOptionC());
+                    ans4.setText(questions[catNum+questionCounter].getOptionD());
                 }
             }
         });
@@ -146,4 +178,12 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
+    /*
+    public static Question[] getNextQuestion(Question[] questions, Question q, int count, int cat) {
+        Account newArray[] = new Account[n + 1];
+        if (count)
+            newArray[i] = accounts[i];
+        newArray[n] = acc;
+        return newArray;
+    }*/
 }
