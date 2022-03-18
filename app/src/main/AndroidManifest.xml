@@ -10,10 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelloWorld">
         <activity
-            android:name="com.example.thinkFast.QuizActivity"
+            android:name=".AdminActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.thinkFast.AccountActivity"
+            android:name=".QuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccountActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -39,8 +39,13 @@ public class AccountActivity extends AppCompatActivity {
                 for (int i = 0; i < mAccounts.length; i++) {
                     if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
+                        if(mUsername.getText().toString().equals("admin")){
+                            startActivity(new Intent(AccountActivity.this, AdminActivity.class));
+                        }
+                        else{
                         Toast.makeText(getApplicationContext(),
-                                "Redirecting...", Toast.LENGTH_SHORT).show();
+                                "Redirecting...", Toast.LENGTH_SHORT).show();}}
+                        else{
                         Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
                         startActivity(new Intent(AccountActivity.this, QuizActivity.class));
                     } /*else {

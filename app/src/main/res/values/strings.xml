@@ -17,4 +17,6 @@
     <string name="twoPlayers">2 player</string>
     <string name="chooseCategory">Choose a category</string>
     <string name="placeholder">Placeholder</string>
+    <string name="delete">Delete</string>
+    <string name="admin">Velkominn admin!</string>
 </resources>
