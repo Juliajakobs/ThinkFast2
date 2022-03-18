@@ -1,5 +1,6 @@
 package com.example.thinkFast;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Arrays;
 
 public class QuizActivity extends AppCompatActivity {
     private Button mStatistics;
@@ -33,14 +36,14 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans3;
     private Button ans4;
     private int questionCounter = 0;
-    private int catNum = 0;
+    private int questionIndex = 0;
 
     private ProgressBar mProgressbar;
     private CountDownTimer mCountDownTimer;
     private int i=0;
 
     // dummy data - categories
-    private Category[] categories = new Category[]{
+    private final Category[] categories = new Category[]{
             new Category("Sport", 1),
             new Category("Science", 2),
             new Category("Geography", 3),
@@ -48,12 +51,12 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     // dummy data - questions
-    private Question[] questions = new Question[]{
+    private final Question[] questions = new Question[]{
             new Question(1, "Which option is a sport?", "Soccer", "Chess", "Poker", "Soccer", "Painting"),
             new Question(1, "Which option is a sport?", "Football", "Drawing", "Music", "Football", "Crafting"),
 
-            new Question(2, "Which option is an animal?", "Dog", "Pillow", "Water", "Blue", "Iris"),
-            new Question(2, "Which option is en animal?", "Cat", "Pillow", "Grass", "Green", "Aloe"),
+            new Question(2, "Which option is an animal?", "Dog", "Pillow", "Water", "Dog", "Iris"),
+            new Question(2, "Which option is en animal?", "Cat", "Pillow", "Grass", "Cat", "Aloe"),
 
             new Question(3, "Which option is a country?", "Iceland", "Africa", "Asia", "Iceland", "Europe"),
             new Question(3, "Which option is a country?", "GreenLand", "Africa", "Asia", "Greenland", "Europe"),
@@ -116,55 +119,43 @@ public class QuizActivity extends AppCompatActivity {
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get selected radio button from radio group
-                int selPlayerNum = rgPlayerNum.getCheckedRadioButtonId();
+                // Get int of selected radio button from radio group
                 int selCategory = rgCategory.getCheckedRadioButtonId();
 
+                // Hide setting buttons
+                rgPlayerNum.setVisibility(View.GONE);
+                rgCategory.setVisibility(View.GONE);
+                bPlay.setVisibility(View.GONE);
 
-                // if button from both groups has been selected, "start quiz"
-                if (selCategory != -1 && selPlayerNum != -1) {
-                    // Find radio button by returned id
-                    // ekki notað alveg strax
-                    rbPlayerNum = (RadioButton) findViewById(selPlayerNum);
-                    chosenCategory = (RadioButton) findViewById(selCategory);
-                    Log.d("mayapp","value: "+chosenCategory);
+                // Make question text visible along with answer buttons
+                questionText.setVisibility(View.VISIBLE);
+                ans1.setVisibility(View.VISIBLE);
+                ans2.setVisibility(View.VISIBLE);
+                ans3.setVisibility(View.VISIBLE);
+                ans4.setVisibility(View.VISIBLE);
 
-                    // Hide setting buttons
-                    rgPlayerNum.setVisibility(View.GONE);
-                    rgCategory.setVisibility(View.GONE);
-                    bPlay.setVisibility(View.GONE);
-
-                    // Start quiz, display question text and buttons
-                    // Make them visible
-                    questionText.setVisibility(View.VISIBLE);
-                    ans1.setVisibility(View.VISIBLE);
-                    ans2.setVisibility(View.VISIBLE);
-                    ans3.setVisibility(View.VISIBLE);
-                    ans4.setVisibility(View.VISIBLE);
-
-                    // make sure we are in the right category
-                    switch(catNum) {
-                        case 1:
-                            catNum = 2;
-                            break;
-                        case 2:
-                            catNum = 4;
-                            break;
-                        case 3:
-                            catNum = 6;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    // Make text reflect the right question
-                    questionText.setText(questions[catNum+questionCounter].getQuestionText());
-                    ans1.setText(questions[catNum+questionCounter].getOptionA());
-                    ans2.setText(questions[catNum+questionCounter].getOptionB());
-                    ans3.setText(questions[catNum+questionCounter].getOptionC());
-                    ans4.setText(questions[catNum+questionCounter].getOptionD());
-                    mCountDownTimer.start();
+                // Only work with questions from chosen category
+                switch (selCategory){
+                    case 1:
+                        questionIndex = 0;
+                        break;
+                    case 2:
+                        questionIndex = 2;
+                        break;
+                    case 3:
+                        questionIndex = 4;
+                        break;
+                    case 4:
+                        questionIndex = 6;
+                        break;
                 }
+
+                // Make text reflect the right question
+                questionText.setText(questions[questionIndex].getQuestionText());
+                ans1.setText(questions[questionIndex].getOptionA());
+                ans2.setText(questions[questionIndex].getOptionB());
+                ans3.setText(questions[questionIndex].getOptionC());
+                ans4.setText(questions[questionIndex].getOptionD());
             }
         });
 
@@ -175,42 +166,43 @@ public class QuizActivity extends AppCompatActivity {
         ans3 = (Button) findViewById(R.id.bAns3);
         ans4 = (Button) findViewById(R.id.bAns4);
 
-
-        ans1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
-        ans2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        ans3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
-        ans4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+        for (Button button : Arrays.asList(ans1, ans2, ans3, ans4)) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (questionCounter < 1) {
+                        getNextQuestion();
+                    } else {
+                        resetQuiz();
+                    }
+                }
+            });
+        }
 
     }
 
+    public void getNextQuestion() {
+        questionCounter += 1;
+        questionIndex += 1;
+        questionText.setText(questions[questionIndex].getQuestionText());
+        ans1.setText(questions[questionIndex].getOptionA());
+        ans2.setText(questions[questionIndex].getOptionB());
+        ans3.setText(questions[questionIndex].getOptionC());
+        ans4.setText(questions[questionIndex].getOptionD());
+    }
 
+    public void resetQuiz() {
+        questionCounter = 0;
+        questionIndex = 0;
 
-    /*
-    public static Question[] getNextQuestion(Question[] questions, Question q, int count, int cat) {
-        Account newArray[] = new Account[n + 1];
-        if (count)
-            newArray[i] = accounts[i];
-        newArray[n] = acc;
-        return newArray;
-    }*/
+        rgPlayerNum.setVisibility(View.VISIBLE);
+        rgCategory.setVisibility(View.VISIBLE);
+        bPlay.setVisibility(View.VISIBLE);
+
+        questionText.setVisibility(View.GONE);
+        ans1.setVisibility(View.GONE);
+        ans2.setVisibility(View.GONE);
+        ans3.setVisibility(View.GONE);
+        ans4.setVisibility(View.GONE);
+    }
 }
