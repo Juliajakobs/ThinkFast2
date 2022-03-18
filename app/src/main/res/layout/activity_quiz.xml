@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/play_quiz"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_statistics"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/statistics"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <RadioGroup
             android:id="@+id/rg_players"
@@ -164,6 +164,35 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholder"
             android:visibility="gone" />
+
+        <ScrollView
+            android:id="@+id/answersScroll"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/placeholder"
+            android:fadeScrollbars="true"
+            android:isScrollContainer="false"
+            android:padding="5dp"
+            android:splitMotionEvents="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/bPlayAgain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/play_again" />
+
+        <Button
+            android:id="@+id/bEndQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/end_quiz" />
 
     </LinearLayout>
 

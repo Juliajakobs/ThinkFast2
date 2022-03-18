@@ -36,6 +36,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans4;
     private int questionCounter = 0;
     private int questionIndex = 0;
+    private int maxNumOfQuestions = 10;
 
     private ProgressBar mProgressbar;
     private CountDownTimer mCountDownTimer;
@@ -53,15 +54,47 @@ public class QuizActivity extends AppCompatActivity {
     private final Question[] questions = new Question[]{
             new Question(1, "Which option is a sport?", "Soccer", "Chess", "Poker", "Soccer", "Painting"),
             new Question(1, "Which option is a sport?", "Football", "Drawing", "Music", "Football", "Crafting"),
+            new Question(1, "Which option is a sport?", "Swimming", "Chess", "Poker", "Swimming", "Painting"),
+            new Question(1, "Which option is a sport?", "Baseball", "Drawing", "Music", "Baseball", "Crafting"),
+            new Question(1, "Which option is a sport?", "Hockey", "Chess", "Poker", "Hockey", "Painting"),
+            new Question(1, "Which option is a sport?", "Basketball", "Drawing", "Music", "Basketball", "Crafting"),
+            new Question(1, "Which option is a sport?", "Golf", "Chess", "Poker", "Golf", "Painting"),
+            new Question(1, "Which option is a sport?", "Figure Skating", "Drawing", "Music", "Figure Skating", "Crafting"),
+            new Question(1, "Which option is a sport?", "VolleyBall", "Chess", "Poker", "Volleyball", "Painting"),
+            new Question(1, "Which option is a sport?", "Martial Arts", "Drawing", "Music", "Martial Arts", "Crafting"),
 
             new Question(2, "Which option is an animal?", "Dog", "Pillow", "Water", "Dog", "Iris"),
-            new Question(2, "Which option is en animal?", "Cat", "Pillow", "Grass", "Cat", "Aloe"),
+            new Question(2, "Which option is en animal?", "Cat", "Bed", "Grass", "Cat", "Aloe"),
+            new Question(2, "Which option is an animal?", "Bird", "Pillow", "Water", "Bird", "Iris"),
+            new Question(2, "Which option is en animal?", "Fish", "Bed", "Grass", "Fish", "Aloe"),
+            new Question(2, "Which option is an animal?", "Llama", "Pillow", "Water", "Llama", "Iris"),
+            new Question(2, "Which option is en animal?", "Hippopotamus", "Bed", "Grass", "Hippopotamus", "Aloe"),
+            new Question(2, "Which option is an animal?", "Swan", "Pillow", "Water", "Swan", "Iris"),
+            new Question(2, "Which option is en animal?", "Rhinoceros", "Bed", "Grass", "Rhinoceros", "Aloe"),
+            new Question(2, "Which option is an animal?", "Hamster", "Pillow", "Water", "Hamster", "Iris"),
+            new Question(2, "Which option is en animal?", "Human", "Bed", "Grass", "Human", "Aloe"),
 
             new Question(3, "Which option is a country?", "Iceland", "Africa", "Asia", "Iceland", "Europe"),
-            new Question(3, "Which option is a country?", "GreenLand", "Africa", "Asia", "Greenland", "Europe"),
+            new Question(3, "Which option is a country?", "GreenLand", "Europe", "Africa", "Greenland", "Asia"),
+            new Question(3, "Which option is a country?", "Finland", "Africa", "Asia", "Finland", "Europe"),
+            new Question(3, "Which option is a country?", "Norway", "Europe", "Africa", "Norway", "Asia"),
+            new Question(3, "Which option is a country?", "Denmark", "Africa", "Asia", "Denmark", "Europe"),
+            new Question(3, "Which option is a country?", "Poland", "Europe", "Africa", "Poland", "Asia"),
+            new Question(3, "Which option is a country?", "Germany", "Africa", "Asia", "Germany", "Europe"),
+            new Question(3, "Which option is a country?", "Netherlands", "Europe", "Africa", "Netherlands", "Asia"),
+            new Question(3, "Which option is a country?", "France", "Africa", "Asia", "France", "Europe"),
+            new Question(3, "Which option is a country?", "Spain", "Europe", "Africa", "Spain", "Asia"),
 
             new Question(4, "Which option is a color?", "Blue", "Blueberry", "Water", "Blue", "Iris"),
-            new Question(4, "Which option is a color?", "Green", "Avocado", "Grass", "Green", "Aloe")
+            new Question(4, "Which option is a color?", "Green", "Avocado", "Grass", "Green", "Aloe"),
+            new Question(4, "Which option is a color?", "Red", "Blueberry", "Water", "Red", "Iris"),
+            new Question(4, "Which option is a color?", "Yellow", "Avocado", "Grass", "Yellow", "Aloe"),
+            new Question(4, "Which option is a color?", "Black", "Blueberry", "Water", "Black", "Iris"),
+            new Question(4, "Which option is a color?", "White", "Avocado", "Grass", "White", "Aloe"),
+            new Question(4, "Which option is a color?", "Purple", "Blueberry", "Water", "Purple", "Iris"),
+            new Question(4, "Which option is a color?", "Brown", "Avocado", "Grass", "Brown", "Aloe"),
+            new Question(4, "Which option is a color?", "Beige", "Blueberry", "Water", "Beige", "Iris"),
+            new Question(4, "Which option is a color?", "Orange", "Avocado", "Grass", "Orange", "Aloe")
     };
 
     @Override
@@ -139,13 +172,13 @@ public class QuizActivity extends AppCompatActivity {
                         questionIndex = 0;
                         break;
                     case 2:
-                        questionIndex = 2;
+                        questionIndex = 10;
                         break;
                     case 3:
-                        questionIndex = 4;
+                        questionIndex = 20;
                         break;
                     case 4:
-                        questionIndex = 6;
+                        questionIndex = 30;
                         break;
                 }
 
@@ -171,7 +204,7 @@ public class QuizActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (questionCounter < 1) {
+                    if (questionCounter < maxNumOfQuestions-1) {
                         getNextQuestion();
                         // If timer resets after a question, it goes here
                         // i = some time
@@ -184,6 +217,9 @@ public class QuizActivity extends AppCompatActivity {
         }
 
     }
+
+    // End screen, see answers and correct answers
+
 
     public void getNextQuestion() {
         questionCounter += 1;
