@@ -6,44 +6,183 @@
     android:layout_height="match_parent"
     tools:context=".QuizActivity">
 
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="50dp"
+            android:clickable="false"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_quiz"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/play_quiz"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/button_statistics"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/statistics"
+            android:visibility="visible" />
+
+        <RadioGroup
+            android:id="@+id/rg_players"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/numPlayersTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/numPlayers"
+                android:visibility="visible" />
+
+            <RadioButton
+                android:id="@+id/rg_p1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/onePlayer" />
+
+            <RadioButton
+                android:id="@+id/rg_p2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/twoPlayers" />
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg_categories"
+            android:layout_width="match_parent"
+            android:layout_height="219dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chooseCategory" />
+
+            <RadioButton
+                android:id="@+id/rb_c1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
+                tools:ignore="DuplicateSpeakableTextCheck" />
+
+            <RadioButton
+                android:id="@+id/rb_c2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder" />
+
+            <RadioButton
+                android:id="@+id/rb_c3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder" />
+
+            <RadioButton
+                android:id="@+id/rb_c4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/bQuizSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/play_quiz"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/placeholder"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/bAns1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/bAns2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/bAns3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/bAns4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
     <include
         android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_above="@+id/textView"
         layout="@layout/header"
-    />
+        android:layout_width="fill_parent"
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:text="@string/index"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_quiz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:layout_marginEnd="144dp"
-        android:text="@string/play_quiz"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="-5dp" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="397dp"
+        android:layout_height="49dp"
+        android:max="500"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/button_statistics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:text="@string/statistics"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:layout_editor_absoluteY="90dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
