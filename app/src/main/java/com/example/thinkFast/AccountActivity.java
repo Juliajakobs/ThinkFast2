@@ -14,7 +14,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mSignUpButton;
-    private EditText mUsername, mPassword,mEmail,mName;w
+    private EditText mUsername, mPassword,mEmail,mName;
     // Dummy data - user and admin
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
@@ -39,8 +39,13 @@ public class AccountActivity extends AppCompatActivity {
                 for (int i = 0; i < mAccounts.length; i++) {
                     if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
+                        if(mUsername.getText().toString().equals("admin")){
+                            startActivity(new Intent(AccountActivity.this, AdminActivity.class));
+                        }
+                        else{
                         Toast.makeText(getApplicationContext(),
-                                "Redirecting...", Toast.LENGTH_SHORT).show();
+                                "Redirecting...", Toast.LENGTH_SHORT).show();}}
+                        else{
                         Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
                         startActivity(new Intent(AccountActivity.this, QuizActivity.class));
                     } /*else {

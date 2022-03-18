@@ -12,4 +12,6 @@
     <string name="play_quiz">Play Quiz</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
+    <string name="delete">Delete</string>
+    <string name="admin">Velkominn admin!</string>
 </resources>
