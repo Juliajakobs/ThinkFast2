@@ -1,6 +1,5 @@
 package com.example.thinkFast;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -156,6 +155,7 @@ public class QuizActivity extends AppCompatActivity {
                 ans2.setText(questions[questionIndex].getOptionB());
                 ans3.setText(questions[questionIndex].getOptionC());
                 ans4.setText(questions[questionIndex].getOptionD());
+                mCountDownTimer.start();
             }
         });
 
@@ -166,12 +166,16 @@ public class QuizActivity extends AppCompatActivity {
         ans3 = (Button) findViewById(R.id.bAns3);
         ans4 = (Button) findViewById(R.id.bAns4);
 
+
         for (Button button : Arrays.asList(ans1, ans2, ans3, ans4)) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (questionCounter < 1) {
                         getNextQuestion();
+                        // If timer resets after a question, it goes here
+                        // i = some time
+                     //   mProgressbar.setProgress((int)i*100/(5000/1000));
                     } else {
                         resetQuiz();
                     }
@@ -189,6 +193,7 @@ public class QuizActivity extends AppCompatActivity {
         ans2.setText(questions[questionIndex].getOptionB());
         ans3.setText(questions[questionIndex].getOptionC());
         ans4.setText(questions[questionIndex].getOptionD());
+
     }
 
     public void resetQuiz() {
