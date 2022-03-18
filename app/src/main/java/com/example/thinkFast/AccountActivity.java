@@ -35,23 +35,24 @@ public class AccountActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Checked if user is registered
                 for (int i = 0; i < mAccounts.length; i++) {
+                    // Check if user is admin
                     if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
                         if(mUsername.getText().toString().equals("admin")){
                             startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                         }
+                        // If user is not admin
+                        else{
+                            Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                            startActivity(new Intent(AccountActivity.this, QuizActivity.class));
+                        } }
+                        // User is not registered
                         else{
                         Toast.makeText(getApplicationContext(),
-                                "Redirecting...", Toast.LENGTH_SHORT).show();}}
-                        else{
-                        Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
-                        startActivity(new Intent(AccountActivity.this, QuizActivity.class));
-                    } /*else {
-                        Toast.makeText(AccountActivity.this, R.string.sign_up_msg, Toast.LENGTH_SHORT).show();
-                        Log.d("MyApp", "USER NOT FOUND "+mUsername.getText().toString() + " " + mAccounts[i].getUsername());
-                    }*/
+                                "Not registered...", Toast.LENGTH_SHORT).show();}
+
                 }
 
             }
