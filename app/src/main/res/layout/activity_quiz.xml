@@ -57,6 +57,7 @@
             android:id="@+id/rg_players"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checkedButton="@id/rg_p1"
             android:visibility="gone">
 
             <TextView
@@ -84,6 +85,7 @@
             android:id="@+id/rg_categories"
             android:layout_width="match_parent"
             android:layout_height="219dp"
+            android:checkedButton="@id/rb_c1"
             android:visibility="gone">
 
             <TextView
