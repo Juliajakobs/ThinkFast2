@@ -117,7 +117,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        // Allt findView dotið er her gert i thetta function
+        // Allt findView tengingar dotið er gert i thetta function
         setFindView();
 
         // Timer virkni
@@ -140,12 +140,8 @@ public class QuizActivity extends AppCompatActivity {
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mStatistics.setVisibility(View.GONE);
-                mPlayQuiz.setVisibility(View.GONE);
-
-                rgPlayerNum.setVisibility(View.VISIBLE);
-                rgCategory.setVisibility(View.VISIBLE);
-                bPlay.setVisibility(View.VISIBLE);
+                visibleMenu(false);
+                visibleQuizSettings(true);
 
                 // Set name of categories
                 rbCategory1.setText(categories[0].getCategoryName());
@@ -161,18 +157,8 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Get int of selected radio button from radio group
                 selCategory = rgCategory.getCheckedRadioButtonId();
-
-                // Hide setting buttons
-                rgPlayerNum.setVisibility(View.GONE);
-                rgCategory.setVisibility(View.GONE);
-                bPlay.setVisibility(View.GONE);
-
-                // Make question text visible along with answer buttons
-                questionText.setVisibility(View.VISIBLE);
-                ans1.setVisibility(View.VISIBLE);
-                ans2.setVisibility(View.VISIBLE);
-                ans3.setVisibility(View.VISIBLE);
-                ans4.setVisibility(View.VISIBLE);
+                visibleQuizSettings(false);
+                visibleQuizPlay(true);
 
                 // Only work with questions from chosen category
                 switch (selCategory){
@@ -201,127 +187,33 @@ public class QuizActivity extends AppCompatActivity {
         });
 
         // Answer button virkni
-        ans1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (questionCounter < maxNumOfQuestions - 1) {
-                    playerAnswersArray[questionCounter] = ans1.getText().toString();
-                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
-                    getNextQuestion();
-                    // If timer resets after a question, it goes here
-                    // i = some time
-                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
-                } else {
-                    // "Display" end screen
-                    questionText.setVisibility(View.GONE);
-                    ans1.setVisibility(View.GONE);
-                    ans2.setVisibility(View.GONE);
-                    ans3.setVisibility(View.GONE);
-                    ans4.setVisibility(View.GONE);
-
-                    answerScroll.setVisibility(View.VISIBLE);
-                    bPlayAgain.setVisibility(View.VISIBLE);
-                    bEndQuiz.setVisibility(View.VISIBLE);
-                    // Synir svor í scrollview
-                    showAnswers();
+        for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (questionCounter < maxNumOfQuestions - 1) {
+                        playerAnswersArray[questionCounter] = button.getText().toString();
+                        correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                        getNextQuestion();
+                        // If timer resets after a question, it goes here
+                        // i = some time
+                        //   mProgressbar.setProgress((int)i*100/(5000/1000));
+                    } else {
+                        visibleQuizPlay(false);
+                        visibleEnd(true);
+                        showAnswers();
+                    }
                 }
-            }
-        });
-        ans2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (questionCounter < maxNumOfQuestions - 1) {
-                    playerAnswersArray[questionCounter] = ans2.getText().toString();
-                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
-                    getNextQuestion();
-                    // If timer resets after a question, it goes here
-                    // i = some time
-                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
-                } else {
-                    // "Display" end screen
-                    questionText.setVisibility(View.GONE);
-                    ans1.setVisibility(View.GONE);
-                    ans2.setVisibility(View.GONE);
-                    ans3.setVisibility(View.GONE);
-                    ans4.setVisibility(View.GONE);
-
-                    answerScroll.setVisibility(View.VISIBLE);
-                    bPlayAgain.setVisibility(View.VISIBLE);
-                    bEndQuiz.setVisibility(View.VISIBLE);
-                    // Synir svor í scrollview
-                    showAnswers();
-                }
-            }
-        });
-        ans3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (questionCounter < maxNumOfQuestions - 1) {
-                    playerAnswersArray[questionCounter] = ans3.getText().toString();
-                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
-                    getNextQuestion();
-                    // If timer resets after a question, it goes here
-                    // i = some time
-                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
-                } else {
-                    // "Display" end screen
-                    questionText.setVisibility(View.GONE);
-                    ans1.setVisibility(View.GONE);
-                    ans2.setVisibility(View.GONE);
-                    ans3.setVisibility(View.GONE);
-                    ans4.setVisibility(View.GONE);
-
-                    answerScroll.setVisibility(View.VISIBLE);
-                    bPlayAgain.setVisibility(View.VISIBLE);
-                    bEndQuiz.setVisibility(View.VISIBLE);
-                    // Synir svor í scrollview
-                    showAnswers();
-                }
-            }
-        });
-        ans4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (questionCounter < maxNumOfQuestions - 1) {
-                    playerAnswersArray[questionCounter] = ans4.getText().toString();
-                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
-                    getNextQuestion();
-                    // If timer resets after a question, it goes here
-                    // i = some time
-                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
-                } else {
-                    // "Display" end screen
-                    questionText.setVisibility(View.GONE);
-                    ans1.setVisibility(View.GONE);
-                    ans2.setVisibility(View.GONE);
-                    ans3.setVisibility(View.GONE);
-                    ans4.setVisibility(View.GONE);
-
-                    answerScroll.setVisibility(View.VISIBLE);
-                    bPlayAgain.setVisibility(View.VISIBLE);
-                    bEndQuiz.setVisibility(View.VISIBLE);
-                    // Synir svor í scrollview
-                    showAnswers();
-                }
-            }
-        });
+            });
+        }
 
         // End screen buttons virkni
         bPlayAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resetQuiz();
-
-                answerScroll.setVisibility(View.GONE);
-                bPlayAgain.setVisibility(View.GONE);
-                bEndQuiz.setVisibility(View.GONE);
-
-                // Make question text visible along with answer buttons
-                questionText.setVisibility(View.VISIBLE);
-                ans1.setVisibility(View.VISIBLE);
-                ans2.setVisibility(View.VISIBLE);
-                ans3.setVisibility(View.VISIBLE);
-                ans4.setVisibility(View.VISIBLE);
+                visibleEnd(false);
+                visibleQuizPlay(true);
 
                 switch (selCategory){
                     case 1:
@@ -351,15 +243,8 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resetQuiz();
-
-                answerScroll.setVisibility(View.GONE);
-                bPlayAgain.setVisibility(View.GONE);
-                bEndQuiz.setVisibility(View.GONE);
-
-                rgPlayerNum.setVisibility(View.VISIBLE);
-                rgCategory.setVisibility(View.VISIBLE);
-                bPlay.setVisibility(View.VISIBLE);
-
+                visibleEnd(false);
+                visibleQuizSettings(true);
             }
         });
     }
@@ -463,5 +348,57 @@ public class QuizActivity extends AppCompatActivity {
         correctAnswersColumn = (LinearLayout) findViewById(R.id.answerColumn2);
         bPlayAgain = (Button) findViewById(R.id.bPlayAgain);
         bEndQuiz = (Button) findViewById(R.id.bEndQuiz);
+    }
+
+    public void visibleMenu(Boolean b) {
+        if (b) {
+            mStatistics.setVisibility(View.VISIBLE);
+            mPlayQuiz.setVisibility(View.VISIBLE);
+        }
+        else {
+            mStatistics.setVisibility(View.GONE);
+            mPlayQuiz.setVisibility(View.GONE);
+        }
+    }
+
+    public void visibleQuizSettings(Boolean b) {
+        if (b) {
+            rgPlayerNum.setVisibility(View.VISIBLE);
+            rgCategory.setVisibility(View.VISIBLE);
+            bPlay.setVisibility(View.VISIBLE);
+        }
+        else {
+            rgPlayerNum.setVisibility(View.GONE);
+            rgCategory.setVisibility(View.GONE);
+            bPlay.setVisibility(View.GONE);
+        }
+    }
+
+    public void visibleQuizPlay(Boolean b) {
+        if (b) {
+            questionText.setVisibility(View.VISIBLE);
+            ans1.setVisibility(View.VISIBLE);
+            ans2.setVisibility(View.VISIBLE);
+            ans3.setVisibility(View.VISIBLE);
+            ans4.setVisibility(View.VISIBLE);
+        } else {
+            questionText.setVisibility(View.GONE);
+            ans1.setVisibility(View.GONE);
+            ans2.setVisibility(View.GONE);
+            ans3.setVisibility(View.GONE);
+            ans4.setVisibility(View.GONE);
+        }
+    }
+
+    public void visibleEnd(Boolean b) {
+        if (b) {
+            answerScroll.setVisibility(View.VISIBLE);
+            bPlayAgain.setVisibility(View.VISIBLE);
+            bEndQuiz.setVisibility(View.VISIBLE);
+        } else {
+            answerScroll.setVisibility(View.GONE);
+            bPlayAgain.setVisibility(View.GONE);
+            bEndQuiz.setVisibility(View.GONE);
+        }
     }
 }
