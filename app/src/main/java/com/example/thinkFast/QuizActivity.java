@@ -1,17 +1,21 @@
 package com.example.thinkFast;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.sql.Array;
 import java.util.Arrays;
 
 public class QuizActivity extends AppCompatActivity {
@@ -26,9 +30,10 @@ public class QuizActivity extends AppCompatActivity {
     private RadioButton rbCategory2;
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
-    private RadioButton chosenCategory;
+    private int selCategory;
     private Button bPlay;
 
+    // Question and answers
     private TextView questionText;
     private Button ans1;
     private Button ans2;
@@ -36,7 +41,17 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans4;
     private int questionCounter = 0;
     private int questionIndex = 0;
-    private int maxNumOfQuestions = 10;
+    private final int maxNumOfQuestions = 10;
+    private String[] playerAnswersArray = new String[10];
+    private String[] correctAnswersArray = new String[10];
+
+
+    // End screen widget
+    private ScrollView answerScroll;
+    private LinearLayout playerAnswersColumn;
+    private LinearLayout correctAnswersColumn;
+    private Button bPlayAgain;
+    private Button bEndQuiz;
 
     private ProgressBar mProgressbar;
     private CountDownTimer mCountDownTimer;
@@ -60,7 +75,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(1, "Which option is a sport?", "Basketball", "Drawing", "Music", "Basketball", "Crafting"),
             new Question(1, "Which option is a sport?", "Golf", "Chess", "Poker", "Golf", "Painting"),
             new Question(1, "Which option is a sport?", "Figure Skating", "Drawing", "Music", "Figure Skating", "Crafting"),
-            new Question(1, "Which option is a sport?", "VolleyBall", "Chess", "Poker", "Volleyball", "Painting"),
+            new Question(1, "Which option is a sport?", "Volleyball", "Chess", "Poker", "Volleyball", "Painting"),
             new Question(1, "Which option is a sport?", "Martial Arts", "Drawing", "Music", "Martial Arts", "Crafting"),
 
             new Question(2, "Which option is an animal?", "Dog", "Pillow", "Water", "Dog", "Iris"),
@@ -101,11 +116,11 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        // Quiz or stats
-        mStatistics = (Button) findViewById(R.id.button_statistics);
-        mPlayQuiz = (Button) findViewById(R.id.button_quiz);
-        // Timer
-        mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
+
+        // Allt findView dotið er her gert i thetta function
+        setFindView();
+
+        // Timer virkni
         mProgressbar.setProgress(i);
         mCountDownTimer=new CountDownTimer(100000,1000) {
             @Override
@@ -121,6 +136,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         };
 
+        // Play quiz
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,11 +148,6 @@ public class QuizActivity extends AppCompatActivity {
                 bPlay.setVisibility(View.VISIBLE);
 
                 // Set name of categories
-                rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
-                rbCategory2 = (RadioButton) findViewById(R.id.rb_c2);
-                rbCategory3 = (RadioButton) findViewById(R.id.rb_c3);
-                rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
-
                 rbCategory1.setText(categories[0].getCategoryName());
                 rbCategory2.setText(categories[1].getCategoryName());
                 rbCategory3.setText(categories[2].getCategoryName());
@@ -144,15 +155,12 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        // Quiz settings
-        rgPlayerNum = (RadioGroup) findViewById(R.id.rg_players);
-        rgCategory = (RadioGroup) findViewById(R.id.rg_categories);
-        bPlay = (Button)  findViewById(R.id.bQuizSettings);
+        // Play quiz button eftir settings dót virkni
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Get int of selected radio button from radio group
-                int selCategory = rgCategory.getCheckedRadioButtonId();
+                selCategory = rgCategory.getCheckedRadioButtonId();
 
                 // Hide setting buttons
                 rgPlayerNum.setVisibility(View.GONE);
@@ -192,34 +200,200 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        // Find question stuff in app
-        questionText = (TextView)  findViewById(R.id.tQuestion);
-        ans1 = (Button) findViewById(R.id.bAns1);
-        ans2 = (Button) findViewById(R.id.bAns2);
-        ans3 = (Button) findViewById(R.id.bAns3);
-        ans4 = (Button) findViewById(R.id.bAns4);
+        // Answer button virkni
+        ans1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questionCounter < maxNumOfQuestions - 1) {
+                    playerAnswersArray[questionCounter] = ans1.getText().toString();
+                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                    getNextQuestion();
+                    // If timer resets after a question, it goes here
+                    // i = some time
+                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
+                } else {
+                    // "Display" end screen
+                    questionText.setVisibility(View.GONE);
+                    ans1.setVisibility(View.GONE);
+                    ans2.setVisibility(View.GONE);
+                    ans3.setVisibility(View.GONE);
+                    ans4.setVisibility(View.GONE);
 
-
-        for (Button button : Arrays.asList(ans1, ans2, ans3, ans4)) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (questionCounter < maxNumOfQuestions-1) {
-                        getNextQuestion();
-                        // If timer resets after a question, it goes here
-                        // i = some time
-                     //   mProgressbar.setProgress((int)i*100/(5000/1000));
-                    } else {
-                        resetQuiz();
-                    }
+                    answerScroll.setVisibility(View.VISIBLE);
+                    bPlayAgain.setVisibility(View.VISIBLE);
+                    bEndQuiz.setVisibility(View.VISIBLE);
+                    // Synir svor í scrollview
+                    showAnswers();
                 }
-            });
-        }
+            }
+        });
+        ans2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questionCounter < maxNumOfQuestions - 1) {
+                    playerAnswersArray[questionCounter] = ans2.getText().toString();
+                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                    getNextQuestion();
+                    // If timer resets after a question, it goes here
+                    // i = some time
+                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
+                } else {
+                    // "Display" end screen
+                    questionText.setVisibility(View.GONE);
+                    ans1.setVisibility(View.GONE);
+                    ans2.setVisibility(View.GONE);
+                    ans3.setVisibility(View.GONE);
+                    ans4.setVisibility(View.GONE);
 
+                    answerScroll.setVisibility(View.VISIBLE);
+                    bPlayAgain.setVisibility(View.VISIBLE);
+                    bEndQuiz.setVisibility(View.VISIBLE);
+                    // Synir svor í scrollview
+                    showAnswers();
+                }
+            }
+        });
+        ans3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questionCounter < maxNumOfQuestions - 1) {
+                    playerAnswersArray[questionCounter] = ans3.getText().toString();
+                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                    getNextQuestion();
+                    // If timer resets after a question, it goes here
+                    // i = some time
+                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
+                } else {
+                    // "Display" end screen
+                    questionText.setVisibility(View.GONE);
+                    ans1.setVisibility(View.GONE);
+                    ans2.setVisibility(View.GONE);
+                    ans3.setVisibility(View.GONE);
+                    ans4.setVisibility(View.GONE);
+
+                    answerScroll.setVisibility(View.VISIBLE);
+                    bPlayAgain.setVisibility(View.VISIBLE);
+                    bEndQuiz.setVisibility(View.VISIBLE);
+                    // Synir svor í scrollview
+                    showAnswers();
+                }
+            }
+        });
+        ans4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questionCounter < maxNumOfQuestions - 1) {
+                    playerAnswersArray[questionCounter] = ans4.getText().toString();
+                    correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                    getNextQuestion();
+                    // If timer resets after a question, it goes here
+                    // i = some time
+                    //   mProgressbar.setProgress((int)i*100/(5000/1000));
+                } else {
+                    // "Display" end screen
+                    questionText.setVisibility(View.GONE);
+                    ans1.setVisibility(View.GONE);
+                    ans2.setVisibility(View.GONE);
+                    ans3.setVisibility(View.GONE);
+                    ans4.setVisibility(View.GONE);
+
+                    answerScroll.setVisibility(View.VISIBLE);
+                    bPlayAgain.setVisibility(View.VISIBLE);
+                    bEndQuiz.setVisibility(View.VISIBLE);
+                    // Synir svor í scrollview
+                    showAnswers();
+                }
+            }
+        });
+
+        // End screen buttons virkni
+        bPlayAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetQuiz();
+
+                answerScroll.setVisibility(View.GONE);
+                bPlayAgain.setVisibility(View.GONE);
+                bEndQuiz.setVisibility(View.GONE);
+
+                // Make question text visible along with answer buttons
+                questionText.setVisibility(View.VISIBLE);
+                ans1.setVisibility(View.VISIBLE);
+                ans2.setVisibility(View.VISIBLE);
+                ans3.setVisibility(View.VISIBLE);
+                ans4.setVisibility(View.VISIBLE);
+
+                switch (selCategory){
+                    case 1:
+                        questionIndex = 0;
+                        break;
+                    case 2:
+                        questionIndex = 10;
+                        break;
+                    case 3:
+                        questionIndex = 20;
+                        break;
+                    case 4:
+                        questionIndex = 30;
+                        break;
+                }
+
+                // Make text reflect the right question
+                questionText.setText(questions[questionIndex].getQuestionText());
+                ans1.setText(questions[questionIndex].getOptionA());
+                ans2.setText(questions[questionIndex].getOptionB());
+                ans3.setText(questions[questionIndex].getOptionC());
+                ans4.setText(questions[questionIndex].getOptionD());
+                mCountDownTimer.start();
+            }
+        });
+        bEndQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetQuiz();
+
+                answerScroll.setVisibility(View.GONE);
+                bPlayAgain.setVisibility(View.GONE);
+                bEndQuiz.setVisibility(View.GONE);
+
+                rgPlayerNum.setVisibility(View.VISIBLE);
+                rgCategory.setVisibility(View.VISIBLE);
+                bPlay.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
-    // End screen, see answers and correct answers
+    public void showAnswers() {
+        for (int i = 0; i < maxNumOfQuestions; i++) {
+            // Add new textView dynamically to answerColumn 1 and 2
+            TextView textView1 = new TextView(this);
+            TextView textView2 = new TextView(this);
 
+            textView1.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            textView2.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+
+            textView1.setText(playerAnswersArray[i]);
+            textView2.setText(correctAnswersArray[i]);
+
+            if (textView1.getText().toString().equals(textView2.getText().toString())) {
+                textView1.setTextColor(Color.GREEN);
+                textView2.setTextColor(Color.GREEN);
+            }
+            else {
+                textView1.setTextColor(Color.RED);
+            }
+
+            playerAnswersColumn.addView(textView1);
+            correctAnswersColumn.addView(textView2);
+        }
+    }
 
     public void getNextQuestion() {
         questionCounter += 1;
@@ -229,21 +403,65 @@ public class QuizActivity extends AppCompatActivity {
         ans2.setText(questions[questionIndex].getOptionB());
         ans3.setText(questions[questionIndex].getOptionC());
         ans4.setText(questions[questionIndex].getOptionD());
-
     }
 
     public void resetQuiz() {
         questionCounter = 0;
         questionIndex = 0;
 
-        rgPlayerNum.setVisibility(View.VISIBLE);
-        rgCategory.setVisibility(View.VISIBLE);
-        bPlay.setVisibility(View.VISIBLE);
+        playerAnswersArray = new String[10];
+        correctAnswersArray = new String[10];
+        playerAnswersColumn.removeAllViewsInLayout();
+        correctAnswersColumn.removeAllViewsInLayout();
 
-        questionText.setVisibility(View.GONE);
-        ans1.setVisibility(View.GONE);
-        ans2.setVisibility(View.GONE);
-        ans3.setVisibility(View.GONE);
-        ans4.setVisibility(View.GONE);
+        i = 0;
+        mProgressbar.setProgress(i);
+        mCountDownTimer=new CountDownTimer(100000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
+                i++;
+                mProgressbar.setProgress((int)i*100/(5000/1000));
+            }
+            @Override
+            public void onFinish() {
+                //Display next Question
+
+            }
+        };
+    }
+
+    public void setFindView() {
+        // Quiz Start screen
+        mStatistics = (Button) findViewById(R.id.button_statistics);
+        mPlayQuiz = (Button) findViewById(R.id.button_quiz);
+
+        // Timer
+        mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
+
+        // Categories
+        rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
+        rbCategory2 = (RadioButton) findViewById(R.id.rb_c2);
+        rbCategory3 = (RadioButton) findViewById(R.id.rb_c3);
+        rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
+
+        // Setting buttons
+        rgPlayerNum = (RadioGroup) findViewById(R.id.rg_players);
+        rgCategory = (RadioGroup) findViewById(R.id.rg_categories);
+        bPlay = (Button)  findViewById(R.id.bQuizSettings);
+
+        // Questions
+        questionText = (TextView)  findViewById(R.id.tQuestion);
+        ans1 = (Button) findViewById(R.id.bAns1);
+        ans2 = (Button) findViewById(R.id.bAns2);
+        ans3 = (Button) findViewById(R.id.bAns3);
+        ans4 = (Button) findViewById(R.id.bAns4);
+
+        // End screens
+        answerScroll = (ScrollView) findViewById(R.id.answersScroll);
+        playerAnswersColumn = (LinearLayout) findViewById(R.id.answerColumn1);
+        correctAnswersColumn = (LinearLayout) findViewById(R.id.answerColumn2);
+        bPlayAgain = (Button) findViewById(R.id.bPlayAgain);
+        bEndQuiz = (Button) findViewById(R.id.bEndQuiz);
     }
 }
