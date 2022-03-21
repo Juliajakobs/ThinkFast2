@@ -85,7 +85,8 @@ public class QuizActivity extends AppCompatActivity {
         // Set time for progress bar
         mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
         mProgressbar.setProgress(i);
-        mCountDownTimer=new CountDownTimer(100000,1000) {
+        mProgressbar.setVisibility(View.GONE);
+        mCountDownTimer=new CountDownTimer(10000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 i++;
@@ -93,7 +94,7 @@ public class QuizActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                //TODO: Calculate points
+                //TODO: Redirect to next question
             }
         };
 
@@ -149,6 +150,7 @@ public class QuizActivity extends AppCompatActivity {
                     rgCategory.setVisibility(View.GONE);
                     bPlay.setVisibility(View.GONE);
 
+
                     // Make question text visible along with answer buttons
                     questionText.setVisibility(View.VISIBLE);
                     ans1.setVisibility(View.VISIBLE);
@@ -178,6 +180,7 @@ public class QuizActivity extends AppCompatActivity {
                     ans2.setText(questions[questionIndex].getOptionB());
                     ans3.setText(questions[questionIndex].getOptionC());
                     ans4.setText(questions[questionIndex].getOptionD());
+                    mProgressbar.setVisibility(View.VISIBLE);
                     mCountDownTimer.start();
                 }
             }
@@ -198,6 +201,7 @@ public class QuizActivity extends AppCompatActivity {
                     Log.d("myapp","value: "+selCategory);
                     if (questionCounter < 1 ) {
                         getNextQuestion();
+                        i=-1;
                         // If timer resets after a question, it goes here
                         // i = some time
                      //   mProgressbar.setProgress((int)i*100/(5000/1000));
@@ -220,18 +224,30 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
+
     public void resetQuiz() {
         questionCounter = 0;
         questionIndex = 0;
+/*
+        playerAnswersArray = new String[10];
+        correctAnswersArray = new String[10];
+        playerAnswersColumn.removeAllViewsInLayout();
+        correctAnswersColumn.removeAllViewsInLayout();*/
 
-        rgPlayerNum.setVisibility(View.VISIBLE);
-        rgCategory.setVisibility(View.VISIBLE);
-        bPlay.setVisibility(View.VISIBLE);
+        i = 0;
+        mProgressbar.setProgress(i);
+        mCountDownTimer=new CountDownTimer(100000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
+                i++;
+                mProgressbar.setProgress((int)i*100/(5000/1000));
+            }
+            @Override
+            public void onFinish() {
+                //Display next Question
 
-        questionText.setVisibility(View.GONE);
-        ans1.setVisibility(View.GONE);
-        ans2.setVisibility(View.GONE);
-        ans3.setVisibility(View.GONE);
-        ans4.setVisibility(View.GONE);
+            }
+        };
     }
 }
