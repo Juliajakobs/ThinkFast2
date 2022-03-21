@@ -149,7 +149,7 @@ public class QuizActivity extends AppCompatActivity {
         String Name = extras.getString("name");
         String Email = extras.getString("email");
         String UserName = extras.getString("username");
-        //Gera mismunandi texta? t.d time to think fast "user"! "user" are you ready to rumble? ofl
+        //Creating a random welcome message for user
         int max = 4;
         int min = 1;
         int range = max - min + 1;
@@ -182,10 +182,6 @@ public class QuizActivity extends AppCompatActivity {
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mStatistics.setVisibility(View.GONE);
-               // mPlayQuiz.setVisibility(View.GONE);
-                //mWelcomeUser.setVisibility(View.GONE);
-
                 visibleMenu(false);
                 visibleQuizSettings(true);
 
