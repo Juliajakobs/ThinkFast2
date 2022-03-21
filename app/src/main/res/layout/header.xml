@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
+    tools:context=".HeaderActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,12 +16,12 @@
         android:theme="?attr/actionBarTheme" />
 
     <Button
-        android:id="@+id/home"
+        android:id="@+id/btn_home"
         android:layout_width="108dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:minWidth="32dp"
-        android:text="Home" />
+        android:text="@string/home" />
 
     <Button
         android:id="@+id/button_statistics"
@@ -30,16 +31,16 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="167dp"
-        android:text="Statistics" />
+        android:text="@string/statistics" />
 
     <Button
-        android:id="@+id/scoreboard"
+        android:id="@+id/btn_scoreboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="14dp"
-        android:text="Scoreboard" />
+        android:text="@string/scoreboard" />
 
 </RelativeLayout>

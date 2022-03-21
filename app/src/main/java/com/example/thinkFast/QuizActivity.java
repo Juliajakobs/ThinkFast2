@@ -1,5 +1,6 @@
 package com.example.thinkFast;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -40,6 +41,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans2;
     private Button ans3;
     private Button ans4;
+    private Button mScoreboard;
     private int questionCounter = 0;
     private int questionIndex = 0;
     private int selCategory = -1;
@@ -147,6 +149,13 @@ public class QuizActivity extends AppCompatActivity {
             }
         };
 
+        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
+        mScoreboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(QuizActivity.this, ScoreboardActivity.class));
+            }
+        });
         // Play quiz
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
