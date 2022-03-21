@@ -8,15 +8,21 @@
     tools:context=".AdminActivity">
 
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/header"
+        android:layout_width="fill_parent"
 
-
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="-5dp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="64dp"
         android:text="@string/admin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

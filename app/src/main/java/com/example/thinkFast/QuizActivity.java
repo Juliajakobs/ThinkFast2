@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class QuizActivity extends AppCompatActivity {
     private Button mStatistics;
     private Button mPlayQuiz;
+    private TextView mWelcomeUser;
 
     // quiz setting, number of players and what category
     private RadioGroup rgPlayerNum;
@@ -69,9 +70,17 @@ public class QuizActivity extends AppCompatActivity {
         // Quiz or stats
         mStatistics = (Button) findViewById(R.id.button_statistics);
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
+        //Welcome user
+        mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
         // Timer
         mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
         mProgressbar.setProgress(i);
+        //Getting information about logged in user from AccountActivity
+        Bundle extras = getIntent().getExtras();
+        String Name = extras.getString("name");
+        String Email = extras.getString("email");
+        String UserName = extras.getString("username");
+        mWelcomeUser.setText("Welcome " + Name);
         mCountDownTimer=new CountDownTimer(100000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -91,6 +100,8 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mStatistics.setVisibility(View.GONE);
                 mPlayQuiz.setVisibility(View.GONE);
+                mWelcomeUser.setVisibility(View.GONE);
+
 
                 rgPlayerNum.setVisibility(View.VISIBLE);
                 rgCategory.setVisibility(View.VISIBLE);
