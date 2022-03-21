@@ -1,5 +1,6 @@
 package com.example.thinkFast;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +95,22 @@ public class QuizActivity extends AppCompatActivity {
         String Name = extras.getString("name");
         String Email = extras.getString("email");
         String UserName = extras.getString("username");
-        mWelcomeUser.setText("Welcome " + Name);
+        //Gera mismunandi texta? t.d time to think fast "user"! "user" are you ready to rumble? ofl
+        int max = 4;
+        int min = 1;
+        int range = max - min + 1;
+        int random = (int) (Math.random()* range) + min;
+        switch(random){
+            case 1: mWelcomeUser.setText("Welcome " + Name +  "!");
+            break;
+            case 2: mWelcomeUser.setText("Time to think fast " + Name + "!");
+            break;
+            case 3: mWelcomeUser.setText(Name + " are you ready to ruuumble?");
+            break;
+            case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
+        }
+
+
         mCountDownTimer=new CountDownTimer(100000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -139,6 +156,13 @@ public class QuizActivity extends AppCompatActivity {
                 rbCategory4.setText(categories[3].getCategoryName());
             }
         });
+        //Gera StatisticsActivity? eða er ehv að gera það
+       /* mStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(QuizActivity.this, StatisticsActivity.class));
+            }
+            });*/
 
         // Quiz settings
 
