@@ -16,8 +16,15 @@
             android:name=".QuizActivity"
             android:exported="false" />
         <activity
+            android:name=".ScoreboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HeaderActivity"
+            android:exported="false" />
+        <activity
             android:name=".AccountActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
