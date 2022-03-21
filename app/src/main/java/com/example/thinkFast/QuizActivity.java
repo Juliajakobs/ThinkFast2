@@ -13,11 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.sql.Array;
-import java.util.Arrays;
 
 public class QuizActivity extends AppCompatActivity {
     private Button mStatistics;
@@ -285,6 +281,27 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void showAnswers() {
+        TextView playerAns = new TextView(this);
+        TextView correctAns = new TextView(this);
+
+        playerAns.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        correctAns.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
+        playerAns.setText(R.string.placeholder);
+        correctAns.setText(R.string.correctAnswers);
+
+        playerAns.setTextColor(Color.BLACK);
+        correctAns.setTextColor(Color.BLACK);
+
+        playerAnswersColumn.addView(playerAns);
+        correctAnswersColumn.addView(correctAns);
+
         for (int i = 0; i < maxNumOfQuestions; i++) {
             // Add new textView dynamically to answerColumn 1 and 2
             TextView textView1 = new TextView(this);
@@ -298,7 +315,6 @@ public class QuizActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             ));
-
             textView1.setText(playerAnswersArray[i]);
             textView2.setText(correctAnswersArray[i]);
 
@@ -308,6 +324,7 @@ public class QuizActivity extends AppCompatActivity {
             }
             else {
                 textView1.setTextColor(Color.RED);
+                textView2.setTextColor(Color.BLACK);
             }
 
             playerAnswersColumn.addView(textView1);

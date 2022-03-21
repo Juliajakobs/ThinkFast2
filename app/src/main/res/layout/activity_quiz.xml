@@ -184,18 +184,19 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/answerColumn2"
-                    android:layout_width="175dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"></LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/answerColumn1"
                     android:layout_width="175dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/answerColumn2"
+                    android:layout_width="175dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 

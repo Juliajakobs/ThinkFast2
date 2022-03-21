@@ -21,4 +21,6 @@
     <string name="placeholder">Placeholder</string>
     <string name="delete">Delete</string>
     <string name="admin">Velkominn admin!</string>
+    <string name="correctAnswers">Correct Answers</string>
+    <string name="answers">Answers</string>
 </resources>
