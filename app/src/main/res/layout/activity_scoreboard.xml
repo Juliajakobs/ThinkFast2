@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScoreboardActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView_scoreboard"
+        android:layout_width="133dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="642dp"
+        android:text="@string/scoreboard"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView_scores"
+        android:layout_width="156dp"
+        android:layout_height="521dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_scoreboard" />
+
+    <TextView
+        android:id="@+id/textView_names"
+        android:layout_width="162dp"
+        android:layout_height="521dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="44dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_scoreboard" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.thinkFast;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class QuizActivity extends AppCompatActivity {
     private Button mStatistics;
     private Button mPlayQuiz;
+    private TextView mWelcomeUser;
 
     // quiz setting, number of players and what category
     private RadioGroup rgPlayerNum;
@@ -28,6 +31,7 @@ public class QuizActivity extends AppCompatActivity {
     private RadioButton rbCategory2;
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
+    private RadioButton chosenCategory;
     private Button bPlay;
 
     // Question and answers
@@ -36,6 +40,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans2;
     private Button ans3;
     private Button ans4;
+    private Button mScoreboard;
     private int questionCounter = 0;
     private int questionIndex = 0;
     private int selCategory = -1;
@@ -128,7 +133,35 @@ public class QuizActivity extends AppCompatActivity {
         setFindView();
 
         // Timer virkni
+        // Quiz or stats
+        mStatistics = (Button) findViewById(R.id.button_statistics);
+        mPlayQuiz = (Button) findViewById(R.id.button_quiz);
+        //Welcome user
+        mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
+        // Set time for progress bar
+        mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
         mProgressbar.setProgress(i);
+        //Getting information about logged in user from AccountActivity
+        Bundle extras = getIntent().getExtras();
+        String Name = extras.getString("name");
+        String Email = extras.getString("email");
+        String UserName = extras.getString("username");
+        //Creating a random welcome message for user
+        int max = 4;
+        int min = 1;
+        int range = max - min + 1;
+        int random = (int) (Math.random()* range) + min;
+        switch(random){
+            case 1: mWelcomeUser.setText("Welcome " + Name +  "!");
+            break;
+            case 2: mWelcomeUser.setText("Time to think fast " + Name + "!");
+            break;
+            case 3: mWelcomeUser.setText(Name + " are you ready to ruuumble?");
+            break;
+            case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
+        }
+
+
         mCountDownTimer=new CountDownTimer(100000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -138,11 +171,17 @@ public class QuizActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                //Display next Question
-
+                //TODO: Calculate points
             }
         };
 
+        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
+        mScoreboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(QuizActivity.this, ScoreboardActivity.class));
+            }
+        });
         // Play quiz
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +211,13 @@ public class QuizActivity extends AppCompatActivity {
                 rbCategory4.setText(categories[3].getCategoryName());
             }
         });
+        //Gera StatisticsActivity? eða er ehv að gera það
+       /* mStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(QuizActivity.this, StatisticsActivity.class));
+            }
+            });*/
 
         // Play quiz button eftir settings dót virkni
         bPlay.setOnClickListener(new View.OnClickListener() {

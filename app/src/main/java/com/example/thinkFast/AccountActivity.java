@@ -19,6 +19,7 @@ public class AccountActivity extends AppCompatActivity {
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
             new Account("admin", "1234", "admin@hi.is", "Admin", true),
+            new Account("julia", "12", "juj7@hi.is", "Júlía", false),
     };
 
     @Override
@@ -43,16 +44,19 @@ public class AccountActivity extends AppCompatActivity {
                         if(mUsername.getText().toString().equals("admin")){
                             startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                         }
-                        // If user is not admin
                         else{
-                            Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
-                            startActivity(new Intent(AccountActivity.this, QuizActivity.class));
-                        } }
-                        // User is not registered
-                        else{
-                        Toast.makeText(getApplicationContext(),
-                                "Not registered...", Toast.LENGTH_SHORT).show();}
+                        Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                        //Sending information about user to QuizActivity
+                        Intent in = new Intent(AccountActivity.this, QuizActivity.class);
+                        in.putExtra("username", mAccounts[i].getUsername());
+                        in.putExtra("name", mAccounts[i].getName());
+                        in.putExtra("email", mAccounts[i].getEmail());
 
+                        startActivity(in);
+                    }} /*else {
+                        Toast.makeText(AccountActivity.this, R.string.sign_up_msg, Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp", "USER NOT FOUND "+mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                    }*/
                 }
 
             }
