@@ -10,6 +10,8 @@
     <string name="username">Username</string>
     <string name="statistics">Statistics</string>
     <string name="play_quiz">Play Quiz</string>
+    <string name="play_again">Play Again</string>
+    <string name="end_quiz">End Quiz</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
     <string name="numPlayers">Number of Players</string>
