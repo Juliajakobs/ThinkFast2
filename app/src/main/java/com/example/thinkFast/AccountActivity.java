@@ -36,11 +36,11 @@ public class AccountActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Checked if user is registered
                 for (int i = 0; i < mAccounts.length; i++) {
+                    // Check if user is admin
                     if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
-                        //Checking if admin
                         if(mUsername.getText().toString().equals("admin")){
                             startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                         }
