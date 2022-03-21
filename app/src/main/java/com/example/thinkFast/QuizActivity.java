@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +20,9 @@ public class QuizActivity extends AppCompatActivity {
     private Button mStatistics;
     private Button mPlayQuiz;
     private TextView mWelcomeUser;
+    private String Name;
+    private String Email;
+    private String UserName;
 
     // quiz setting, number of players and what category
     private RadioGroup rgPlayerNum;
@@ -31,7 +33,6 @@ public class QuizActivity extends AppCompatActivity {
     private RadioButton rbCategory2;
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
-    private RadioButton chosenCategory;
     private Button bPlay;
 
     // Question and answers
@@ -44,6 +45,7 @@ public class QuizActivity extends AppCompatActivity {
     private int questionCounter = 0;
     private int questionIndex = 0;
     private int selCategory = -1;
+    private int selPlayers = -1;
     // Id's for category and player radio buttons
     private static final int RB1_ID = 1;
     private static final int RB2_ID = 2;
@@ -55,6 +57,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private final int maxNumOfQuestions = 10;
     private String[] playerAnswersArray = new String[10];
+    private String[] playe2AnswersArray = new String[10];
     private String[] correctAnswersArray = new String[10];
 
 
@@ -132,20 +135,11 @@ public class QuizActivity extends AppCompatActivity {
         // Allt findView tengingar dotið er gert i thetta function
         setFindView();
 
-        // Timer virkni
-        // Quiz or stats
-        mStatistics = (Button) findViewById(R.id.button_statistics);
-        mPlayQuiz = (Button) findViewById(R.id.button_quiz);
-        //Welcome user
-        mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
-        // Set time for progress bar
-        mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
-        mProgressbar.setProgress(i);
         //Getting information about logged in user from AccountActivity
         Bundle extras = getIntent().getExtras();
-        String Name = extras.getString("name");
-        String Email = extras.getString("email");
-        String UserName = extras.getString("username");
+        Name = extras.getString("name");
+        Email = extras.getString("email");
+        UserName = extras.getString("username");
         //Creating a random welcome message for user
         int max = 4;
         int min = 1;
@@ -153,14 +147,16 @@ public class QuizActivity extends AppCompatActivity {
         int random = (int) (Math.random()* range) + min;
         switch(random){
             case 1: mWelcomeUser.setText("Welcome " + Name +  "!");
-            break;
+                break;
             case 2: mWelcomeUser.setText("Time to think fast " + Name + "!");
-            break;
+                break;
             case 3: mWelcomeUser.setText(Name + " are you ready to ruuumble?");
-            break;
+                break;
             case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
         }
 
+        // Set time for progress bar
+        mProgressbar.setProgress(i);
 
         mCountDownTimer=new CountDownTimer(100000,1000) {
             @Override
@@ -175,13 +171,13 @@ public class QuizActivity extends AppCompatActivity {
             }
         };
 
-        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
         mScoreboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(QuizActivity.this, ScoreboardActivity.class));
             }
         });
+
         // Play quiz
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,20 +185,13 @@ public class QuizActivity extends AppCompatActivity {
                 visibleMenu(false);
                 visibleQuizSettings(true);
 
-                // Set name of categories
-                // Set name and ID of categories
-                rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
+                // Set name and ID of categories and player
                 rbCategory1.setId(RB1_ID);
-                rbCategory2 = (RadioButton) findViewById(R.id.rb_c2);
                 rbCategory2.setId(RB2_ID);
-                rbCategory3 = (RadioButton) findViewById(R.id.rb_c3);
                 rbCategory3.setId(RB3_ID);
-                rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
                 rbCategory4.setId(RB4_ID);
 
-                rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
                 rbPlayer1.setId(RBP1_ID);
-                rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
                 rbPlayer2.setId(RBP2_ID);
 
                 rbCategory1.setText(categories[0].getCategoryName());
@@ -211,13 +200,6 @@ public class QuizActivity extends AppCompatActivity {
                 rbCategory4.setText(categories[3].getCategoryName());
             }
         });
-        //Gera StatisticsActivity? eða er ehv að gera það
-       /* mStatistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(QuizActivity.this, StatisticsActivity.class));
-            }
-            });*/
 
         // Play quiz button eftir settings dót virkni
         bPlay.setOnClickListener(new View.OnClickListener() {
@@ -225,11 +207,12 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Get int of selected radio button from radio group
                 selCategory = rgCategory.getCheckedRadioButtonId();
-                int selPlayers=rgPlayerNum.getCheckedRadioButtonId();
-                selCategory = rgCategory.getCheckedRadioButtonId();
-                Log.d("myapp", "onClick: "+selPlayers);
+                selPlayers = rgPlayerNum.getCheckedRadioButtonId();
+                Log.d("myapp", "onClick: "+ selPlayers);
                 if(selCategory == -1) Toast.makeText(getApplicationContext(),
                         "You have to choose a category", Toast.LENGTH_SHORT).show();
+                else if(selPlayers == -1) Toast.makeText(getApplicationContext(),
+                        "You have to choose the number of players", Toast.LENGTH_SHORT).show();
                 else {
                     // Hide setting buttons
                     visibleQuizSettings(false);
@@ -327,6 +310,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void showAnswers() {
+
         TextView playerAns = new TextView(this);
         TextView correctAns = new TextView(this);
 
@@ -339,7 +323,7 @@ public class QuizActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
 
-        playerAns.setText(R.string.placeholder);
+        playerAns.setText(Name + R.string.answers);
         correctAns.setText(R.string.correctAnswers);
 
         playerAns.setTextColor(Color.BLACK);
@@ -386,7 +370,6 @@ public class QuizActivity extends AppCompatActivity {
         ans2.setText(questions[questionIndex].getOptionB());
         ans3.setText(questions[questionIndex].getOptionC());
         ans4.setText(questions[questionIndex].getOptionD());
-
     }
 
     public void resetQuiz() {
@@ -416,6 +399,9 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void setFindView() {
+        // User stuff
+        mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
+
         // Quiz Start screen
         mStatistics = (Button) findViewById(R.id.button_statistics);
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
@@ -430,8 +416,16 @@ public class QuizActivity extends AppCompatActivity {
         rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
 
         // Setting buttons
-        rgPlayerNum = (RadioGroup) findViewById(R.id.rg_players);
         rgCategory = (RadioGroup) findViewById(R.id.rg_categories);
+        rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
+        rbCategory2 = (RadioButton) findViewById(R.id.rb_c2);
+        rbCategory3 = (RadioButton) findViewById(R.id.rb_c3);
+        rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
+
+        rgPlayerNum = (RadioGroup) findViewById(R.id.rg_players);
+        rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
+        rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
+
         bPlay = (Button)  findViewById(R.id.bQuizSettings);
 
         // Questions
@@ -447,6 +441,9 @@ public class QuizActivity extends AppCompatActivity {
         correctAnswersColumn = (LinearLayout) findViewById(R.id.answerColumn2);
         bPlayAgain = (Button) findViewById(R.id.bPlayAgain);
         bEndQuiz = (Button) findViewById(R.id.bEndQuiz);
+
+        // Scoreboard
+        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
     }
 
     public void visibleMenu(Boolean b) {
