@@ -4,22 +4,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.sql.Array;
-import java.util.Arrays;
 
 public class QuizActivity extends AppCompatActivity {
     private Button mStatistics;
@@ -116,7 +111,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(2, "Which option is en animal?", "Human", "Bed", "Grass", "Human", "Aloe"),
 
             new Question(3, "Which option is a country?", "Iceland", "Africa", "Asia", "Iceland", "Europe"),
-            new Question(3, "Which option is a country?", "GreenLand", "Europe", "Africa", "Greenland", "Asia"),
+            new Question(3, "Which option is a country?", "Greenland", "Europe", "Africa", "Greenland", "Asia"),
             new Question(3, "Which option is a country?", "Finland", "Africa", "Asia", "Finland", "Europe"),
             new Question(3, "Which option is a country?", "Norway", "Europe", "Africa", "Norway", "Asia"),
             new Question(3, "Which option is a country?", "Denmark", "Africa", "Asia", "Denmark", "Europe"),
@@ -179,20 +174,33 @@ public class QuizActivity extends AppCompatActivity {
         // Set time for progress bar
         mProgressbar.setProgress(i);
 
-        mCountDownTimer=new CountDownTimer(100000,400) {
+        mCountDownTimer=new CountDownTimer(5000,400) {
             @Override
             public void onTick(long millisUntilFinished) {
-                Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
                 i++;
-                mProgressbar.setProgress((int)i*100/(5000/1000));
+                mProgressbar.setProgress((int)i*500/(5000/400));
             }
             @Override
             public void onFinish() {
                 //TODO: Get to next question
-                Log.d("myapp","this is over");
-                i=0;
-                mProgressbar.setProgress(i);
-                getNextQuestion();
+                if (questionCounter < maxNumOfQuestions-1) {
+                   /* i = 0;
+                    mProgressbar.setProgress(i);
+                    mCountDownTimer.start();*/
+                    correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                    if(player1AnswersArray[questionCounter]==null)player1AnswersArray[questionCounter]="Timed out";
+                    if(selPlayers==2){
+                        correct2AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                        if(player2AnswersArray[questionCounter]==null)player2AnswersArray[questionCounter]="Timed out";
+                    }
+                    getNextQuestion();
+
+                }
+                else {
+                    visibleQuizPlay(false);
+                    visibleEnd(true);
+                    showAnswers();
+                }
 
             }
         };
@@ -240,7 +248,7 @@ public class QuizActivity extends AppCompatActivity {
                 // Get int of selected radio button from radio group
                 selCategory = rgCategory.getCheckedRadioButtonId();
                 selPlayers = rgPlayerNum.getCheckedRadioButtonId();
-                Log.d("myapp", "onClick: "+ selPlayers);
+              //  Log.d("myapp", "onClick: "+ selPlayers);
                 if(selCategory == -1) Toast.makeText(getApplicationContext(),
                         "You have to choose a category", Toast.LENGTH_SHORT).show();
                 else if(selPlayers == -1) Toast.makeText(getApplicationContext(),
@@ -248,6 +256,7 @@ public class QuizActivity extends AppCompatActivity {
                 else {
                     // CountDown function, quiz starts after countdown
                     getReadyCountDown();
+
                 }
             }
         });
@@ -257,13 +266,14 @@ public class QuizActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("myapp","value: " + selCategory);
+                  /*  Log.d("myapp","value: " + selCategory);
                     Log.d("myapp","value: " + turn);
-                    Log.d("myapp","value: " + questionCounter);
+                    Log.d("myapp","value: " + questionCounter);*/
                     // Save answers in appropriate array
                     if (selPlayers == 2) {
                         if (turn == 1) {
                             player1AnswersArray[questionCounter] = button.getText().toString();
+
                             correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
                         } else if (turn == 2) {
                             player2AnswersArray[questionCounter] = button.getText().toString();
@@ -276,9 +286,9 @@ public class QuizActivity extends AppCompatActivity {
                     }
 
                     if (questionCounter < maxNumOfQuestions-1) {
-                        i=0;
-                        mProgressbar.setProgress(i);
+                        mCountDownTimer.cancel();
                         getNextQuestion();
+
                         // If timer resets after a question, it goes here
                         // i = some time
                         //   mProgressbar.setProgress((int)i*100/(5000/1000));
@@ -376,10 +386,12 @@ public class QuizActivity extends AppCompatActivity {
         ans2.setText(questions[questionIndex].getOptionB());
         ans3.setText(questions[questionIndex].getOptionC());
         ans4.setText(questions[questionIndex].getOptionD());
+        mProgressbar.setVisibility(View.VISIBLE);
         mCountDownTimer.start();
     }
 
     public void showAnswers() {
+        mProgressbar.setVisibility(View.GONE);
         if (selPlayers == 1) {
             TextView playerAns = new TextView(this);
             TextView correctAns = new TextView(this);
@@ -488,9 +500,12 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void getNextQuestion() {
+        i = 0;
+        mProgressbar.setProgress(i);
+        mCountDownTimer.start();
         questionCounter += 1;
         questionIndex += 1;
-        questionText.setText(questions[questionIndex].getQuestionText());
+        questionText.setText(questions[questionIndex].getQuestionText()+" "+questionIndex);
         ans1.setText(questions[questionIndex].getOptionA());
         ans2.setText(questions[questionIndex].getOptionB());
         ans3.setText(questions[questionIndex].getOptionC());
@@ -503,7 +518,9 @@ public class QuizActivity extends AppCompatActivity {
         questionCounter = 0;
         questionIndex = 0;
         turn = 0;
+        mCountDownTimer.cancel();
         i=0;
+        mCountDownTimer.start();
         player1AnswersArray = new String[10];
         player2AnswersArray = new String[10];
         correct1AnswersArray = new String[10];
@@ -513,7 +530,7 @@ public class QuizActivity extends AppCompatActivity {
 
         i = 0;
         mProgressbar.setProgress(i);
-        mCountDownTimer=new CountDownTimer(100000,1000) {
+      /*  mCountDownTimer=new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
@@ -523,9 +540,13 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 //Display next Question
+                Log.d("ma","THIS IS OVER");
+                i=0;
+                mProgressbar.setProgress(i);
+                getNextQuestion();
 
             }
-        };
+        };*/
     }
 
     public void setFindView() {
@@ -622,6 +643,8 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void visibleEnd(Boolean b) {
+        mProgressbar.setVisibility(View.GONE);
+        mCountDownTimer.cancel();
         if (b) {
             answerScroll.setVisibility(View.VISIBLE);
             bPlayAgain.setVisibility(View.VISIBLE);
