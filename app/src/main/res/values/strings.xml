@@ -25,4 +25,10 @@
     <string name="home">Home</string>
     <string name="correctAnswers">Correct Answers</string>
     <string name="answers"> Answers</string>
+    <string name="getReady3">Get Ready!</string>
+    <string name="getReady2">Set!</string>
+    <string name="getReady1Player1">Think Fast Player 1!</string>
+    <string name="getReady1Player2">Think Fast Player 2!</string>
+    <string name="p1">Player 1</string>
+    <string name="p2">Player 2</string>
 </resources>
