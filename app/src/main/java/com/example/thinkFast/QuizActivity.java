@@ -18,14 +18,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.thinkFast.networking.NetworkCallback;
+import com.example.thinkFast.networking.NetworkManager;
+
 import java.sql.Array;
 import java.util.Arrays;
+import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
     private Button mStatistics;
     private Button mPlayQuiz;
     private TextView mWelcomeUser;
-
+    private static final String TAG = "QuizActivity";
     // quiz setting, number of players and what category
     private RadioGroup rgPlayerNum;
     private RadioButton rbPlayer1;
@@ -82,6 +86,8 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     // dummy data - questions
+    private List<Question> questions;
+    /*
     private final Question[] questions = new Question[]{
             new Question(1, "Which option is a sport?", "Soccer", "Chess", "Poker", "Soccer", "Painting"),
             new Question(1, "Which option is a sport?", "Football", "Drawing", "Music", "Football", "Crafting"),
@@ -127,7 +133,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(4, "Which option is a color?", "Beige", "Blueberry", "Water", "Beige", "Iris"),
             new Question(4, "Which option is a color?", "Orange", "Avocado", "Grass", "Orange", "Aloe")
     };
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +142,20 @@ public class QuizActivity extends AppCompatActivity {
         // Allt findView tengingar dotið er gert i thetta function
         setFindView();
 
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.getQuestionsByCategory(1,new NetworkCallback<List<Question>>() {
+            @Override
+            public void onSuccess(List<Question> result) {
+                questions = result;
+                Log.d(TAG, "First question:" + questions.get(0).getQuestionText());
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Log.e(TAG, "Failed to get questions: " + errorString);
+            }
+
+        });
         // Timer virkni
         // Quiz or stats
         mStatistics = (Button) findViewById(R.id.button_statistics);
@@ -256,11 +276,11 @@ public class QuizActivity extends AppCompatActivity {
                     }
 
                     // Make text reflect the right question
-                    questionText.setText(questions[questionIndex].getQuestionText());
-                    ans1.setText(questions[questionIndex].getOptionA());
-                    ans2.setText(questions[questionIndex].getOptionB());
-                    ans3.setText(questions[questionIndex].getOptionC());
-                    ans4.setText(questions[questionIndex].getOptionD());
+                    questionText.setText(questions.get(questionIndex).getQuestionText());
+                    ans1.setText(questions.get(questionIndex).getOptionA());
+                    ans2.setText(questions.get(questionIndex).getOptionB());
+                    ans3.setText(questions.get(questionIndex).getOptionC());
+                    ans4.setText(questions.get(questionIndex).getOptionD());
                     mCountDownTimer.start();
                 }
             }
@@ -274,7 +294,7 @@ public class QuizActivity extends AppCompatActivity {
                     Log.d("myapp","value: "+selCategory);
                     if (questionCounter < maxNumOfQuestions - 1) {
                         playerAnswersArray[questionCounter] = button.getText().toString();
-                        correctAnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                        correctAnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
                         getNextQuestion();
                         // If timer resets after a question, it goes here
                         // i = some time
@@ -312,11 +332,11 @@ public class QuizActivity extends AppCompatActivity {
                 }
 
                 // Make text reflect the right question
-                questionText.setText(questions[questionIndex].getQuestionText());
-                ans1.setText(questions[questionIndex].getOptionA());
-                ans2.setText(questions[questionIndex].getOptionB());
-                ans3.setText(questions[questionIndex].getOptionC());
-                ans4.setText(questions[questionIndex].getOptionD());
+                questionText.setText(questions.get(questionIndex).getQuestionText());
+                ans1.setText(questions.get(questionIndex).getOptionA());
+                ans2.setText(questions.get(questionIndex).getOptionB());
+                ans3.setText(questions.get(questionIndex).getOptionC());
+                ans4.setText(questions.get(questionIndex).getOptionD());
                 mCountDownTimer.start();
             }
         });
@@ -364,11 +384,11 @@ public class QuizActivity extends AppCompatActivity {
     public void getNextQuestion() {
         questionCounter += 1;
         questionIndex += 1;
-        questionText.setText(questions[questionIndex].getQuestionText());
-        ans1.setText(questions[questionIndex].getOptionA());
-        ans2.setText(questions[questionIndex].getOptionB());
-        ans3.setText(questions[questionIndex].getOptionC());
-        ans4.setText(questions[questionIndex].getOptionD());
+        questionText.setText(questions.get(questionIndex).getQuestionText());
+        ans1.setText(questions.get(questionIndex).getOptionA());
+        ans2.setText(questions.get(questionIndex).getOptionB());
+        ans3.setText(questions.get(questionIndex).getOptionC());
+        ans4.setText(questions.get(questionIndex).getOptionD());
 
     }
 

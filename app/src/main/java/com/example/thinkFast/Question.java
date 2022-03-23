@@ -1,57 +1,67 @@
 package com.example.thinkFast;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Question {
-    private long ID;
-    private int categoryID;
-    public String questionText;
-    private String correctAnswer;
-    private String optionA;
-    private String optionB;
-    private String optionC;
-    private String optionD;
+    @SerializedName("ID")
+    private long mID;
+    @SerializedName("categoryID")
+    private int mCategoryID;
+    @SerializedName("questionText")
+    public String mQuestionText;
+    @SerializedName("correctAnswer")
+    private String mCorrectAnswer;
+    @SerializedName("optionA")
+    private String mOptionA;
+    @SerializedName("optionB")
+    private String mOptionB;
+    @SerializedName("optionC")
+    private String mOptionC;
+    @SerializedName("optionD")
+    private String mOptionD;
 
     public Question(){}
 
     public Question(int categoryID, String questionText, String correctAnswer, String optionA, String optionB, String optionC, String optionD) {
-        this.categoryID = categoryID;
-        this.questionText = questionText;
-        this.correctAnswer = correctAnswer;
-        this.optionA = optionA;
-        this.optionB = optionB;
-        this.optionC = optionC;
-        this.optionD = optionD;
+        this.mCategoryID = categoryID;
+        this.mQuestionText = questionText;
+        this.mCorrectAnswer = correctAnswer;
+        this.mOptionA = optionA;
+        this.mOptionB = optionB;
+        this.mOptionC = optionC;
+        this.mOptionD = optionD;
     }
 
-    public long getID() { return ID; }
+    public long getID() { return mID; }
 
-    public void setID(long ID) { this.ID = ID; }
+    public void setID(long ID) { this.mID = ID; }
 
-    public int getCategoryID() { return categoryID; }
+    public int getCategoryID() { return mCategoryID; }
 
-    public void setCategoryID(int categoryID) { this.categoryID = categoryID; }
+    public void setCategoryID(int categoryID) { this.mCategoryID = categoryID; }
 
-    public String getQuestionText() { return questionText; }
+    public String getQuestionText() { return mQuestionText; }
 
-    public void setQuestionText(String questionText) { this.questionText = questionText; }
+    public void setQuestionText(String questionText) { this.mQuestionText = questionText; }
 
-    public String getCorrectAnswer() { return correctAnswer; }
+    public String getCorrectAnswer() { return mCorrectAnswer; }
 
-    public void setCorrectAnswer(String correctAnswer) { this.correctAnswer = correctAnswer; }
+    public void setCorrectAnswer(String correctAnswer) { this.mCorrectAnswer = correctAnswer; }
 
-    public String getOptionA() { return optionA; }
+    public String getOptionA() { return mOptionA; }
 
-    public void setOptionA(String optionA) { this.optionA = optionA; }
+    public void setOptionA(String optionA) { this.mOptionA = optionA; }
 
-    public String getOptionB() { return optionB; }
+    public String getOptionB() { return mOptionB; }
 
-    public void setOptionB(String optionB) { this.optionB = optionB; }
+    public void setOptionB(String optionB) { this.mOptionB = optionB; }
 
-    public String getOptionC() { return optionC; }
+    public String getOptionC() { return mOptionC; }
 
-    public void setOptionC(String optionC) { this.optionC = optionC; }
+    public void setOptionC(String optionC) { this.mOptionC = optionC; }
 
-    public String getOptionD() { return optionD; }
+    public String getOptionD() { return mOptionD; }
 
-    public void setOptionD(String optionD) { this.optionD = optionD; }
+    public void setOptionD(String optionD) { this.mOptionD = optionD; }
 }
 
