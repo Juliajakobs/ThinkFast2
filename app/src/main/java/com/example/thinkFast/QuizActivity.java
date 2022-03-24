@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -64,6 +65,8 @@ public class QuizActivity extends AppCompatActivity {
     private String[] player2AnswersArray = new String[10];
     private String[] correct1AnswersArray = new String[10];
     private String[] correct2AnswersArray = new String[10];
+    private int player1Score=0;
+    private int player2Score=0;
     private int turn = 0;
 
 
@@ -141,7 +144,6 @@ public class QuizActivity extends AppCompatActivity {
         // Allt findView tengingar dotið er gert i thetta function
         setFindView();
 
-        // Timer virkni
         // Quiz or stats
         mStatistics = (Button) findViewById(R.id.button_statistics);
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
@@ -182,11 +184,9 @@ public class QuizActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                //TODO: Get to next question
+                // her er i = 12
+                //Add "Timed out" as user answer if question is not answered in the time limit
                 if (questionCounter < maxNumOfQuestions-1) {
-                   /* i = 0;
-                    mProgressbar.setProgress(i);
-                    mCountDownTimer.start();*/
                     correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
                     if(player1AnswersArray[questionCounter]==null)player1AnswersArray[questionCounter]="Timed out";
                     if(selPlayers==2){
@@ -248,7 +248,6 @@ public class QuizActivity extends AppCompatActivity {
                 // Get int of selected radio button from radio group
                 selCategory = rgCategory.getCheckedRadioButtonId();
                 selPlayers = rgPlayerNum.getCheckedRadioButtonId();
-              //  Log.d("myapp", "onClick: "+ selPlayers);
                 if(selCategory == -1) Toast.makeText(getApplicationContext(),
                         "You have to choose a category", Toast.LENGTH_SHORT).show();
                 else if(selPlayers == -1) Toast.makeText(getApplicationContext(),
@@ -266,32 +265,29 @@ public class QuizActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                  /*  Log.d("myapp","value: " + selCategory);
-                    Log.d("myapp","value: " + turn);
-                    Log.d("myapp","value: " + questionCounter);*/
-                    // Save answers in appropriate array
                     if (selPlayers == 2) {
                         if (turn == 1) {
                             player1AnswersArray[questionCounter] = button.getText().toString();
-
                             correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                            // Calculate score if answer is correct
+                            if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
                         } else if (turn == 2) {
                             player2AnswersArray[questionCounter] = button.getText().toString();
                             correct2AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                            // Calculate score if answer is correct
+                            if( player2AnswersArray[questionCounter].equals(correct2AnswersArray[questionCounter])) player2Score+=calculateScore(player2Score,i);
                         }
                     }
                     else {
                         player1AnswersArray[questionCounter] = button.getText().toString();
                         correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                        // Calculate score if answer is correct
+                        if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
                     }
 
                     if (questionCounter < maxNumOfQuestions-1) {
-                        mCountDownTimer.cancel();
                         getNextQuestion();
 
-                        // If timer resets after a question, it goes here
-                        // i = some time
-                        //   mProgressbar.setProgress((int)i*100/(5000/1000));
                     } else {
                         if (selPlayers == 2 && turn == 1) {
                             getReadyCountDown();
@@ -441,6 +437,7 @@ public class QuizActivity extends AppCompatActivity {
                 answerColumn1.addView(textView1);
                 answerColumn2.addView(textView2);
             }
+            Log.d("myapp","playerscore: "+player1Score);
         }
         else {
             TextView player1Ans = new TextView(this);
@@ -495,17 +492,17 @@ public class QuizActivity extends AppCompatActivity {
 
                 answerColumn1.addView(textView1);
                 answerColumn2.addView(textView2);
+
             }
         }
     }
 
     public void getNextQuestion() {
-        i = 0;
+        resetCounter();
         mProgressbar.setProgress(i);
-        mCountDownTimer.start();
         questionCounter += 1;
         questionIndex += 1;
-        questionText.setText(questions[questionIndex].getQuestionText()+" "+questionIndex);
+        questionText.setText(questions[questionIndex].getQuestionText());
         ans1.setText(questions[questionIndex].getOptionA());
         ans2.setText(questions[questionIndex].getOptionB());
         ans3.setText(questions[questionIndex].getOptionC());
@@ -518,37 +515,30 @@ public class QuizActivity extends AppCompatActivity {
         questionCounter = 0;
         questionIndex = 0;
         turn = 0;
-        mCountDownTimer.cancel();
-        i=0;
-        mCountDownTimer.start();
+        resetCounter();
         player1AnswersArray = new String[10];
         player2AnswersArray = new String[10];
         correct1AnswersArray = new String[10];
         correct2AnswersArray = new String[10];
         answerColumn1.removeAllViewsInLayout();
         answerColumn2.removeAllViewsInLayout();
-
-        i = 0;
+    }
+    // Resets counter after each question/quiz
+    public void resetCounter(){
+        i=0;
+        mCountDownTimer.cancel();
+        mCountDownTimer.start();
         mProgressbar.setProgress(i);
-      /*  mCountDownTimer=new CountDownTimer(5000,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
-                i++;
-                mProgressbar.setProgress((int)i*100/(5000/1000));
-            }
-            @Override
-            public void onFinish() {
-                //Display next Question
-                Log.d("ma","THIS IS OVER");
-                i=0;
-                mProgressbar.setProgress(i);
-                getNextQuestion();
-
-            }
-        };*/
     }
 
+    public int calculateScore(int playerScore, int i){
+        // Timer bonus scores
+      if(i<=3)  playerScore = 100;
+      else if(i<=6) playerScore = 75;
+      else if(i<=9) playerScore = 50;
+      else if(i<=12) playerScore = 25;
+      return playerScore;
+    }
     public void setFindView() {
         // User stuff
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
