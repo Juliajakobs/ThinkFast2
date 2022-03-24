@@ -3,7 +3,6 @@ package com.example.thinkFast.networking;
 import android.content.Context;
 import android.net.Uri;
 
-import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;

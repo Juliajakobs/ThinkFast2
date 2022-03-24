@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
@@ -99,8 +96,8 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     // dummy data - questions
-    private List<Question> questions;
-    /*
+    private List<Question> questions_1;
+
     private final Question[] questions = new Question[]{
             new Question(1, "Which option is a sport?", "Soccer", "Chess", "Poker", "Soccer", "Painting"),
             new Question(1, "Which option is a sport?", "Football", "Drawing", "Music", "Football", "Crafting"),
@@ -146,7 +143,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(4, "Which option is a color?", "Beige", "Blueberry", "Water", "Beige", "Iris"),
             new Question(4, "Which option is a color?", "Orange", "Avocado", "Grass", "Orange", "Aloe")
     };
-*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,8 +156,8 @@ public class QuizActivity extends AppCompatActivity {
         networkManager.getQuestionsByCategory(1,new NetworkCallback<List<Question>>() {
             @Override
             public void onSuccess(List<Question> result) {
-                questions = result;
-                Log.d(TAG, "First question:" + questions.get(0).getQuestionText());
+                questions_1 = result;
+                Log.d(TAG, "First question:" + questions_1.get(0).getQuestionText());
             }
 
             @Override
