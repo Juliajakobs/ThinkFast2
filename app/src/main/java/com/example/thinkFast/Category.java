@@ -1,18 +1,23 @@
 package com.example.thinkFast;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
-    private long ID;
-    private String categoryName;
-    private int categoryID;
+    @SerializedName("ID")
+    private long mID;
+    @SerializedName("categoryName")
+    private String mCategoryName;
+    @SerializedName("categoryID")
+    private int mCategoryID;
 
     private List<Question> questions= new ArrayList<>();
 
     public Category(String categoryName, int categoryID) {
-        this.categoryName = categoryName;
-        this.categoryID = categoryID;
+        this.mCategoryName = categoryName;
+        this.mCategoryID = categoryID;
     }
 
     public Category() {}
@@ -21,15 +26,15 @@ public class Category {
 
     public void setQuestions(List<Question> questions) { this.questions = questions; }
 
-    public long getID() { return ID; }
+    public long getID() { return mID; }
 
-    public void setID(long ID) { this.ID = ID; }
+    public void setID(long ID) { this.mID = ID; }
 
-    public String getCategoryName() { return categoryName; }
+    public String getCategoryName() { return mCategoryName; }
 
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public void setCategoryName(String categoryName) { this.mCategoryName = categoryName; }
 
-    public int getCategoryID() { return categoryID; }
+    public int getCategoryID() { return mCategoryID; }
 
-    public void setCategoryID(int categoryID) { this.categoryID = categoryID; }
+    public void setCategoryID(int categoryID) { this.mCategoryID = categoryID; }
 }
