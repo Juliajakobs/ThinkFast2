@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
@@ -372,7 +369,7 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         // Only work with questions from chosen category
-        switch (selCategory){
+     /*   switch (selCategory){
             case 1:
                 questionIndex = 0;
                 break;
@@ -385,7 +382,7 @@ public class QuizActivity extends AppCompatActivity {
             case 4:
                 questionIndex = 30;
                 break;
-        }
+        }*/
 
         // Make text reflect the right question
         questionText.setText(questions.get(questionIndex).getQuestionText());
