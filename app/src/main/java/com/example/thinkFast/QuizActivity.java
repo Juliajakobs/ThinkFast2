@@ -40,7 +40,6 @@ public class QuizActivity extends AppCompatActivity {
     private RadioButton rbCategory2;
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
-    private RadioButton chosenCategory;
     private Button bPlay;
 
     // Question and answers
@@ -50,8 +49,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans3;
     private Button ans4;
     private Button mScoreboard;
-    private int questionCounter = 0;
-    private int questionIndex = 0;
+    private int questionIndex;
     private int selCategory = -1;
     private int selPlayers = -1;
     // Id's for category and player radio buttons
@@ -88,15 +86,7 @@ public class QuizActivity extends AppCompatActivity {
     private int i=0;
 
     private List<Category> categories;
-    /*
-    // dummy data - categories
-    private final Category[] categories = new Category[]{
-            new Category("Sport", 1),
-            new Category("Science", 2),
-            new Category("Geography", 3),
-            new Category("General", 4)
-    };
-*/
+
     private List<Question> questions;
 
     @Override
@@ -134,16 +124,10 @@ public class QuizActivity extends AppCompatActivity {
             }
 
         });
-        // Timer virkni
-        // Quiz or stats
-        mStatistics = (Button) findViewById(R.id.button_statistics);
-        mPlayQuiz = (Button) findViewById(R.id.button_quiz);
-        //Welcome user
-        mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
+
         // Set time for progress bar
-        mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
         mProgressbar.setProgress(i);
-        mProgressbar.setVisibility(View.GONE);
+
         //Getting information about logged in user from AccountActivity
         Bundle extras = getIntent().getExtras();
         Name = extras.getString("name");
@@ -178,26 +162,35 @@ public class QuizActivity extends AppCompatActivity {
             public void onFinish() {
                 // her er i = 12
                 //Add "Timed out" as user answer if question is not answered in the time limit
-                if (questionCounter < maxNumOfQuestions-1) {
-                    correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
-                    if(player1AnswersArray[questionCounter]==null)player1AnswersArray[questionCounter]="Timed out";
-                    if(selPlayers==2){
-                        correct2AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
-                        if(player2AnswersArray[questionCounter]==null)player2AnswersArray[questionCounter]="Timed out";
+                if (selPlayers == 2) {
+                    if (turn == 1) {
+                        player1AnswersArray[questionIndex] = "Timed out";
+                        correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
+                    } else if (turn == 2) {
+                        player2AnswersArray[questionIndex] = "Timed out";
+                        correct2AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                     }
-                    getNextQuestion();
-
                 }
                 else {
-                    visibleQuizPlay(false);
-                    visibleEnd(true);
-                    showAnswers();
+                    player1AnswersArray[questionIndex] = "Timed out";
+                    correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
+                }
+
+                if (questionIndex < maxNumOfQuestions) {
+                    getNextQuestion();
+                }
+                else {
+                    if (selPlayers == 2 && turn == 1) getReadyCountDown();
+                    else {
+                        visibleQuizPlay(false);
+                        visibleEnd(true);
+                        showAnswers();
+                    }
                 }
 
             }
         };
 
-        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
         mScoreboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,18 +206,13 @@ public class QuizActivity extends AppCompatActivity {
                 visibleQuizSettings(true);
 
                 // Set name and ID of categories and player
-                rbCategory1.setId(RB1_ID);
-                rbCategory2 = (RadioButton) findViewById(R.id.rb_c2);
-                rbCategory2.setId(RB2_ID);
-                rbCategory3 = (RadioButton) findViewById(R.id.rb_c3);
-                rbCategory3.setId(RB3_ID);
-                rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
-                rbCategory4.setId(RB4_ID);
-
-                rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
                 rbPlayer1.setId(RBP1_ID);
-                rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
                 rbPlayer2.setId(RBP2_ID);
+
+                rbCategory1.setId(RB1_ID);
+                rbCategory2.setId(RB2_ID);
+                rbCategory3.setId(RB3_ID);
+                rbCategory4.setId(RB4_ID);
 
                 rbCategory1.setText(categories.get(0).getCategoryName());
                 rbCategory2.setText(categories.get(1).getCategoryName());
@@ -254,16 +242,6 @@ public class QuizActivity extends AppCompatActivity {
                 else {
                     // CountDown function, quiz starts after countdown
                     getReadyCountDown();
-
-                    // Only work with questions from chosen category
-                    questionIndex = 0;
-                    // Make text reflect the right question
-                    questionText.setText(questions.get(questionIndex).getQuestionText());
-                    ans1.setText(questions.get(questionIndex).getOptionA());
-                    ans2.setText(questions.get(questionIndex).getOptionB());
-                    ans3.setText(questions.get(questionIndex).getOptionC());
-                    ans4.setText(questions.get(questionIndex).getOptionD());
-                    mCountDownTimer.start();
                 }
             }
         });
@@ -275,31 +253,27 @@ public class QuizActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (selPlayers == 2) {
                         if (turn == 1) {
-                            player1AnswersArray[questionCounter] = button.getText().toString();
-                            correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
+                            player1AnswersArray[questionIndex] = button.getText().toString();
+                            correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                             // Calculate score if answer is correct
-                            if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
+                            if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex])) player1Score += calculateScore(player1Score,i);
                         } else if (turn == 2) {
-                            player2AnswersArray[questionCounter] = button.getText().toString();
-                            correct2AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
+                            player2AnswersArray[questionIndex] = button.getText().toString();
+                            correct2AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                             // Calculate score if answer is correct
-                            if( player2AnswersArray[questionCounter].equals(correct2AnswersArray[questionCounter])) player2Score+=calculateScore(player2Score,i);
+                            if( player2AnswersArray[questionIndex].equals(correct2AnswersArray[questionIndex])) player2Score += calculateScore(player2Score,i);
                         }
                     }
                     else {
-                        player1AnswersArray[questionCounter] = button.getText().toString();
-                        correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
+                        player1AnswersArray[questionIndex] = button.getText().toString();
+                        correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                         // Calculate score if answer is correct
-                        if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
+                        if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex])) player1Score += calculateScore(player1Score,i);
                     }
 
-                    if (questionCounter < maxNumOfQuestions-1) {
-                        getNextQuestion();
-
-                    } else {
-                        if (selPlayers == 2 && turn == 1) {
-                            getReadyCountDown();
-                        }
+                    if (questionIndex < maxNumOfQuestions-1) getNextQuestion();
+                    else {
+                        if (selPlayers == 2 && turn == 1) getReadyCountDown();
                         else {
                             visibleQuizPlay(false);
                             visibleEnd(true);
@@ -350,7 +324,7 @@ public class QuizActivity extends AppCompatActivity {
                         if (turn == 1) getReady.setText(R.string.getReady1Player1);
                         if (turn == 2) getReady.setText(R.string.getReady1Player2);
                     }
-                    else getReady.setText(Name);
+                    else getReady.setText(R.string.app_name);
                 }
                 counter--;
             }
@@ -364,25 +338,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void playQuiz() {
-        if (questionCounter > 0) {
-            questionCounter = 0;
-        }
-
-        // Only work with questions from chosen category
-     /*   switch (selCategory){
-            case 1:
-                questionIndex = 0;
-                break;
-            case 2:
-                questionIndex = 10;
-                break;
-            case 3:
-                questionIndex = 20;
-                break;
-            case 4:
-                questionIndex = 30;
-                break;
-        }*/
+        questionIndex = 0;
 
         // Make text reflect the right question
         questionText.setText(questions.get(questionIndex).getQuestionText());
@@ -390,12 +346,10 @@ public class QuizActivity extends AppCompatActivity {
         ans2.setText(questions.get(questionIndex).getOptionB());
         ans3.setText(questions.get(questionIndex).getOptionC());
         ans4.setText(questions.get(questionIndex).getOptionD());
-        mProgressbar.setVisibility(View.VISIBLE);
         mCountDownTimer.start();
     }
 
     public void showAnswers() {
-        mProgressbar.setVisibility(View.GONE);
         if (selPlayers == 1) {
             TextView playerAns = new TextView(this);
             TextView correctAns = new TextView(this);
@@ -418,7 +372,7 @@ public class QuizActivity extends AppCompatActivity {
             answerColumn1.addView(playerAns);
             answerColumn2.addView(correctAns);
 
-            for (int i = 0; i < maxNumOfQuestions-1; i++) {
+            for (int i = 0; i < player1AnswersArray.length; i++) {
                 // Add new textView dynamically to answerColumn 1 and 2
                 TextView textView1 = new TextView(this);
                 TextView textView2 = new TextView(this);
@@ -469,7 +423,7 @@ public class QuizActivity extends AppCompatActivity {
             answerColumn1.addView(player1Ans);
             answerColumn2.addView(player2Ans);
 
-            for (int i = 0; i < maxNumOfQuestions-1; i++) {
+            for (int i = 0; i < player1AnswersArray.length; i++) {
                 // Add new textView dynamically to answerColumn 1 and 2
                 TextView textView1 = new TextView(this);
                 TextView textView2 = new TextView(this);
@@ -508,19 +462,15 @@ public class QuizActivity extends AppCompatActivity {
     public void getNextQuestion() {
         resetCounter();
         mProgressbar.setProgress(i);
-        questionCounter += 1;
-        questionIndex += 1;
+        questionIndex++;
         questionText.setText(questions.get(questionIndex).getQuestionText());
         ans1.setText(questions.get(questionIndex).getOptionA());
         ans2.setText(questions.get(questionIndex).getOptionB());
         ans3.setText(questions.get(questionIndex).getOptionC());
         ans4.setText(questions.get(questionIndex).getOptionD());
-
     }
 
     public void resetQuiz() {
-        mProgressbar.setVisibility(View.VISIBLE);
-        questionCounter = 0;
         questionIndex = 0;
         turn = 0;
         resetCounter();
@@ -531,6 +481,7 @@ public class QuizActivity extends AppCompatActivity {
         answerColumn1.removeAllViewsInLayout();
         answerColumn2.removeAllViewsInLayout();
     }
+
     // Resets counter after each question/quiz
     public void resetCounter(){
         i=0;
@@ -576,8 +527,8 @@ public class QuizActivity extends AppCompatActivity {
         rbCategory4 = (RadioButton) findViewById(R.id.rb_c4);
 
         rgPlayerNum = (RadioGroup) findViewById(R.id.rg_players);
-        rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
-        rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
+        rbPlayer1 = (RadioButton)findViewById(R.id.rg_p1);
+        rbPlayer2 = (RadioButton)findViewById(R.id.rg_p2);
 
         bPlay = (Button)  findViewById(R.id.bQuizSettings);
 
@@ -627,12 +578,14 @@ public class QuizActivity extends AppCompatActivity {
 
     public void visibleQuizPlay(Boolean b) {
         if (b) {
+            mProgressbar.setVisibility(View.VISIBLE);
             questionText.setVisibility(View.VISIBLE);
             ans1.setVisibility(View.VISIBLE);
             ans2.setVisibility(View.VISIBLE);
             ans3.setVisibility(View.VISIBLE);
             ans4.setVisibility(View.VISIBLE);
         } else {
+            mProgressbar.setVisibility(View.GONE);
             questionText.setVisibility(View.GONE);
             ans1.setVisibility(View.GONE);
             ans2.setVisibility(View.GONE);
@@ -642,7 +595,6 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void visibleEnd(Boolean b) {
-        mProgressbar.setVisibility(View.GONE);
         mCountDownTimer.cancel();
         if (b) {
             answerScroll.setVisibility(View.VISIBLE);
