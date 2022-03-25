@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
@@ -87,6 +90,8 @@ public class QuizActivity extends AppCompatActivity {
     private CountDownTimer mCountDownTimer;
     private int i=0;
 
+    private List<Category> categories;
+    /*
     // dummy data - categories
     private final Category[] categories = new Category[]{
             new Category("Sport", 1),
@@ -94,56 +99,9 @@ public class QuizActivity extends AppCompatActivity {
             new Category("Geography", 3),
             new Category("General", 4)
     };
-
-    // dummy data - questions
-    private List<Question> questions;
-/*
-    private final Question[] questions = new Question[]{
-            new Question(1, "Which option is a sport?", "Soccer", "Chess", "Poker", "Soccer", "Painting"),
-            new Question(1, "Which option is a sport?", "Football", "Drawing", "Music", "Football", "Crafting"),
-            new Question(1, "Which option is a sport?", "Swimming", "Chess", "Poker", "Swimming", "Painting"),
-            new Question(1, "Which option is a sport?", "Baseball", "Drawing", "Music", "Baseball", "Crafting"),
-            new Question(1, "Which option is a sport?", "Hockey", "Chess", "Poker", "Hockey", "Painting"),
-            new Question(1, "Which option is a sport?", "Basketball", "Drawing", "Music", "Basketball", "Crafting"),
-            new Question(1, "Which option is a sport?", "Golf", "Chess", "Poker", "Golf", "Painting"),
-            new Question(1, "Which option is a sport?", "Figure Skating", "Drawing", "Music", "Figure Skating", "Crafting"),
-            new Question(1, "Which option is a sport?", "Volleyball", "Chess", "Poker", "Volleyball", "Painting"),
-            new Question(1, "Which option is a sport?", "Martial Arts", "Drawing", "Music", "Martial Arts", "Crafting"),
-
-            new Question(2, "Which option is an animal?", "Dog", "Pillow", "Water", "Dog", "Iris"),
-            new Question(2, "Which option is en animal?", "Cat", "Bed", "Grass", "Cat", "Aloe"),
-            new Question(2, "Which option is an animal?", "Bird", "Pillow", "Water", "Bird", "Iris"),
-            new Question(2, "Which option is en animal?", "Fish", "Bed", "Grass", "Fish", "Aloe"),
-            new Question(2, "Which option is an animal?", "Llama", "Pillow", "Water", "Llama", "Iris"),
-            new Question(2, "Which option is en animal?", "Hippopotamus", "Bed", "Grass", "Hippopotamus", "Aloe"),
-            new Question(2, "Which option is an animal?", "Swan", "Pillow", "Water", "Swan", "Iris"),
-            new Question(2, "Which option is en animal?", "Rhinoceros", "Bed", "Grass", "Rhinoceros", "Aloe"),
-            new Question(2, "Which option is an animal?", "Hamster", "Pillow", "Water", "Hamster", "Iris"),
-            new Question(2, "Which option is en animal?", "Human", "Bed", "Grass", "Human", "Aloe"),
-
-            new Question(3, "Which option is a country?", "Iceland", "Africa", "Asia", "Iceland", "Europe"),
-            new Question(3, "Which option is a country?", "GreenLand", "Europe", "Africa", "Greenland", "Asia"),
-            new Question(3, "Which option is a country?", "Finland", "Africa", "Asia", "Finland", "Europe"),
-            new Question(3, "Which option is a country?", "Norway", "Europe", "Africa", "Norway", "Asia"),
-            new Question(3, "Which option is a country?", "Denmark", "Africa", "Asia", "Denmark", "Europe"),
-            new Question(3, "Which option is a country?", "Poland", "Europe", "Africa", "Poland", "Asia"),
-            new Question(3, "Which option is a country?", "Germany", "Africa", "Asia", "Germany", "Europe"),
-            new Question(3, "Which option is a country?", "Netherlands", "Europe", "Africa", "Netherlands", "Asia"),
-            new Question(3, "Which option is a country?", "France", "Africa", "Asia", "France", "Europe"),
-            new Question(3, "Which option is a country?", "Spain", "Europe", "Africa", "Spain", "Asia"),
-
-            new Question(4, "Which option is a color?", "Blue", "Blueberry", "Water", "Blue", "Iris"),
-            new Question(4, "Which option is a color?", "Green", "Avocado", "Grass", "Green", "Aloe"),
-            new Question(4, "Which option is a color?", "Red", "Blueberry", "Water", "Red", "Iris"),
-            new Question(4, "Which option is a color?", "Yellow", "Avocado", "Grass", "Yellow", "Aloe"),
-            new Question(4, "Which option is a color?", "Black", "Blueberry", "Water", "Black", "Iris"),
-            new Question(4, "Which option is a color?", "White", "Avocado", "Grass", "White", "Aloe"),
-            new Question(4, "Which option is a color?", "Purple", "Blueberry", "Water", "Purple", "Iris"),
-            new Question(4, "Which option is a color?", "Brown", "Avocado", "Grass", "Brown", "Aloe"),
-            new Question(4, "Which option is a color?", "Beige", "Blueberry", "Water", "Beige", "Iris"),
-            new Question(4, "Which option is a color?", "Orange", "Avocado", "Grass", "Orange", "Aloe")
-    };
 */
+    private List<Question> questions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +116,19 @@ public class QuizActivity extends AppCompatActivity {
             public void onSuccess(List<Question> result) {
                 questions = result;
                 Log.d(TAG, "First question:" + questions.get(0).getQuestionText());
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Log.e(TAG, "Failed to get questions: " + errorString);
+            }
+        });
+
+        networkManager.getCategories(new NetworkCallback<List<Category>>() {
+            @Override
+            public void onSuccess(List<Category> result) {
+                categories = result;
+                Log.d(TAG, "First category:" + categories.get(0).getCategoryName());
             }
 
             @Override
@@ -202,6 +173,7 @@ public class QuizActivity extends AppCompatActivity {
         mCountDownTimer=new CountDownTimer(5000,400) {
             @Override
             public void onTick(long millisUntilFinished) {
+                Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
                 i++;
                 mProgressbar.setProgress((int)i*500/(5000/400));
             }
@@ -257,10 +229,10 @@ public class QuizActivity extends AppCompatActivity {
                 rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
                 rbPlayer2.setId(RBP2_ID);
 
-                rbCategory1.setText(categories[0].getCategoryName());
-                rbCategory2.setText(categories[1].getCategoryName());
-                rbCategory3.setText(categories[2].getCategoryName());
-                rbCategory4.setText(categories[3].getCategoryName());
+                rbCategory1.setText(categories.get(0).getCategoryName());
+                rbCategory2.setText(categories.get(1).getCategoryName());
+                rbCategory3.setText(categories.get(2).getCategoryName());
+                rbCategory4.setText(categories.get(3).getCategoryName());
             }
         });
         //Gera StatisticsActivity? eða er ehv að gera það
@@ -286,6 +258,15 @@ public class QuizActivity extends AppCompatActivity {
                     // CountDown function, quiz starts after countdown
                     getReadyCountDown();
 
+                    // Only work with questions from chosen category
+                    questionIndex = 0;
+                    // Make text reflect the right question
+                    questionText.setText(questions.get(questionIndex).getQuestionText());
+                    ans1.setText(questions.get(questionIndex).getOptionA());
+                    ans2.setText(questions.get(questionIndex).getOptionB());
+                    ans3.setText(questions.get(questionIndex).getOptionC());
+                    ans4.setText(questions.get(questionIndex).getOptionD());
+                    mCountDownTimer.start();
                 }
             }
         });
@@ -569,6 +550,7 @@ public class QuizActivity extends AppCompatActivity {
         else if(i<=12) playerScore = 25;
         return playerScore;
     }
+
     public void setFindView() {
         // User stuff
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
