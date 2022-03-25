@@ -96,8 +96,8 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     // dummy data - questions
-    private List<Question> questions_1;
-
+    private List<Question> questions;
+/*
     private final Question[] questions = new Question[]{
             new Question(1, "Which option is a sport?", "Soccer", "Chess", "Poker", "Soccer", "Painting"),
             new Question(1, "Which option is a sport?", "Football", "Drawing", "Music", "Football", "Crafting"),
@@ -143,7 +143,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(4, "Which option is a color?", "Beige", "Blueberry", "Water", "Beige", "Iris"),
             new Question(4, "Which option is a color?", "Orange", "Avocado", "Grass", "Orange", "Aloe")
     };
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,8 +156,8 @@ public class QuizActivity extends AppCompatActivity {
         networkManager.getQuestionsByCategory(1,new NetworkCallback<List<Question>>() {
             @Override
             public void onSuccess(List<Question> result) {
-                questions_1 = result;
-                Log.d(TAG, "First question:" + questions_1.get(0).getQuestionText());
+                questions = result;
+                Log.d(TAG, "First question:" + questions.get(0).getQuestionText());
             }
 
             @Override
@@ -210,10 +210,10 @@ public class QuizActivity extends AppCompatActivity {
                 // her er i = 12
                 //Add "Timed out" as user answer if question is not answered in the time limit
                 if (questionCounter < maxNumOfQuestions-1) {
-                    correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                    correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
                     if(player1AnswersArray[questionCounter]==null)player1AnswersArray[questionCounter]="Timed out";
                     if(selPlayers==2){
-                        correct2AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                        correct2AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
                         if(player2AnswersArray[questionCounter]==null)player2AnswersArray[questionCounter]="Timed out";
                     }
                     getNextQuestion();
@@ -264,12 +264,12 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
         //Gera StatisticsActivity? eða er ehv að gera það
-       /* mStatistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(QuizActivity.this, StatisticsActivity.class));
-            }
-            });*/
+      /* mStatistics.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               startActivity(new Intent(QuizActivity.this, StatisticsActivity.class));
+           }
+           });*/
 
         // Play quiz button eftir settings dót virkni
         bPlay.setOnClickListener(new View.OnClickListener() {
@@ -298,19 +298,19 @@ public class QuizActivity extends AppCompatActivity {
                     if (selPlayers == 2) {
                         if (turn == 1) {
                             player1AnswersArray[questionCounter] = button.getText().toString();
-                            correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                            correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
                             // Calculate score if answer is correct
                             if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
                         } else if (turn == 2) {
                             player2AnswersArray[questionCounter] = button.getText().toString();
-                            correct2AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                            correct2AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
                             // Calculate score if answer is correct
                             if( player2AnswersArray[questionCounter].equals(correct2AnswersArray[questionCounter])) player2Score+=calculateScore(player2Score,i);
                         }
                     }
                     else {
                         player1AnswersArray[questionCounter] = button.getText().toString();
-                        correct1AnswersArray[questionCounter] = questions[questionIndex].getCorrectAnswer();
+                        correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
                         // Calculate score if answer is correct
                         if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
                     }
@@ -407,11 +407,11 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         // Make text reflect the right question
-        questionText.setText(questions[questionIndex].getQuestionText());
-        ans1.setText(questions[questionIndex].getOptionA());
-        ans2.setText(questions[questionIndex].getOptionB());
-        ans3.setText(questions[questionIndex].getOptionC());
-        ans4.setText(questions[questionIndex].getOptionD());
+        questionText.setText(questions.get(questionIndex).getQuestionText());
+        ans1.setText(questions.get(questionIndex).getOptionA());
+        ans2.setText(questions.get(questionIndex).getOptionB());
+        ans3.setText(questions.get(questionIndex).getOptionC());
+        ans4.setText(questions.get(questionIndex).getOptionD());
         mProgressbar.setVisibility(View.VISIBLE);
         mCountDownTimer.start();
     }
@@ -532,11 +532,11 @@ public class QuizActivity extends AppCompatActivity {
         mProgressbar.setProgress(i);
         questionCounter += 1;
         questionIndex += 1;
-        questionText.setText(questions[questionIndex].getQuestionText());
-        ans1.setText(questions[questionIndex].getOptionA());
-        ans2.setText(questions[questionIndex].getOptionB());
-        ans3.setText(questions[questionIndex].getOptionC());
-        ans4.setText(questions[questionIndex].getOptionD());
+        questionText.setText(questions.get(questionIndex).getQuestionText());
+        ans1.setText(questions.get(questionIndex).getOptionA());
+        ans2.setText(questions.get(questionIndex).getOptionB());
+        ans3.setText(questions.get(questionIndex).getOptionC());
+        ans4.setText(questions.get(questionIndex).getOptionD());
 
     }
 
@@ -563,11 +563,11 @@ public class QuizActivity extends AppCompatActivity {
 
     public int calculateScore(int playerScore, int i){
         // Timer bonus scores
-      if(i<=3)  playerScore = 100;
-      else if(i<=6) playerScore = 75;
-      else if(i<=9) playerScore = 50;
-      else if(i<=12) playerScore = 25;
-      return playerScore;
+        if(i<=3)  playerScore = 100;
+        else if(i<=6) playerScore = 75;
+        else if(i<=9) playerScore = 50;
+        else if(i<=12) playerScore = 25;
+        return playerScore;
     }
     public void setFindView() {
         // User stuff
@@ -684,3 +684,4 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 }
+
