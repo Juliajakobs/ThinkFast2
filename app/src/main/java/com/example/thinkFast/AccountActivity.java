@@ -46,8 +46,8 @@ public class AccountActivity extends AppCompatActivity {
                         else{
                         Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
                         //Sending information about user to QuizActivity
-                        Intent in = new Intent(AccountActivity.this, QuizActivity.class);
-                        in.putExtra("username", mAccounts[i].getUsername());
+                        Intent in = new Intent(AccountActivity.this, SetupActivity.class);
+                       in.putExtra("username", mAccounts[i].getUsername());
                         in.putExtra("name", mAccounts[i].getName());
                         in.putExtra("email", mAccounts[i].getEmail());
 
@@ -70,7 +70,7 @@ public class AccountActivity extends AppCompatActivity {
                 mLoginButton.setVisibility(View.GONE);
                 if(mUsername.getText().length()!=0 && mEmail.getText().length()!=0 &&mName.getText().length()!=0&& mEmail.getText().length()!=0){
                    mAccounts=saveAccount(mAccounts.length,mAccounts,new Account(mUsername.getText().toString(),mPassword.getText().toString(),mName.getText().toString(),mEmail.getText().toString(),false));
-                    startActivity(new Intent(AccountActivity.this, QuizActivity.class));
+                    startActivity(new Intent(AccountActivity.this, SetupActivity.class));
                 }
             }
         });
