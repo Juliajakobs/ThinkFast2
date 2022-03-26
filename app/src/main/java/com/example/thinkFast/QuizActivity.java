@@ -116,6 +116,11 @@ public class QuizActivity extends AppCompatActivity {
             public void onSuccess(List<Category> result) {
                 categories = result;
                 Log.d(TAG, "First category:" + categories.get(0).getCategoryName());
+
+                rbCategory1.setText(categories.get(0).getCategoryName());
+                rbCategory2.setText(categories.get(1).getCategoryName());
+                rbCategory3.setText(categories.get(2).getCategoryName());
+                rbCategory4.setText(categories.get(3).getCategoryName());
             }
 
             @Override
@@ -213,11 +218,6 @@ public class QuizActivity extends AppCompatActivity {
                 rbCategory2.setId(RB2_ID);
                 rbCategory3.setId(RB3_ID);
                 rbCategory4.setId(RB4_ID);
-
-                rbCategory1.setText(categories.get(0).getCategoryName());
-                rbCategory2.setText(categories.get(1).getCategoryName());
-                rbCategory3.setText(categories.get(2).getCategoryName());
-                rbCategory4.setText(categories.get(3).getCategoryName());
             }
         });
         //Gera StatisticsActivity? eða er ehv að gera það
