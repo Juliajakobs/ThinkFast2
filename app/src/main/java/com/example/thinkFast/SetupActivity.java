@@ -18,7 +18,7 @@ import com.example.thinkFast.networking.NetworkManager;
 import java.util.List;
 
 public class SetupActivity extends AppCompatActivity {
-    private static final String TAG = "QuizActivity";
+    private static final String TAG = "SetupActivity";
     private Button mStatistics;
     private Button mPlayQuiz;
     private TextView mWelcomeUser;
@@ -43,14 +43,15 @@ public class SetupActivity extends AppCompatActivity {
     private String Email;
     private String UserName;
 
-    private static final int RB1_ID = 1;
-    private static final int RB2_ID = 2;
-    private static final int RB3_ID = 3;
-    private static final int RB4_ID = 4;
+    private static final int RB1_ID = 0;
+    private static final int RB2_ID = 1;
+    private static final int RB3_ID = 2;
+    private static final int RB4_ID = 3;
     private static final int RBP1_ID = 1;
     private static final int RBP2_ID = 2;
 
     private List<Category> categories;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +96,7 @@ public class SetupActivity extends AppCompatActivity {
                 break;
             case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
         }
+
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getCategories(new NetworkCallback<List<Category>>() {
             @Override

@@ -20,14 +20,10 @@ import com.example.thinkFast.networking.NetworkManager;
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
+    private static final String TAG = "QuizActivity";
     private Button mStatistics;
     private TextView mWelcomeUser;
-
-
-    private static final String TAG = "QuizActivity";
-
     private Button bPlay;
-
     // Question and answers
     private TextView questionText;
     private Button ans1;
@@ -44,7 +40,6 @@ public class QuizActivity extends AppCompatActivity {
     private TextView getReady;
     private int counter;
 
-
     private final int maxNumOfQuestions = 5;
     private String[] player1AnswersArray = new String[10];
     private String[] player2AnswersArray = new String[10];
@@ -53,7 +48,6 @@ public class QuizActivity extends AppCompatActivity {
     private int player1Score=0;
     private int player2Score=0;
     private int turn = 0;
-
 
     // End screen widget
     private ScrollView answerScroll;
@@ -65,7 +59,6 @@ public class QuizActivity extends AppCompatActivity {
     private ProgressBar mProgressbar;
     private CountDownTimer mCountDownTimer;
     private int i=0;
-
 
     private List<Question> questions;
 
@@ -147,7 +140,6 @@ public class QuizActivity extends AppCompatActivity {
                startActivity(new Intent(QuizActivity.this, StatisticsActivity.class));
            }
            });*/
-
 
         // Answer button virkni
         for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
@@ -249,7 +241,6 @@ public class QuizActivity extends AppCompatActivity {
             }
         }.start();
     }
-
 
     public void playQuiz() {
         questionIndex = 0;
@@ -375,7 +366,6 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-
     public void getNextQuestion() {
         resetCounter();
         mProgressbar.setProgress(i);
@@ -385,7 +375,6 @@ public class QuizActivity extends AppCompatActivity {
         ans2.setText(questions.get(questionIndex).getOptionB());
         ans3.setText(questions.get(questionIndex).getOptionC());
         ans4.setText(questions.get(questionIndex).getOptionD());
-
     }
 
     public void resetQuiz() {
@@ -400,6 +389,7 @@ public class QuizActivity extends AppCompatActivity {
         answerColumn1.removeAllViewsInLayout();
         answerColumn2.removeAllViewsInLayout();
     }
+
     // Resets counter after each question/quiz
     public void resetCounter(){
         i=0;
@@ -420,7 +410,6 @@ public class QuizActivity extends AppCompatActivity {
     public void setFindView() {
         // User stuff
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
-
         // Quiz Start screen
         mStatistics = (Button) findViewById(R.id.button_statistics);
        // mPlayQuiz = (Button) findViewById(R.id.button_quiz);
