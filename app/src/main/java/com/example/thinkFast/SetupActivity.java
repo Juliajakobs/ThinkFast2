@@ -2,13 +2,13 @@ package com.example.thinkFast;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -77,7 +77,10 @@ public class SetupActivity extends AppCompatActivity {
         Email = extras.getString("email");
         UserName = extras.getString("username");
 
+        // CountDown for getting ready
+        getReady = (TextView) findViewById(R.id.getReadyCountDown);
         bPlay = (Button)  findViewById(R.id.bQuizSettings);
+
         //Creating a random welcome message for user
         int max = 4;
         int min = 1;
@@ -111,8 +114,6 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Set name and ID of categories and player
-
-
                 rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
                 rbPlayer1.setId(RBP1_ID);
                 rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
@@ -127,41 +128,33 @@ public class SetupActivity extends AppCompatActivity {
                 bPlay.setVisibility(View.VISIBLE);
                 mPlayQuiz.setVisibility(View.GONE);
                 mStatistics.setVisibility(View.GONE);
-
             }
         });
-    }
 
-    public void getReadyCountDown() {
-      //  visibleGetReadyCountDown(true);
-        counter = 4;
-        turn++;
-
-        // Countdown timer
-        new CountDownTimer(3000, 1000) {
+        // Listener for button that starts quiz
+        // Will start quizactivity if a category and number of players has been selected.
+        bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTick(long l) {
-                // Set appropriate countdown text
-                if (counter == 4) getReady.setText(R.string.getReady3);
-                if (counter == 3) getReady.setText(R.string.getReady2);
-                if (counter == 2) {
-                    if (selPlayers == 2) {
-                        if (turn == 1) getReady.setText(R.string.getReady1Player1);
-                        if (turn == 2) getReady.setText(R.string.getReady1Player2);
-                    }
-                    else getReady.setText(Name);
+            public void onClick(View view) {
+                // Get int of selected radio button from radio group
+                selCategory = rgCategory.getCheckedRadioButtonId();
+                selPlayers = rgPlayerNum.getCheckedRadioButtonId();
+                // Missing input handling
+                if(selCategory == -1) Toast.makeText(getApplicationContext(),
+                        "You have to choose a category", Toast.LENGTH_SHORT).show();
+                else if(selPlayers == -1) Toast.makeText(getApplicationContext(),
+                        "You have to choose the number of players", Toast.LENGTH_SHORT).show();
+                // Start quiz
+                else if(selCategory !=-1 && selPlayers !=-1)  {
+                    mStatistics.setVisibility(View.GONE);
+                    mPlayQuiz.setVisibility(View.GONE);
+                    Intent in = new Intent(SetupActivity.this, QuizActivity.class);
+                    in.putExtra("categoryID",selCategory);
+                    in.putExtra("selPlayers",selPlayers);
+                    startActivity(in);
+                    Log.d("app","category: "+selCategory+" players: "+selPlayers);
                 }
-                counter--;
             }
-            @Override
-            public void onFinish() {
-           // start intent
-                Intent in = new Intent(SetupActivity.this, QuizActivity.class);
-             /*   in.putExtra("username", mAccounts[i].getUsername());
-                in.putExtra("name", mAccounts[i].getName());
-                in.putExtra("email", mAccounts[i].getEmail());*/
-
-            }
-        }.start();
+        });
     }
 }
