@@ -35,8 +35,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans3;
     private Button ans4;
     private Button mScoreboard;
-    private int questionCounter = 0;
-    private int questionIndex = 0;
+    private int questionIndex;
     private int selPlayers;
     private int c_id;
 
@@ -116,15 +115,14 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 //Add "Timed out" as user answer if question is not answered in the time limit
-                if (questionCounter < maxNumOfQuestions-1) {
-                    correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
-                    if(player1AnswersArray[questionCounter]==null)player1AnswersArray[questionCounter]="Timed out";
+                if (questionIndex < maxNumOfQuestions-1) {
+                    correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
+                    if(player1AnswersArray[questionIndex]==null)player1AnswersArray[questionIndex]="Timed out";
                     if(selPlayers==2){
-                        correct2AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
-                        if(player2AnswersArray[questionCounter]==null)player2AnswersArray[questionCounter]="Timed out";
+                        correct2AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
+                        if(player2AnswersArray[questionIndex]==null)player2AnswersArray[questionIndex]="Timed out";
                     }
                     getNextQuestion();
-
                 }
                 else {
                     showAnswers();
@@ -157,32 +155,34 @@ public class QuizActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (selPlayers == 2) {
                         if (turn == 1) {
-                            player1AnswersArray[questionCounter] = button.getText().toString();
-                            correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
+                            player1AnswersArray[questionIndex] = button.getText().toString();
+                            correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
+                            Log.d(TAG, "player 1 ans " + player1AnswersArray[questionIndex]);
                             // Calculate score if answer is correct
-                            if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
+                            if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex]))player1Score+=calculateScore(player1Score,i);
                         } else if (turn == 2) {
-                            player2AnswersArray[questionCounter] = button.getText().toString();
-                            correct2AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
+                            player2AnswersArray[questionIndex] = button.getText().toString();
+                            correct2AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
+                            Log.d(TAG, "player 2 ans " + player2AnswersArray[questionIndex]);
                             // Calculate score if answer is correct
-                            if( player2AnswersArray[questionCounter].equals(correct2AnswersArray[questionCounter])) player2Score+=calculateScore(player2Score,i);
+                            if( player2AnswersArray[questionIndex].equals(correct2AnswersArray[questionIndex])) player2Score+=calculateScore(player2Score,i);
                         }
                     }
                     else {
-                        player1AnswersArray[questionCounter] = button.getText().toString();
-                        correct1AnswersArray[questionCounter] = questions.get(questionIndex).getCorrectAnswer();
+                        player1AnswersArray[questionIndex] = button.getText().toString();
+                        correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                         // Calculate score if answer is correct
-                        if( player1AnswersArray[questionCounter].equals( correct1AnswersArray[questionCounter]))player1Score+=calculateScore(player1Score,i);
+                        Log.d(TAG, "player 1 ans " + player1AnswersArray[questionIndex]);
+                        if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex]))player1Score+=calculateScore(player1Score,i);
                     }
 
-                    if (questionCounter < maxNumOfQuestions-1) {
+                    Log.d(TAG, "question number " + questionIndex);
+                    if (questionIndex < maxNumOfQuestions-1) {
                         getNextQuestion();
 
                     } else {
                         if (selPlayers == 2 && turn == 1) {
                             getReadyCountDown();
-
-
                         }
                         else {
                             visibleQuizPlay(false);
@@ -251,9 +251,7 @@ public class QuizActivity extends AppCompatActivity {
 
 
     public void playQuiz() {
-        if (questionCounter > 0) {
-            questionCounter = 0;
-        }
+        questionIndex = 0;
 
         // Make text reflect the right question
         questionText.setText(questions.get(questionIndex).getQuestionText());
@@ -289,7 +287,7 @@ public class QuizActivity extends AppCompatActivity {
             answerColumn1.addView(playerAns);
             answerColumn2.addView(correctAns);
 
-            for (int i = 0; i < player1AnswersArray.length; i++) {
+            for (int i = 0; i < maxNumOfQuestions; i++) {
                 // Add new textView dynamically to answerColumn 1 and 2
                 TextView textView1 = new TextView(this);
                 TextView textView2 = new TextView(this);
@@ -340,7 +338,7 @@ public class QuizActivity extends AppCompatActivity {
             answerColumn1.addView(player1Ans);
             answerColumn2.addView(player2Ans);
 
-            for (int i = 0; i < player1AnswersArray.length; i++) {
+            for (int i = 0; i < maxNumOfQuestions; i++) {
                 // Add new textView dynamically to answerColumn 1 and 2
                 TextView textView1 = new TextView(this);
                 TextView textView2 = new TextView(this);
@@ -380,8 +378,7 @@ public class QuizActivity extends AppCompatActivity {
     public void getNextQuestion() {
         resetCounter();
         mProgressbar.setProgress(i);
-        questionCounter += 1;
-        questionIndex += 1;
+        questionIndex++;
         questionText.setText(questions.get(questionIndex).getQuestionText());
         ans1.setText(questions.get(questionIndex).getOptionA());
         ans2.setText(questions.get(questionIndex).getOptionB());
@@ -392,7 +389,6 @@ public class QuizActivity extends AppCompatActivity {
 
     public void resetQuiz() {
         mProgressbar.setVisibility(View.VISIBLE);
-        questionCounter = 0;
         questionIndex = 0;
         turn = 0;
         resetCounter();
