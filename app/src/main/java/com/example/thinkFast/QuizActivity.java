@@ -35,6 +35,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans3;
     private Button ans4;
     private Button mScoreboard;
+    private int resetIndex;
     private int questionIndex;
     private int selPlayers;
     private int c_id;
