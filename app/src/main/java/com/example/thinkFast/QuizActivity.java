@@ -101,10 +101,8 @@ public class QuizActivity extends AppCompatActivity {
         mProgressbar.setProgress(i);
         mProgressbar.setVisibility(View.GONE);
 
-        // Set time for progress bar
-        mProgressbar.setProgress(i);
-
         // Set up countdown timer for questions
+        // Todo: make timer longer ?
         mCountDownTimer=new CountDownTimer(5000,400) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -112,6 +110,7 @@ public class QuizActivity extends AppCompatActivity {
                 i++;
                 mProgressbar.setProgress((int)i*500/(5000/400));
             }
+            // If time runs out get next question or end quiz
             @Override
             public void onFinish() {
                 //Add "Timed out" as user answer if question is not answered in the time limit
@@ -141,7 +140,7 @@ public class QuizActivity extends AppCompatActivity {
         });
 
 
-        // Answer button
+        // Answer buttons - checks if user answer is correct and gets next question or ends quiz if last question was answered
         for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -442,7 +441,8 @@ public class QuizActivity extends AppCompatActivity {
         // Scoreboard
         mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
     }
-
+ // Todo: get name from setupactivity and use this function
+    // If true, shows a message to logged in user.
     public void visibleMenu(Boolean b) {
         if (b) {
             mWelcomeUser.setVisibility(View.VISIBLE);
@@ -458,11 +458,6 @@ public class QuizActivity extends AppCompatActivity {
         if (b) {
             bPlay.setVisibility(View.VISIBLE);
         }
-     /*   else {
-            rgPlayerNum.setVisibility(View.GONE);
-            rgCategory.setVisibility(View.GONE);
-            bPlay.setVisibility(View.GONE);
-        }*/
     }
 
     public void visibleQuizPlay(Boolean b) {
