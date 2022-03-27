@@ -40,11 +40,15 @@ public class QuizActivity extends AppCompatActivity {
     private TextView getReady;
     private int counter;
 
+    //Maximum number of questions
     private final int maxNumOfQuestions = 5;
+    //Arrays that hold the players answers
     private String[] player1AnswersArray = new String[10];
     private String[] player2AnswersArray = new String[10];
+    //Arrays that hold the correct answers
     private String[] correct1AnswersArray = new String[10];
     private String[] correct2AnswersArray = new String[10];
+    //Variables that hold the players scores
     private int player1Score=0;
     private int player2Score=0;
     private int turn = 0;
@@ -56,17 +60,19 @@ public class QuizActivity extends AppCompatActivity {
     private Button bPlayAgain;
     private Button bEndQuiz;
 
+    //Progress bar and timer variables
     private ProgressBar mProgressbar;
     private CountDownTimer mCountDownTimer;
     private int i=0;
 
+    //Making a list for the questions in the DB
     private List<Question> questions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        // Allt findView tengingar dotið er gert i thetta function
+        //All findView connections are in this function
         setFindView();
         // Quiz starts after countdown (ready - set - start quiz)
         getReadyCountDown();
@@ -75,6 +81,7 @@ public class QuizActivity extends AppCompatActivity {
         c_id = extras.getInt("categoryID");
         selPlayers = extras.getInt("selPlayers");
 
+        //Calling networkManager to get questions from DB
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getQuestionsByCategory(c_id,new NetworkCallback<List<Question>>() {
             @Override
@@ -89,7 +96,6 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-      // mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
         // Set up progress bar
         mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
         mProgressbar.setProgress(i);
@@ -125,6 +131,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         };
 
+        //If scoreboard button on header is pressed, open scoreboardActivity
         mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
         mScoreboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,27 +140,22 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        //Gera StatisticsActivity? eða er ehv að gera það
-      /* mStatistics.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               startActivity(new Intent(QuizActivity.this, StatisticsActivity.class));
-           }
-           });*/
 
-        // Answer button virkni
+        // Answer button
         for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (selPlayers == 2) {
                         if (turn == 1) {
+                            //Getting the players answer from the button
                             player1AnswersArray[questionIndex] = button.getText().toString();
                             correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                             Log.d(TAG, "player 1 ans " + player1AnswersArray[questionIndex]);
                             // Calculate score if answer is correct
                             if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex]))player1Score+=calculateScore(player1Score,i);
                         } else if (turn == 2) {
+                            //Getting the players answer from the button
                             player2AnswersArray[questionIndex] = button.getText().toString();
                             correct2AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                             Log.d(TAG, "player 2 ans " + player2AnswersArray[questionIndex]);
@@ -162,6 +164,7 @@ public class QuizActivity extends AppCompatActivity {
                         }
                     }
                     else {
+                        //Getting the players answer from the button
                         player1AnswersArray[questionIndex] = button.getText().toString();
                         correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                         // Calculate score if answer is correct
@@ -187,7 +190,7 @@ public class QuizActivity extends AppCompatActivity {
             });
         }
 
-        // End screen buttons virkni
+        // End screen buttons functionality
         bPlayAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +200,7 @@ public class QuizActivity extends AppCompatActivity {
                 getReadyCountDown();
             }
         });
-
+        //Quiz ends
         bEndQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,7 +210,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
     }
-
+    //Function for the countdown at the start
     public void getReadyCountDown() {
 
         visibleQuizSettings(false);
@@ -228,7 +231,7 @@ public class QuizActivity extends AppCompatActivity {
                         if (turn == 1) getReady.setText(R.string.getReady1Player1);
                         if (turn == 2) getReady.setText(R.string.getReady1Player2);
                     }
-                    else getReady.setText("Placeholder"); // ætti að vera name
+                    else getReady.setText("Placeholder"); // should be name
                 }
                 counter--;
             }
@@ -254,7 +257,7 @@ public class QuizActivity extends AppCompatActivity {
         mProgressbar.setVisibility(View.VISIBLE);
         mCountDownTimer.start();
     }
-
+    //Function that displays the players answers vs the correct answers at the end
     public void showAnswers() {
         Log.d(TAG,"selPlayers: "+selPlayers);
         if (selPlayers == 1) {
@@ -294,7 +297,7 @@ public class QuizActivity extends AppCompatActivity {
                 ));
                 textView1.setText(player1AnswersArray[i]);
                 textView2.setText(correct1AnswersArray[i]);
-
+                //If answer is correct --> then it's green else red
                 if (textView1.getText().toString().equals(textView2.getText().toString())) {
                     textView1.setTextColor(Color.GREEN);
                     textView2.setTextColor(Color.GREEN);
@@ -346,7 +349,8 @@ public class QuizActivity extends AppCompatActivity {
 
                 textView1.setText(player1AnswersArray[i]);
                 textView2.setText(player2AnswersArray[i]);
-                Log.d(TAG,"PLayerayrray: "+player1AnswersArray[i]+" correctanswers1: "+correct1AnswersArray[i]);
+                Log.d(TAG,"PLayerarray: "+player1AnswersArray[i]+" correctanswers1: "+correct1AnswersArray[i]);
+                ////If answer is correct --> then it's green else red
                 if (player1AnswersArray[i].equals(correct1AnswersArray[i])) {
                     textView1.setTextColor(Color.GREEN);
                 } else {
@@ -365,7 +369,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         }
     }
-
+    //Function that gets next question
     public void getNextQuestion() {
         resetCounter();
         mProgressbar.setProgress(i);
@@ -376,7 +380,7 @@ public class QuizActivity extends AppCompatActivity {
         ans3.setText(questions.get(questionIndex).getOptionC());
         ans4.setText(questions.get(questionIndex).getOptionD());
     }
-
+    //Reset the quiz and all its settings
     public void resetQuiz() {
         mProgressbar.setVisibility(View.VISIBLE);
         questionIndex = 0;
@@ -397,7 +401,7 @@ public class QuizActivity extends AppCompatActivity {
         mCountDownTimer.start();
         mProgressbar.setProgress(i);
     }
-
+    //Calculate score
     public int calculateScore(int playerScore, int i){
         // Timer bonus scores
         if(i<=3)  playerScore = 100;
@@ -406,7 +410,7 @@ public class QuizActivity extends AppCompatActivity {
         else if(i<=12) playerScore = 25;
         return playerScore;
     }
-
+    //Function that handles all findViewById
     public void setFindView() {
         // User stuff
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
