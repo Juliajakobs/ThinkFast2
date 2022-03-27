@@ -28,7 +28,7 @@
             android:id="@+id/velkominn_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder"
+            android:text=""
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"

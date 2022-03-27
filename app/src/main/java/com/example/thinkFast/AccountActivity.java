@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,7 +48,7 @@ public class AccountActivity extends AppCompatActivity {
                         Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
                         //Sending information about user to QuizActivity
                         Intent in = new Intent(AccountActivity.this, SetupActivity.class);
-                       in.putExtra("username", mAccounts[i].getUsername());
+                        in.putExtra("username", mAccounts[i].getUsername());
                         in.putExtra("name", mAccounts[i].getName());
                         in.putExtra("email", mAccounts[i].getEmail());
 
