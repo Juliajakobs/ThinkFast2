@@ -14,6 +14,7 @@ public class Account {
   //  @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
  //   Statistics statistics;
 
+    //Constructor for Account
     public Account(String username, String password, String email, String name,boolean isAdmin) {
         this.username = username;
         this.password = password;
@@ -32,7 +33,7 @@ public class Account {
     public void setID(long ID) {
         this.ID = ID;
     }*/
-
+    //General functions for the entity
     public String getUsername() {
         return username;
     }

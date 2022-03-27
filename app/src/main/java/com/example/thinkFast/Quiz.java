@@ -9,12 +9,13 @@ public class Quiz {
   //  @SerializedName("answerTrue")
     private boolean mAnswerTrue;
 
+    //Constructor for Quiz
     public Quiz(int id, String questionText, boolean answerTrue) {
         mId = id;
         mQuestionText = questionText;
         mAnswerTrue = answerTrue;
     }
-
+    //General functions for the entity
     public int getId() {
         return mId;
     }

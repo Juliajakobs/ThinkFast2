@@ -15,11 +15,12 @@ public class Category {
 
     private List<Question> questions= new ArrayList<>();
 
+    //Constructor for Category
     public Category(String categoryName, int categoryID) {
         this.mCategoryName = categoryName;
         this.mCategoryID = categoryID;
     }
-
+    //General functions for the entity
     public Category() {}
 
     public List<Question> getQuestions() { return questions; }

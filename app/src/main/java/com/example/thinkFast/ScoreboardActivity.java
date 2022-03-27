@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+//The scoreboard is not complete -functioning on dummy data
 public class ScoreboardActivity extends AppCompatActivity {
     private TextView mTextView_scores;
     private TextView mTextView_names;
@@ -34,6 +34,7 @@ public class ScoreboardActivity extends AppCompatActivity {
             names.append(name).append("\n");
             scores.append(score).append("\n");
         }
+        //Displaying the dummy data on the scoreboard
         mTextView_names.setText(names.toString());
         mTextView_scores.setText(scores.toString());
     }

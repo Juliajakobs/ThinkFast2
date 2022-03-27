@@ -4,12 +4,12 @@ public class Scores {
     private Account account;
     private int score;
 
-
+    //Constructor for scores
     public Scores(Account account, int score) {
         this.account = account;
         this.score = score;
     }
-
+    //General functions for the entity
     public Account getAccount() {
         return account;
     }

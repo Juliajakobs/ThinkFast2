@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AccountActivity extends AppCompatActivity {
-
+    //Initializing names
     private Button mLoginButton;
     private Button mSignUpButton;
     private EditText mUsername, mPassword,mEmail,mName;
@@ -19,28 +19,28 @@ public class AccountActivity extends AppCompatActivity {
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
             new Account("admin", "1234", "admin@hi.is", "Admin", true),
-            new Account("julia", "12", "juj7@hi.is", "Júlía", false),
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        // Login/register
+        //Getting the input from user
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
         mEmail = (EditText) findViewById(R.id.name);
         mName = (EditText) findViewById(R.id.email);
-
+        //Login
         mLoginButton = (Button) findViewById(R.id.login);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Checked if user is registered
                 for (int i = 0; i < mAccounts.length; i++) {
-                    // Check if user is admin
+                    // Check if user is registered and if admin
                     if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
                             mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
+                        //If admin is logging in--> go to admin page
                         if(mUsername.getText().toString().equals("admin")){
                             startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                         }
@@ -53,14 +53,12 @@ public class AccountActivity extends AppCompatActivity {
                         in.putExtra("email", mAccounts[i].getEmail());
 
                         startActivity(in);
-                    }} /*else {
-                        Toast.makeText(AccountActivity.this, R.string.sign_up_msg, Toast.LENGTH_SHORT).show();
-                        Log.d("MyApp", "USER NOT FOUND "+mUsername.getText().toString() + " " + mAccounts[i].getUsername());
-                    }*/
+                    }}
                 }
 
             }
         });
+        //Sign up
         mSignUpButton = (Button) findViewById(R.id.sign_up);
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +67,7 @@ public class AccountActivity extends AppCompatActivity {
                 mName.setVisibility(View.VISIBLE);
                 mEmail.setVisibility(View.VISIBLE);
                 mLoginButton.setVisibility(View.GONE);
+                //Creating a new account - not complete!
                 if(mUsername.getText().length()!=0 && mEmail.getText().length()!=0 &&mName.getText().length()!=0&& mEmail.getText().length()!=0){
                    mAccounts=saveAccount(mAccounts.length,mAccounts,new Account(mUsername.getText().toString(),mPassword.getText().toString(),mName.getText().toString(),mEmail.getText().toString(),false));
                     startActivity(new Intent(AccountActivity.this, SetupActivity.class));

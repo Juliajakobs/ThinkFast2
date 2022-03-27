@@ -18,6 +18,7 @@ import com.example.thinkFast.networking.NetworkManager;
 import java.util.List;
 
 public class SetupActivity extends AppCompatActivity {
+    //Initializing buttons and such
     private static final String TAG = "SetupActivity";
     private Button mStatistics;
     private Button mPlayQuiz;
@@ -36,26 +37,32 @@ public class SetupActivity extends AppCompatActivity {
     private int counter;
     private int turn = 0;
 
+    //Initializing the selected category and number of players
     private int selCategory = -1;
     private int selPlayers = -1;
 
+    //Information about user
     private String Name;
     private String Email;
     private String UserName;
 
+    //ID's for the category radio buttons
     private static final int RB1_ID = 0;
     private static final int RB2_ID = 1;
     private static final int RB3_ID = 2;
     private static final int RB4_ID = 3;
+    //ID's for one player or two player
     private static final int RBP1_ID = 1;
     private static final int RBP2_ID = 2;
 
+    //Initializing a list for the categories
     private List<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+        //More initialization
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
         mStatistics = (Button) findViewById(R.id.button_statistics);
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
@@ -73,6 +80,7 @@ public class SetupActivity extends AppCompatActivity {
         rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
         rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
 
+        //Getting information from QuizActivity about the logged in user
         Bundle extras = getIntent().getExtras();
         Name = extras.getString("name");
         Email = extras.getString("email");
@@ -96,7 +104,7 @@ public class SetupActivity extends AppCompatActivity {
                 break;
             case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
         }
-
+        //Calling the networkManager to access the chosen category
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getCategories(new NetworkCallback<List<Category>>() {
             @Override
@@ -134,7 +142,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         // Listener for button that starts quiz
-        // Will start quizactivity if a category and number of players has been selected.
+        // Will start QuizActivity if a category and number of players has been selected.
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

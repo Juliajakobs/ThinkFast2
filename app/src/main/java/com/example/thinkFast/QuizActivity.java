@@ -228,7 +228,7 @@ public class QuizActivity extends AppCompatActivity {
                         if (turn == 1) getReady.setText(R.string.getReady1Player1);
                         if (turn == 2) getReady.setText(R.string.getReady1Player2);
                     }
-                    else getReady.setText("placeholder"); // ætti að vera name
+                    else getReady.setText("Placeholder"); // ætti að vera name
                 }
                 counter--;
             }

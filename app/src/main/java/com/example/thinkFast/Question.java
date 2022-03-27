@@ -22,6 +22,7 @@ public class Question {
 
     public Question(){}
 
+    //Constructor for Question
     public Question(int categoryID, String questionText, String correctAnswer, String optionA, String optionB, String optionC, String optionD) {
         this.mCategoryID = categoryID;
         this.mQuestionText = questionText;
@@ -31,7 +32,7 @@ public class Question {
         this.mOptionC = optionC;
         this.mOptionD = optionD;
     }
-
+    //General functions for the entity
     public long getID() { return mID; }
 
     public void setID(long ID) { this.mID = ID; }

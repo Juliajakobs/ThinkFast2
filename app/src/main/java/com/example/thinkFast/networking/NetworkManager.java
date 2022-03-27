@@ -28,7 +28,7 @@ public class NetworkManager {
         }
         return mInstance;
     }
-
+    //Constructor for the NetworkManager
     private NetworkManager(Context context) {
         mContext = context;
         mQueue = getRequestQueue();
