@@ -9,7 +9,7 @@ Notendanafn: admin
 Lykilorð: 1234 
 
 #### Nöfn hópmeðlima
-Jenný Hildur Ómarsdóttir 
-Júlía Jakobsdóttir 
-Katja Nikole Vernharðsdóttir
+Jenný Hildur Ómarsdóttir \
+Júlía Jakobsdóttir \
+Katja Nikole Vernharðsdóttir\
 Tómas Jónsson
