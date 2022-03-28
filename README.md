@@ -1,11 +1,11 @@
 ## Think Fast
 
 #### Til að skrá sig inn sem venjulegur notandi: 
-Notendanafn: user 
+Notendanafn: user \
 Lykilorð: 123 
 
 #### Til að skrá sig inn sem stjórnandi: 
-Notendanafn: admin 
+Notendanafn: admin \
 Lykilorð: 1234 
 
 #### Nöfn hópmeðlima
