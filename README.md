@@ -1,4 +1,4 @@
-## Think fast
+## Think Fast
 
 #### Til að skrá sig inn sem venjulegur notandi: 
 Notendanafn: user 
