@@ -119,6 +119,7 @@ public class SetupActivity extends AppCompatActivity {
             }
 
         });
+
     // Listener to start setting up a quiz - where to choose number of players and category
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
