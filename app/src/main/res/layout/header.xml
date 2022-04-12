@@ -4,8 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"><![CDATA[
     tools:context=".HeaderActivity">
+
+    ]]>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,23 +17,24 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
-    <Button
-        android:id="@+id/btn_home"
-        android:layout_width="108dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:minWidth="32dp"
-        android:text="@string/home" />
-
-    <Button
-        android:id="@+id/button_statistics"
+    <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentEnd="false"
         android:layout_marginTop="1dp"
-        android:layout_marginEnd="167dp"
-        android:text="@string/statistics" />
+        android:layout_marginEnd="14dp"
+        android:lineSpacingExtra="10sp"
+        android:maxWidth="320dp"
+        android:minWidth="88dip"
+        android:minHeight="48dip"
+        android:padding="5dp"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_scoreboard"
