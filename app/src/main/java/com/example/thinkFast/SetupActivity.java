@@ -39,6 +39,7 @@ public class SetupActivity extends AppCompatActivity {
     private RadioButton rbCategory4;
     private Button bPlay;
     private Button bLogout;
+    private Button bLogOutHeader;
     private int counter;
     private int turn = 0;
 
@@ -100,6 +101,7 @@ public class SetupActivity extends AppCompatActivity {
         //More initialization
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
         mStatistics = (Button) findViewById(R.id.button_statistics);
+        bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
         rgCategory = (RadioGroup) findViewById(R.id.rg_categories);
         rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
@@ -170,6 +172,7 @@ public class SetupActivity extends AppCompatActivity {
                 mPlayQuiz.setVisibility(View.GONE);
                 mStatistics.setVisibility(View.GONE);
                 mWelcomeUser.setVisibility(View.GONE);
+                bLogout.setVisibility(View.GONE);
             }
         });
 
@@ -194,8 +197,17 @@ public class SetupActivity extends AppCompatActivity {
                     in.putExtra("categoryID",selCategory);
                     in.putExtra("selPlayers",selPlayers);
                     startActivity(in);
-                    Log.d("app","category: "+selCategory+" players: "+selPlayers);
+                    Log.d(TAG,"category: "+selCategory+" players: "+selPlayers);
                 }
+            }
+        });
+        // Listener for Log out
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set name and ID of categories and player
+                Log.d(TAG,"LOGGING ot");
+                logout();
             }
         });
     }
@@ -203,17 +215,17 @@ public class SetupActivity extends AppCompatActivity {
     public String getUsername(){
         SharedPreferences sharedpreferences = getSharedPreferences(AccountActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         String uname=sharedpreferences.getString(AccountActivity.uName,"null");
-        Log.d("app","SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
+        Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
         return uname;
     }
-    public void logout(View view){
+    public void logout(){
 
         SharedPreferences sharedpreferences = getSharedPreferences(AccountActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        Log.d("app","SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"Should have a username"));
+        Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"Should have a username"));
         editor.clear();
         editor.commit();
-        Log.d("app","SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
+        Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
         // Beina á forsíðu
         startActivity(new Intent(SetupActivity.this,AccountActivity.class));
     }

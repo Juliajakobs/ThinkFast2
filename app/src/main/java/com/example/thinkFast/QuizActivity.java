@@ -165,15 +165,15 @@ public class QuizActivity extends AppCompatActivity {
 
             }
         };
-        // TODO: Taka þetta mögulega burt og setja í header
+        // TODO: Taka þetta mögulega burt ?
         //If scoreboard button on header is pressed, open scoreboardActivity
-        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
+      /*  mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
         mScoreboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(QuizActivity.this, ScoreboardActivity.class));
             }
-        });
+        });*/
 
         // Answer buttons - checks if user answer is correct and gets next question or ends quiz if last question was answered
         for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
@@ -448,7 +448,7 @@ public class QuizActivity extends AppCompatActivity {
         bEndQuiz = (Button) findViewById(R.id.bEndQuiz);
 
         // Scoreboard
-        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
+       // mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
     }
 
     public void visibleQuizSettings(Boolean b) {
