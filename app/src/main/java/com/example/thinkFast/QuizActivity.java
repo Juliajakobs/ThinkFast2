@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -12,10 +13,12 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
@@ -72,6 +75,38 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
+        // Initialize and assign variable
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Set home selected
+        //bottomNavigationView.setSelectedItemId(R.id.quiz);
+
+        // Perform item selected listener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch(item.getItemId())
+                {
+                    case R.id.account:
+                        startActivity(new Intent(QuizActivity.this,AccountActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.quiz:
+                        //TODO Only perform if logged in
+                        startActivity(new Intent(QuizActivity.this,SetupActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.scoreboard:
+                        startActivity(new Intent(QuizActivity.this,ScoreboardActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
+        });
+
         //All findView connections are in this function
         setFindView();
         // Quiz starts after countdown (ready - set - start quiz)

@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.MenuItem;
+import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AccountActivity extends AppCompatActivity {
     //Initializing names
@@ -25,6 +29,54 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+
+        // Initialize and assign variable
+        BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
+
+        // Set Account selected
+        bottomNavigationView.setSelectedItemId(R.id.account);
+
+        // Perform item selected listener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch(item.getItemId())
+                {
+                    case R.id.account:
+                        return true;
+                    case R.id.quiz:
+                        //TODO Only perform if logged in
+                        for (int i = 0; i < mAccounts.length; i++) {
+                            // Check if user is registered and if admin
+                            if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
+                                    mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
+                                //If admin is logging in--> go to admin page
+                                if(mUsername.getText().toString().equals("admin")){
+                                    startActivity(new Intent(AccountActivity.this, AdminActivity.class));
+                                }
+                                else{
+                                    Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                                    //Sending information about user to QuizActivity
+                                    Intent in = new Intent(AccountActivity.this, SetupActivity.class);
+                                    in.putExtra("username", mAccounts[i].getUsername());
+                                    in.putExtra("name", mAccounts[i].getName());
+                                    in.putExtra("email", mAccounts[i].getEmail());
+
+                                    startActivity(in);
+                                }}
+                        }
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.scoreboard:
+                        startActivity(new Intent(AccountActivity.this,ScoreboardActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
+        });
+
         //Getting the input from user
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);

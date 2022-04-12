@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,9 +7,18 @@
     tools:context=".QuizActivity">
 
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/header"
+        android:layout_width="fill_parent"
+
+        android:layout_height="60dp"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="-5dp" />
+
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"
         android:baselineAligned="false"
@@ -17,6 +26,7 @@
         android:orientation="vertical"
         android:padding="10dp"
         android:textAlignment="center"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -151,13 +161,16 @@
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/header"
-        android:layout_width="fill_parent"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:padding="0dp"
+        android:textAlignment="center"
+        app:itemBackground="@color/purple_500"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:menu="@menu/menu_navigation" />
 
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="-5dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
