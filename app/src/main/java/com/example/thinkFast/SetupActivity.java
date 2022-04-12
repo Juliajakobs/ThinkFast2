@@ -1,6 +1,8 @@
 package com.example.thinkFast;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,8 +34,8 @@ public class SetupActivity extends AppCompatActivity {
     private RadioButton rbCategory2;
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
-    private RadioButton chosenCategory;
     private Button bPlay;
+    private Button bLogout;
     private int counter;
     private int turn = 0;
 
@@ -57,6 +59,7 @@ public class SetupActivity extends AppCompatActivity {
 
     //Initializing a list for the categories
     private List<Category> categories;
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,29 +83,25 @@ public class SetupActivity extends AppCompatActivity {
         rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
         rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
 
-        //Getting information from QuizActivity about the logged in user
-        Bundle extras = getIntent().getExtras();
-        Name = extras.getString("name");
-        Email = extras.getString("email");
-        UserName = extras.getString("username");
-
         // CountDown for getting ready
         getReady = (TextView) findViewById(R.id.getReadyCountDown);
         bPlay = (Button)  findViewById(R.id.bQuizSettings);
+        bLogout =(Button) findViewById(R.id.bLogout);
 
         //Creating a random welcome message for user
         int max = 4;
         int min = 1;
         int range = max - min + 1;
         int random = (int) (Math.random()* range) + min;
+        String username = getUsername();
         switch(random){
-            case 1: mWelcomeUser.setText("Welcome " + Name +  "!");
+            case 1: mWelcomeUser.setText("Welcome " + username +"!");
                 break;
-            case 2: mWelcomeUser.setText("Time to think fast " + Name + "!");
+            case 2: mWelcomeUser.setText("Time to think fast, " + username + "!");
                 break;
-            case 3: mWelcomeUser.setText(Name + " are you ready to ruuumble?");
+            case 3: mWelcomeUser.setText(username + " are you ready to ruuumble?");
                 break;
-            case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
+            case 4: mWelcomeUser.setText("Get your thinking hat on "  + username + "!");
         }
         //Calling the networkManager to access the chosen category
         NetworkManager networkManager = NetworkManager.getInstance(this);
@@ -138,6 +137,7 @@ public class SetupActivity extends AppCompatActivity {
                 bPlay.setVisibility(View.VISIBLE);
                 mPlayQuiz.setVisibility(View.GONE);
                 mStatistics.setVisibility(View.GONE);
+                mWelcomeUser.setVisibility(View.GONE);
             }
         });
 
@@ -166,5 +166,27 @@ public class SetupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public String getUsername(){
+        SharedPreferences sharedpreferences = getSharedPreferences(AccountActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        String uname=sharedpreferences.getString(AccountActivity.uName,"null");
+        Log.d("app","SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
+        return uname;
+    }
+    public void logout(View view){
+
+        SharedPreferences sharedpreferences = getSharedPreferences(AccountActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        Log.d("app","SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"Should have a username"));
+        editor.clear();
+        editor.commit();
+        Log.d("app","SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
+        // Beina á forsíðu
+        startActivity(new Intent(SetupActivity.this,AccountActivity.class));
+    }
+
+    public void close(View view){
+        finish();
     }
 }

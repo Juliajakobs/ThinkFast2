@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".SetupActivity"
-            android:exported="false" />
+            android:exported="false" />x
         <activity
             android:name=".AdminActivity"
             android:exported="false" />

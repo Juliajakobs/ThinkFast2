@@ -2,16 +2,16 @@ package com.example.thinkFast.networking;
 
 import android.content.Context;
 import android.net.Uri;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.thinkFast.Category;
 import com.example.thinkFast.Question;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class NetworkManager {
         }
         return mInstance;
     }
-    //Constructor for the NetworkManager
+    // Constructor for the NetworkManager
     private NetworkManager(Context context) {
         mContext = context;
         mQueue = getRequestQueue();

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuizActivity">
+    tools:context=".SetupActivity">
 
 
     <LinearLayout
@@ -65,6 +65,12 @@
             android:text="@string/statistics"
             android:visibility="visible"
             tools:ignore="DuplicateSpeakableTextCheck" />
+        <Button
+            android:id="@+id/bLogout"
+            android:onClick="logout"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Log out" />
 
         <RadioGroup
             android:id="@+id/rg_players"

@@ -220,6 +220,8 @@
             android:text="@string/end_quiz"
             android:visibility="gone" />
 
+
+
     </LinearLayout>
 
     <include
