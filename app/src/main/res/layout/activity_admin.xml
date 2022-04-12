@@ -51,7 +51,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_goneMarginTop="188dp"
-        tools:ignore="TextContrastCheck" />
+        tools:ignore="TextContrastCheck"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,5 +34,6 @@
     <string name="icon_account">Account</string>
     <string name="icon_quiz">Quiz</string>
     <string name="icon_scoreboard">Scoreboard</string>
+    <string name="LogOut">Log Out</string>
 
 </resources>

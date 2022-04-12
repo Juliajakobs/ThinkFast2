@@ -54,7 +54,9 @@ public class AccountActivity extends AppCompatActivity {
                 {
                     case R.id.account:
                    // TODO user activity
-                        return true;
+                        if(sharedpreferences.getString(AccountActivity.uName,"null")!="null"){
+                            startActivity(new Intent(AccountActivity.this, SetupActivity.class));
+                        }
                     case R.id.quiz:
                         // Only perform if logged in
                         if(sharedpreferences.getString(AccountActivity.uName,"null")!="null"){
