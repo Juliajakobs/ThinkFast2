@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/account"
-        android:title="Account"/>
+        android:icon="@drawable/ic_navigation_account"
+        android:title="@string/icon_account" />
     <item
         android:id="@+id/quiz"
-        android:title="Quiz"/>
+        android:icon="@drawable/ic_navigation_quiz"
+        android:title="@string/icon_quiz"/>
     <item
         android:id="@+id/scoreboard"
-        android:title="Scoreboards" />
+        android:icon="@drawable/ic_navigation_scoreboard"
+        android:title="@string/icon_scoreboard" />
 </menu>

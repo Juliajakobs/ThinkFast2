@@ -31,4 +31,8 @@
     <string name="getReady1Player2">Think Fast Player 2!</string>
     <string name="p1">Player 1</string>
     <string name="p2">Player 2</string>
+    <string name="icon_account">Account</string>
+    <string name="icon_quiz">Quiz</string>
+    <string name="icon_scoreboard">Scoreboard</string>
+
 </resources>
