@@ -1,12 +1,18 @@
 package com.example.thinkFast;
 
-public class Account {
+import com.google.gson.annotations.SerializedName;
 
-    private String username;
-    private String password;
-    private String email;
-    private String name;
-    private Boolean isAdmin;
+public class Account {
+    @SerializedName("username")
+    private String mUsername;
+    @SerializedName("password")
+    private String mPassword;
+    @SerializedName("email")
+    private String mEmail;
+    @SerializedName("name")
+    private String mName;
+    @SerializedName("isAdmin")
+    private Boolean mIsAdmin;
 
   //  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
   //  List<Scores> scores = new ArrayList<>();
@@ -16,11 +22,11 @@ public class Account {
 
     //Constructor for Account
     public Account(String username, String password, String email, String name,boolean isAdmin) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.name = name;
-        this.isAdmin = isAdmin;
+        this.mUsername = username;
+        this.mPassword = password;
+        this.mEmail = email;
+        this.mName = name;
+        this.mIsAdmin = isAdmin;
     }
    /* public void setScores(List<Scores> scores) {
         this.scores = scores;
@@ -35,43 +41,43 @@ public class Account {
     }*/
     //General functions for the entity
     public String getUsername() {
-        return username;
+        return mUsername;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.mUsername = username;
     }
 
     public String getPassword() {
-        return password;
+        return mPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.mPassword = password;
     }
 
     public String getEmail() {
-        return email;
+        return mEmail;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.mEmail = email;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.mName = name;
     }
 
     public Boolean isAdmin() {
-        return isAdmin;
+        return mIsAdmin;
     }
 
     public void setAdmin(boolean admin) {
-        isAdmin = true;
+        mIsAdmin = true;
     }
 
 }

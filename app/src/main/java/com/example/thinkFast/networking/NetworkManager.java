@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.thinkFast.Account;
 import com.example.thinkFast.Category;
 import com.example.thinkFast.Question;
 import com.google.gson.Gson;
@@ -28,7 +29,7 @@ public class NetworkManager {
         }
         return mInstance;
     }
-    //Constructor for the NetworkManager
+
     private NetworkManager(Context context) {
         mContext = context;
         mQueue = getRequestQueue();
