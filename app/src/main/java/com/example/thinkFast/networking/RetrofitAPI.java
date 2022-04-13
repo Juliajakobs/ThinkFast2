@@ -9,4 +9,6 @@ public interface RetrofitAPI {
     @POST("signup")
     Call<Account> createPost(@Body Account account);
 
+    @POST("loginAPI")
+    Call<Account> loginPost(@Body Account account);
 }

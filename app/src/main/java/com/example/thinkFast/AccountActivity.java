@@ -60,7 +60,7 @@ public class AccountActivity extends AppCompatActivity {
                             startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                         }
                         else{
-                        Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                        Log.d(TAG, mUsername.getText().toString() + " " + mAccounts[i].getUsername());
                         //Sending information about user to QuizActivity
                         Intent in = new Intent(AccountActivity.this, SetupActivity.class);
                         in.putExtra("username", mAccounts[i].getUsername());
@@ -117,6 +117,8 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
                 Log.d(TAG, "error: "+ t.getMessage());
+                Toast.makeText(AccountActivity.this, "username already exists!",Toast.LENGTH_SHORT).show();
+
             }
         });
     }
