@@ -35,7 +35,6 @@ public class BaseActivity extends AppCompatActivity {
                 switch(item.getItemId())
                 {
                     case R.id.account:
-                        // TODO user activity
                         Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"Should have a username"));
                         if(sharedpreferences.getString(AccountActivity.uName,"null")!="null"){
                             startActivity(new Intent(BaseActivity.this, SetupActivity.class));
