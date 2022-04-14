@@ -11,14 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends BaseActivity {
     //Initializing names
     private Button mLoginButton;
     private Button mSignUpButton;
+    private Button bLogOutHeader;
     private EditText mUsername, mPassword,mEmail,mName;
 
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -38,7 +38,6 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        //String uname=sharedpreferences.getString(AccountActivity.uName,"null");
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
 
@@ -122,10 +121,6 @@ public class AccountActivity extends AppCompatActivity {
                         Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
                         //Sending information about user to QuizActivity
                         Intent in = new Intent(AccountActivity.this, SetupActivity.class);
-                        in.putExtra("username", mAccounts[i].getUsername());
-                        in.putExtra("name", mAccounts[i].getName());
-                        in.putExtra("email", mAccounts[i].getEmail());
-
                         startActivity(in);
                     }}
                 }
@@ -146,6 +141,17 @@ public class AccountActivity extends AppCompatActivity {
                    mAccounts=saveAccount(mAccounts.length,mAccounts,new Account(mUsername.getText().toString(),mPassword.getText().toString(),mName.getText().toString(),mEmail.getText().toString(),false));
                     startActivity(new Intent(AccountActivity.this, SetupActivity.class));
                 }
+            }
+        });
+        // Log out button for header
+        bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
+        // Listener for Log out
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set name and ID of categories and player
+                Log.d("AccountActivity","Logging out");
+                logout();
             }
         });
     }

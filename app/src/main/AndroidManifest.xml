@@ -13,8 +13,11 @@
         android:theme="@style/Theme.HelloWorld"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".SetupActivity"
-            android:exported="false" />x
+            android:exported="false" />
         <activity
             android:name=".AdminActivity"
             android:exported="false" />
@@ -27,7 +30,6 @@
         <activity
             android:name=".AccountActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

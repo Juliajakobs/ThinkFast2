@@ -1,5 +1,4 @@
 package com.example.thinkFast;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,17 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.List;
 
-public class QuizActivity extends AppCompatActivity {
+public class QuizActivity extends BaseActivity {
     private static final String TAG = "QuizActivity";
     private Button mStatistics;
     private TextView mWelcomeUser;
@@ -33,7 +28,6 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans2;
     private Button ans3;
     private Button ans4;
-    private Button mScoreboard;
     private int questionIndex;
     private int selPlayers;
     private int c_id;
@@ -61,6 +55,7 @@ public class QuizActivity extends AppCompatActivity {
     private LinearLayout answerColumn2;
     private Button bPlayAgain;
     private Button bEndQuiz;
+    private Button bLogOutHeader;
 
     //Progress bar and timer variables
     private ProgressBar mProgressbar;
@@ -105,7 +100,6 @@ public class QuizActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         //All findView connections are in this function
         setFindView();
         // Quiz starts after countdown (ready - set - start quiz)
@@ -129,7 +123,17 @@ public class QuizActivity extends AppCompatActivity {
                 Log.e(TAG, "Failed to get questions: " + errorString);
             }
         });
-
+        // Log out button in header
+        bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
+        // Listener for log out button
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set name and ID of categories and player
+                Log.d(TAG,"Logging out");
+                logout();
+            }
+        });
         // Set up progress bar
         mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
         mProgressbar.setProgress(i);
@@ -148,7 +152,6 @@ public class QuizActivity extends AppCompatActivity {
             public void onFinish() {
                 //Add "Timed out" as user answer if question is not answered in the time limit
                 if (questionIndex < maxNumOfQuestions) {
-                    Log.d(TAG,"maxno: "+maxNumOfQuestions+" index: "+questionIndex);
                     correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                     if(player1AnswersArray[questionIndex]==null)player1AnswersArray[questionIndex]="Timed out";
                     if(selPlayers==2){
@@ -162,19 +165,16 @@ public class QuizActivity extends AppCompatActivity {
                     visibleEnd(true);
                     showAnswers();
                 }
-
             }
         };
-        // TODO: Taka þetta mögulega burt ?
-        //If scoreboard button on header is pressed, open scoreboardActivity
-      /*  mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
-        mScoreboard.setOnClickListener(new View.OnClickListener() {
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(QuizActivity.this, ScoreboardActivity.class));
+                // Set name and ID of categories and player
+                Log.d(TAG,"LOGGING ot");
+                logout();
             }
-        });*/
-
+        });
         // Answer buttons - checks if user answer is correct and gets next question or ends quiz if last question was answered
         for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
             button.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +202,7 @@ public class QuizActivity extends AppCompatActivity {
                         // Calculate score if answer is correct
                         if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex]))player1Score+=calculateScore(player1Score,i);
                     }
+
                     if (questionIndex < maxNumOfQuestions-1) {
                         getNextQuestion();
 
@@ -295,7 +296,6 @@ public class QuizActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             ));
-
            // playerAns.setText(Name);
             correctAns.setText(R.string.correctAnswers);
 
@@ -379,16 +379,13 @@ public class QuizActivity extends AppCompatActivity {
                 } else {
                     textView1.setTextColor(Color.RED);
                 }
-
                 if (player2AnswersArray[i].equals(correct2AnswersArray[i])) {
                     textView2.setTextColor(Color.GREEN);
                 } else {
                     textView2.setTextColor(Color.RED);
                 }
-
                 answerColumn1.addView(textView1);
                 answerColumn2.addView(textView2);
-
             }
         }
     }
@@ -446,9 +443,6 @@ public class QuizActivity extends AppCompatActivity {
         answerColumn2 = (LinearLayout) findViewById(R.id.answerColumn2);
         bPlayAgain = (Button) findViewById(R.id.bPlayAgain);
         bEndQuiz = (Button) findViewById(R.id.bEndQuiz);
-
-        // Scoreboard
-       // mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
     }
 
     public void visibleQuizSettings(Boolean b) {

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
@@ -22,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-public class SetupActivity extends AppCompatActivity {
+public class SetupActivity extends BaseActivity {
     //Initializing buttons and such
     private static final String TAG = "SetupActivity";
     private Button mStatistics;
@@ -38,19 +37,11 @@ public class SetupActivity extends AppCompatActivity {
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
     private Button bPlay;
-    private Button bLogout;
     private Button bLogOutHeader;
-    private int counter;
-    private int turn = 0;
 
     //Initializing the selected category and number of players
     private int selCategory = -1;
     private int selPlayers = -1;
-
-    //Information about user
-    private String Name;
-    private String Email;
-    private String UserName;
 
     //ID's for the category radio buttons
     private static final int RB1_ID = 0;
@@ -120,7 +111,7 @@ public class SetupActivity extends AppCompatActivity {
         // CountDown for getting ready
         getReady = (TextView) findViewById(R.id.getReadyCountDown);
         bPlay = (Button)  findViewById(R.id.bQuizSettings);
-        bLogout =(Button) findViewById(R.id.bLogout);
+        //bLogout =(Button) findViewById(R.id.bLogout);
 
         //Creating a random welcome message for user
         int max = 4;
@@ -172,7 +163,6 @@ public class SetupActivity extends AppCompatActivity {
                 mPlayQuiz.setVisibility(View.GONE);
                 mStatistics.setVisibility(View.GONE);
                 mWelcomeUser.setVisibility(View.GONE);
-                bLogout.setVisibility(View.GONE);
             }
         });
 
@@ -206,7 +196,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Set name and ID of categories and player
-                Log.d(TAG,"LOGGING ot");
+                Log.d(TAG,"Logging out");
                 logout();
             }
         });
@@ -217,17 +207,6 @@ public class SetupActivity extends AppCompatActivity {
         String uname=sharedpreferences.getString(AccountActivity.uName,"null");
         Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
         return uname;
-    }
-    public void logout(){
-
-        SharedPreferences sharedpreferences = getSharedPreferences(AccountActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"Should have a username"));
-        editor.clear();
-        editor.commit();
-        Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
-        // Beina á forsíðu
-        startActivity(new Intent(SetupActivity.this,AccountActivity.class));
     }
 
     public void close(View view){
