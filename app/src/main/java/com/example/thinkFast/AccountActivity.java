@@ -9,12 +9,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AccountActivity extends BaseActivity {
+import com.example.thinkFast.networking.NetworkCallback;
+import com.example.thinkFast.networking.NetworkManager;
+import com.example.thinkFast.networking.RetrofitAPI;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class AccountActivity extends AppCompatActivity {
+    private static final String TAG = "AccountActivity";
+
     //Initializing names
     private Button mLoginButton;
     private Button mSignUpButton;
@@ -28,6 +44,7 @@ public class AccountActivity extends BaseActivity {
 
 
     // Dummy data - user and admin
+    private Account newAccount;
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
             new Account("admin", "1234", "admin@hi.is", "Admin", true),
@@ -118,7 +135,7 @@ public class AccountActivity extends BaseActivity {
                             startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                         }
                         else{
-                        Log.d("MyApp", mUsername.getText().toString() + " " + mAccounts[i].getUsername());
+                        Log.d(TAG, mUsername.getText().toString() + " " + mAccounts[i].getUsername());
                         //Sending information about user to QuizActivity
                         Intent in = new Intent(AccountActivity.this, SetupActivity.class);
                         startActivity(in);
@@ -132,15 +149,46 @@ public class AccountActivity extends BaseActivity {
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 mName.setVisibility(View.VISIBLE);
                 mEmail.setVisibility(View.VISIBLE);
                 mLoginButton.setVisibility(View.GONE);
                 //Creating a new account - not complete!
-                if(mUsername.getText().length()!=0 && mEmail.getText().length()!=0 &&mName.getText().length()!=0&& mEmail.getText().length()!=0){
-                   mAccounts=saveAccount(mAccounts.length,mAccounts,new Account(mUsername.getText().toString(),mPassword.getText().toString(),mName.getText().toString(),mEmail.getText().toString(),false));
-                    startActivity(new Intent(AccountActivity.this, SetupActivity.class));
+                if(mUsername.getText().toString().isEmpty() && mEmail.getText().toString().isEmpty() &&mName.getText().toString().isEmpty()&& mEmail.getText().toString().isEmpty()){
+                    Toast.makeText(AccountActivity.this, "Please enter all values", Toast.LENGTH_SHORT).show();
+                    return;
+                    //mAccounts=saveAccount(mAccounts.length,mAccounts,new Account(mUsername.getText().toString(),mPassword.getText().toString(),mName.getText().toString(),mEmail.getText().toString(),false));
+                    //startActivity(new Intent(AccountActivity.this, SetupActivity.class));
                 }
+                postAccount(mUsername.getText().toString(), mPassword.getText().toString(),mEmail.getText().toString(), mName.getText().toString());
+            }
+        });
+    }
+
+    private void postAccount(String username, String password, String email, String name) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://quiz-app-b.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
+        Account account = new Account(username,password,email,name, false);
+        Call<Account> call = retrofitAPI.createPost(account);
+
+        call.enqueue(new Callback<Account>() {
+            @Override
+            public void onResponse(Call<Account> call, Response<Account> response) {
+                Toast.makeText(AccountActivity.this, "You have signed up!",Toast.LENGTH_SHORT).show();
+
+                Account responseFromAPI = response.body();
+
+                //String responseString = "Response Code : " + response.code() + "username: "+ responseFromAPI.getUsername();
+                Log.d(TAG, "user created: "+ responseFromAPI.getUsername());
+            }
+
+            @Override
+            public void onFailure(Call<Account> call, Throwable t) {
+                Log.d(TAG, "error: "+ t.getMessage());
+                Toast.makeText(AccountActivity.this, "username already exists!",Toast.LENGTH_SHORT).show();
+
             }
         });
         // Log out button for header
