@@ -14,8 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-public class AccountActivity extends BaseActivity {
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 import com.example.thinkFast.networking.RetrofitAPI;
@@ -28,9 +26,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AccountActivity extends AppCompatActivity {
-    private static final String TAG = "AccountActivity";
+public class AccountActivity extends BaseActivity {
 
+    private static final String TAG = "AccountActivity";
     //Initializing names
     private Button mLoginButton;
     private Button mSignUpButton;
