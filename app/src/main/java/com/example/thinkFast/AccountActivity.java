@@ -5,20 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.example.thinkFast.networking.NetworkCallback;
-import com.example.thinkFast.networking.NetworkManager;
 import com.example.thinkFast.networking.RetrofitAPI;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,7 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AccountActivity extends BaseActivity {
 
     private static final String TAG = "AccountActivity";
-    private List<Account> accounts;
     //Initializing names
     private Button mLoginButton;
     private Button mSignUpButton;
@@ -40,12 +31,6 @@ public class AccountActivity extends BaseActivity {
     public static final String uName = "nameKey";
     public static final String pWord = "phoneKey";
     SharedPreferences sharedpreferences;
-
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://quiz-app-b.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
 
 
     // Dummy data - user and admin
@@ -58,56 +43,7 @@ public class AccountActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
-        // Initialize and assign variable
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
-
-        // Set Account selected
-        bottomNavigationView.setSelectedItemId(R.id.account);
-
-        // Perform item selected listener
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch(item.getItemId())
-                {
-                    case R.id.account:
-                   // TODO user activity
-                        if(sharedpreferences.getString(AccountActivity.uName,"null")!="null"){
-                            startActivity(new Intent(AccountActivity.this, SetupActivity.class));
-                        }
-                    case R.id.quiz:
-                        // Only perform if logged in
-                        if(sharedpreferences.getString(AccountActivity.uName,"null")!="null"){
-                            startActivity(new Intent(AccountActivity.this, SetupActivity.class));
-                        }
-
-                        for (int i = 0; i < mAccounts.length; i++) {
-                            // Check if user is registered and if admin
-                            if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
-                                    mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
-                                //If admin is logging in--> go to admin page
-                                if(mUsername.getText().toString().equals("admin")){
-                                    startActivity(new Intent(AccountActivity.this, AdminActivity.class));
-                                }
-                                else{
-                                    //Sending information about user to QuizActivity
-                                    Intent in = new Intent(AccountActivity.this, SetupActivity.class);
-                                    startActivity(in);
-                                }}
-                        }
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.scoreboard:
-                        startActivity(new Intent(AccountActivity.this,ScoreboardActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return false;
-            }
-        });
-
+        bottomNavigation();
         //Getting the input from user
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
@@ -127,31 +63,6 @@ public class AccountActivity extends BaseActivity {
                     return;
                 }
                 loginAccount(username,password);
-/*
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-
-                editor.putString(uName, username);
-                editor.putString(pWord, password);
-                editor.commit();
-                loginAccount(mUsername.getText().toString(),mPassword.getText().toString());
-                // Checked if user is registered - Log in process
-                /*
-                for (int i = 0; i < mAccounts.length; i++) {
-                    // Check if user is registered and if admin
-                    if (mUsername.getText().toString().equals(mAccounts[i].getUsername()) &&
-                            mPassword.getText().toString().equals(mAccounts[i].getPassword())) {
-                        //If admin is logging in--> go to admin page
-                        if(mUsername.getText().toString().equals("admin")){
-                            startActivity(new Intent(AccountActivity.this, AdminActivity.class));
-                        }
-                        else{
-                        Log.d(TAG, mUsername.getText().toString() + " " + mAccounts[i].getUsername());
-                        //Sending information about user to QuizActivity
-                        Intent in = new Intent(AccountActivity.this, SetupActivity.class);
-                        startActivity(in);
-                    }}
-                }
-*/
             }
         });
 
@@ -173,32 +84,6 @@ public class AccountActivity extends BaseActivity {
                 postAccount(mUsername.getText().toString(), mPassword.getText().toString(),mEmail.getText().toString(), mName.getText().toString());
             }
         });
-    }
-    private void loginAccount(String username, String password){
-        //Calling networkManager to get questions from DB
-        NetworkManager networkManager = NetworkManager.getInstance(this);
-        networkManager.getAccount(username,new NetworkCallback<List<Account>>() {
-            @Override
-            public void onSuccess(List<Account> result) {
-                accounts = result;
-                for(int i=0; i< accounts.size();i++) {
-                    if(accounts.get(i).getUsername().equals(username) && accounts.get(i).getPassword().equals(password)) {
-                        //If admin is logging in--> go to admin page
-                        if(mUsername.getText().toString().equals("admin")){
-                            startActivity(new Intent(AccountActivity.this, AdminActivity.class));
-                        }
-                        // Else start set activity as user
-                        else startActivity(new Intent(AccountActivity.this, SetupActivity.class));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(String errorString) {
-                Log.e(TAG, "Failed to get accounts: " + errorString);
-            }
-        });
-
     }
 
     private void loginAccount(String username, String password) {
@@ -238,10 +123,10 @@ public class AccountActivity extends BaseActivity {
     }
 
     private void postAccount(String username, String password, String email, String name) {
-       /* Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://quiz-app-b.herokuapp.com/")
                 .addConverterFactory(GsonConverterFactory.create())
-                .build();*/
+                .build();
         RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
         Account account = new Account(username,password,email,name, false);
         Call<Account> call = retrofitAPI.createPost(account);
@@ -260,6 +145,7 @@ public class AccountActivity extends BaseActivity {
             public void onFailure(Call<Account> call, Throwable t) {
                 Log.d(TAG, "error: "+ t.getMessage());
                 Toast.makeText(AccountActivity.this, "username already exists!",Toast.LENGTH_SHORT).show();
+
             }
         });
         // Log out button for header
@@ -280,7 +166,7 @@ public class AccountActivity extends BaseActivity {
         int i;
         Account newArray[] = new Account[n + 1];
         for (i = 0; i < n; i++)
-        newArray[i] = accounts[i];
+            newArray[i] = accounts[i];
         newArray[n] = acc;
         return newArray;
     }

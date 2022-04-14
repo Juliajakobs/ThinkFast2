@@ -16,7 +16,4 @@ public interface RetrofitAPI {
     @POST("loginAPI")
     Call<Account> loginPost(@Body Account account);
 
-    @GET("authenticate")
-    Call<List<Account>> loginAccount();
-
 }
