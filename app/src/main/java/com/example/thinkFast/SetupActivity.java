@@ -80,7 +80,7 @@ public class SetupActivity extends AppCompatActivity {
         rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
         rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
 
-        //Getting information from QuizActivity about the logged in user
+        //Getting information from AccountActivity about the logged in user
         Bundle extras = getIntent().getExtras();
         Name = extras.getString("name");
         Email = extras.getString("email");
@@ -91,7 +91,7 @@ public class SetupActivity extends AppCompatActivity {
         bPlay = (Button)  findViewById(R.id.bQuizSettings);
 
         //Creating a random welcome message for user
-        int max = 4;
+        int max = 6;
         int min = 1;
         int range = max - min + 1;
         int random = (int) (Math.random()* range) + min;
@@ -103,6 +103,10 @@ public class SetupActivity extends AppCompatActivity {
             case 3: mWelcomeUser.setText(Name + " are you ready to ruuumble?");
                 break;
             case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
+                break;
+            case 5: mWelcomeUser.setText(Name + " are you sure you are ready to think fast?");
+                break;
+            case 6: mWelcomeUser.setText("Time to delve into your thinking pool " + Name +"!");
         }
         //Calling the networkManager to access the chosen category
         NetworkManager networkManager = NetworkManager.getInstance(this);

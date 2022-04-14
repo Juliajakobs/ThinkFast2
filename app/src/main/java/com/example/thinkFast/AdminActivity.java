@@ -3,7 +3,9 @@ package com.example.thinkFast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
     private Button mDeleteButton;
+    private Button mStatistics;
     private List<Question> questions;
 
     //Changes the view to admin view
@@ -24,8 +27,9 @@ public class AdminActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-
+        //Initializing the textview and making it scrollable
         TextView yourTextView = (TextView) findViewById(R.id.textView3);
+        yourTextView.setMovementMethod(new ScrollingMovementMethod());
 
         //Gets questions from database and displays them - not fully complete
         NetworkManager networkManager = NetworkManager.getInstance(this);
@@ -47,7 +51,14 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
-
+        //Placeholder basically
+        mStatistics = (Button) findViewById(R.id.button_statistics);
+        mStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminActivity.this, StatisticsActivity.class));
+            }
+        });
         //Delete button - not complete
         mDeleteButton = (Button) findViewById(R.id.delete_button);
         mDeleteButton.setOnClickListener(new View.OnClickListener() {

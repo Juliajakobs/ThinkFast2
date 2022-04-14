@@ -140,7 +140,6 @@ public class QuizActivity extends AppCompatActivity {
         });
 
 
-
         // Answer buttons - checks if user answer is correct and gets next question or ends quiz if last question was answered
         for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
             button.setOnClickListener(new View.OnClickListener() {
