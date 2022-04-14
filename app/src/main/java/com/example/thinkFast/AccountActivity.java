@@ -49,7 +49,6 @@ public class AccountActivity extends BaseActivity {
 
 
     // Dummy data - user and admin
-    private Account newAccount;
     private Account[] mAccounts = new Account[]{
             new Account("user", "123", "api@hi.is", "User", false),
             new Account("admin", "1234", "admin@hi.is", "Admin", true),
@@ -123,7 +122,12 @@ public class AccountActivity extends BaseActivity {
             public void onClick(View view) {
                 String username  = mUsername.getText().toString();
                 String password  = mPassword.getText().toString();
-
+                if (mUsername.getText().toString().isEmpty() && mPassword.getText().toString().isEmpty()) {
+                    Toast.makeText(AccountActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                loginAccount(username,password);
+/*
                 SharedPreferences.Editor editor = sharedpreferences.edit();
 
                 editor.putString(uName, username);
@@ -150,6 +154,7 @@ public class AccountActivity extends BaseActivity {
 */
             }
         });
+
         //Sign up
         mSignUpButton = (Button) findViewById(R.id.sign_up);
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +201,42 @@ public class AccountActivity extends BaseActivity {
 
     }
 
+    private void loginAccount(String username, String password) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://quiz-app-b.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
+        Account loginAccount = new Account(username,password,null,null,false);
+        Call<Account> call = retrofitAPI.loginPost(loginAccount);
+        call.enqueue(new Callback<Account>() {
+            @Override
+            public void onResponse(Call<Account> call, Response<Account> response) {
+                Account responseFromAPI = response.body();
+                Log.d(TAG, "user logged in: "+ responseFromAPI.getUsername());
+
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString(uName, mUsername.getText().toString());
+                editor.putString(pWord, mPassword.getText().toString());
+                editor.commit();
+
+                if(mUsername.getText().toString().equals("admin")){
+                    startActivity(new Intent(AccountActivity.this, AdminActivity.class));
+                } else {
+                    Intent in = new Intent(AccountActivity.this, SetupActivity.class);
+                    startActivity(in);
+                }
+                Toast.makeText(AccountActivity.this, "hello " + responseFromAPI.getUsername(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Account> call, Throwable t) {
+                Log.d(TAG, "error: "+ t.getMessage());
+                Toast.makeText(AccountActivity.this, "wrong username or password",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void postAccount(String username, String password, String email, String name) {
        /* Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://quiz-app-b.herokuapp.com/")
@@ -208,9 +249,8 @@ public class AccountActivity extends BaseActivity {
         call.enqueue(new Callback<Account>() {
             @Override
             public void onResponse(Call<Account> call, Response<Account> response) {
-                Toast.makeText(AccountActivity.this, "You have signed up!",Toast.LENGTH_SHORT).show();
-
                 Account responseFromAPI = response.body();
+                Toast.makeText(AccountActivity.this, "Thank you for signing up, " + responseFromAPI.getUsername(),Toast.LENGTH_SHORT).show();
 
                 //String responseString = "Response Code : " + response.code() + "username: "+ responseFromAPI.getUsername();
                 Log.d(TAG, "user created: "+ responseFromAPI.getUsername());
