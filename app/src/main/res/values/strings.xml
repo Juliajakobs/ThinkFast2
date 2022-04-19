@@ -32,4 +32,6 @@
     <string name="p1">Player 1</string>
     <string name="p2">Player 2</string>
     <string name="stats">Since joining Think Fast you have... </string>
+    <string name="questionsInDB">Questions currently in the database:</string>
+    <string name ="takki">"HALL'O'O'O'O'O'O</string>
     </resources>
