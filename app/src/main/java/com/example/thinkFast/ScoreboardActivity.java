@@ -3,9 +3,8 @@ package com.example.thinkFast;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 //The scoreboard is not complete -functioning on dummy data
-public class ScoreboardActivity extends AppCompatActivity {
+public class ScoreboardActivity extends BaseActivity {
     private TextView mTextView_scores;
     private TextView mTextView_names;
 
@@ -24,6 +23,10 @@ public class ScoreboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scoreboard);
+
+        // Bottom navigation
+        bottomNavigation();
+
         mTextView_scores = (TextView) findViewById(R.id.textView_scores);
         mTextView_names = (TextView) findViewById(R.id.textView_names);
         StringBuilder names = new StringBuilder();

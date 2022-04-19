@@ -1,6 +1,8 @@
 package com.example.thinkFast;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,14 +12,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 
 import java.util.List;
 
-public class SetupActivity extends AppCompatActivity {
+public class SetupActivity extends BaseActivity {
     //Initializing buttons and such
     private static final String TAG = "SetupActivity";
     private Button mStatistics;
@@ -32,19 +32,12 @@ public class SetupActivity extends AppCompatActivity {
     private RadioButton rbCategory2;
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
-    private RadioButton chosenCategory;
     private Button bPlay;
-    private int counter;
-    private int turn = 0;
+    private Button bLogOutHeader;
 
     //Initializing the selected category and number of players
     private int selCategory = -1;
     private int selPlayers = -1;
-
-    //Information about user
-    private String Name;
-    private String Email;
-    private String UserName;
 
     //ID's for the category radio buttons
     private static final int RB1_ID = 0;
@@ -57,14 +50,19 @@ public class SetupActivity extends AppCompatActivity {
 
     //Initializing a list for the categories
     private List<Category> categories;
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+        // Bottom navigation
+        bottomNavigation();
+
         //More initialization
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
         mStatistics = (Button) findViewById(R.id.button_statistics);
+        bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
         rgCategory = (RadioGroup) findViewById(R.id.rg_categories);
         rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
@@ -80,33 +78,25 @@ public class SetupActivity extends AppCompatActivity {
         rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
         rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
 
-        //Getting information from AccountActivity about the logged in user
-        Bundle extras = getIntent().getExtras();
-        Name = extras.getString("name");
-        Email = extras.getString("email");
-        UserName = extras.getString("username");
-
         // CountDown for getting ready
         getReady = (TextView) findViewById(R.id.getReadyCountDown);
         bPlay = (Button)  findViewById(R.id.bQuizSettings);
+        //bLogout =(Button) findViewById(R.id.bLogout);
 
         //Creating a random welcome message for user
-        int max = 6;
+        int max = 4;
         int min = 1;
         int range = max - min + 1;
         int random = (int) (Math.random()* range) + min;
+        String username = getUsername();
         switch(random){
-            case 1: mWelcomeUser.setText("Welcome " + Name +  "!");
+            case 1: mWelcomeUser.setText("Welcome " + username +"!");
                 break;
-            case 2: mWelcomeUser.setText("Time to think fast " + Name + "!");
+            case 2: mWelcomeUser.setText("Time to think fast, " + username + "!");
                 break;
-            case 3: mWelcomeUser.setText(Name + " are you ready to ruuumble?");
+            case 3: mWelcomeUser.setText(username + " are you ready to ruuumble?");
                 break;
-            case 4: mWelcomeUser.setText("Get your thinking hat on "  + Name + "!");
-                break;
-            case 5: mWelcomeUser.setText(Name + " are you sure you are ready to think fast?");
-                break;
-            case 6: mWelcomeUser.setText("Time to delve into your thinking pool " + Name +"!");
+            case 4: mWelcomeUser.setText("Get your thinking hat on "  + username + "!");
         }
         //Calling the networkManager to access the chosen category
         NetworkManager networkManager = NetworkManager.getInstance(this);
@@ -143,6 +133,7 @@ public class SetupActivity extends AppCompatActivity {
                 bPlay.setVisibility(View.VISIBLE);
                 mPlayQuiz.setVisibility(View.GONE);
                 mStatistics.setVisibility(View.GONE);
+                mWelcomeUser.setVisibility(View.GONE);
             }
         });
 
@@ -167,9 +158,29 @@ public class SetupActivity extends AppCompatActivity {
                     in.putExtra("categoryID",selCategory);
                     in.putExtra("selPlayers",selPlayers);
                     startActivity(in);
-                    Log.d("app","category: "+selCategory+" players: "+selPlayers);
+                    Log.d(TAG,"category: "+selCategory+" players: "+selPlayers);
                 }
             }
         });
+        // Listener for Log out
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set name and ID of categories and player
+                Log.d(TAG,"Logging out");
+                logout();
+            }
+        });
+    }
+
+    public String getUsername(){
+        SharedPreferences sharedpreferences = getSharedPreferences(AccountActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        String uname=sharedpreferences.getString(AccountActivity.uName,"null");
+        Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
+        return uname;
+    }
+
+    public void close(View view){
+        finish();
     }
 }

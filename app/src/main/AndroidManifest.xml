@@ -16,6 +16,9 @@
             android:name=".StatisticsActivity"
             android:exported="false" />
         <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".SetupActivity"
             android:exported="false" />
         <activity

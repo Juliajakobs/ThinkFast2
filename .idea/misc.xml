@@ -13,11 +13,25 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/content_scrolling.xml" value="0.1796875" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/header.xml" value="0.1796875" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.188" />
+        <entry key="..\:/Users/tommi/Desktop/V22/hugb2/ThinkFast2/app/src/main/res/layout/activity_account.xml" value="0.15364583333333334" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_navigation_account.xml" value="0.1035" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_navigation_quiz.xml" value="0.1035" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_navigation_scoreboard.xml" value="0.1035" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/selector.xml" value="0.1035" />
+        <entry key="app/src/main/res/layout/activity_account.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_admin.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3881591796875" />
-        <entry key="app/src/main/res/layout/activity_quiz.xml" value="0.15940685820203893" />
-        <entry key="app/src/main/res/layout/activity_setup.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_navigation.xml" value="0.2543822146216332" />
+        <entry key="app/src/main/res/layout/activity_quiz.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_scoreboard.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_setup.xml" value="0.22093353271484378" />
+        <entry key="app/src/main/res/layout/fragment_statistics.xml" value="0.2543822146216332" />
+        <entry key="app/src/main/res/layout/header.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_navigation.xml" value="0.2826171875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1035" />
       </map>
     </option>
   </component>

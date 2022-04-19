@@ -1,5 +1,4 @@
 package com.example.thinkFast;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,14 +11,12 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 
 import java.util.List;
 
-public class QuizActivity extends AppCompatActivity {
+public class QuizActivity extends BaseActivity {
     private static final String TAG = "QuizActivity";
     private Button mStatistics;
     private TextView mWelcomeUser;
@@ -30,8 +27,6 @@ public class QuizActivity extends AppCompatActivity {
     private Button ans2;
     private Button ans3;
     private Button ans4;
-    private Button mScoreboard;
-    private int resetIndex;
     private int questionIndex;
     private int selPlayers;
     private int c_id;
@@ -59,6 +54,7 @@ public class QuizActivity extends AppCompatActivity {
     private LinearLayout answerColumn2;
     private Button bPlayAgain;
     private Button bEndQuiz;
+    private Button bLogOutHeader;
 
     //Progress bar and timer variables
     private ProgressBar mProgressbar;
@@ -72,6 +68,9 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
+        // Bottom navigation
+        bottomNavigation();
         //All findView connections are in this function
         setFindView();
         // Quiz starts after countdown (ready - set - start quiz)
@@ -95,7 +94,17 @@ public class QuizActivity extends AppCompatActivity {
                 Log.e(TAG, "Failed to get questions: " + errorString);
             }
         });
-
+        // Log out button in header
+        bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
+        // Listener for log out button
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set name and ID of categories and player
+                Log.d(TAG,"Logging out");
+                logout();
+            }
+        });
         // Set up progress bar
         mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
         mProgressbar.setProgress(i);
@@ -106,7 +115,6 @@ public class QuizActivity extends AppCompatActivity {
         mCountDownTimer=new CountDownTimer(5000,400) {
             @Override
             public void onTick(long millisUntilFinished) {
-                Log.v("Log_tag", "Tick of Progress"+ i+ millisUntilFinished);
                 i++;
                 mProgressbar.setProgress((int)i*500/(5000/400));
             }
@@ -114,7 +122,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 //Add "Timed out" as user answer if question is not answered in the time limit
-                if (questionIndex < maxNumOfQuestions-1) {
+                if (questionIndex < maxNumOfQuestions) {
                     correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                     if(player1AnswersArray[questionIndex]==null)player1AnswersArray[questionIndex]="Timed out";
                     if(selPlayers==2){
@@ -124,22 +132,20 @@ public class QuizActivity extends AppCompatActivity {
                     getNextQuestion();
                 }
                 else {
+                    visibleQuizPlay(false);
+                    visibleEnd(true);
                     showAnswers();
                 }
-
             }
         };
-
-        //If scoreboard button on header is pressed, open scoreboardActivity
-        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
-        mScoreboard.setOnClickListener(new View.OnClickListener() {
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(QuizActivity.this, ScoreboardActivity.class));
+                // Set name and ID of categories and player
+                Log.d(TAG,"LOGGING ot");
+                logout();
             }
         });
-
-
         // Answer buttons - checks if user answer is correct and gets next question or ends quiz if last question was answered
         for (Button button: new Button[]{ans1,ans2, ans3, ans4}) {
             button.setOnClickListener(new View.OnClickListener() {
@@ -150,14 +156,12 @@ public class QuizActivity extends AppCompatActivity {
                             //Getting the players answer from the button
                             player1AnswersArray[questionIndex] = button.getText().toString();
                             correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
-                            Log.d(TAG, "player 1 ans " + player1AnswersArray[questionIndex]);
                             // Calculate score if answer is correct
                             if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex]))player1Score+=calculateScore(player1Score,i);
                         } else if (turn == 2) {
                             //Getting the players answer from the button
                             player2AnswersArray[questionIndex] = button.getText().toString();
                             correct2AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
-                            Log.d(TAG, "player 2 ans " + player2AnswersArray[questionIndex]);
                             // Calculate score if answer is correct
                             if( player2AnswersArray[questionIndex].equals(correct2AnswersArray[questionIndex])) player2Score+=calculateScore(player2Score,i);
                         }
@@ -167,11 +171,9 @@ public class QuizActivity extends AppCompatActivity {
                         player1AnswersArray[questionIndex] = button.getText().toString();
                         correct1AnswersArray[questionIndex] = questions.get(questionIndex).getCorrectAnswer();
                         // Calculate score if answer is correct
-                        Log.d(TAG, "player 1 ans " + player1AnswersArray[questionIndex]);
                         if( player1AnswersArray[questionIndex].equals( correct1AnswersArray[questionIndex]))player1Score+=calculateScore(player1Score,i);
                     }
 
-                    Log.d(TAG, "question number " + questionIndex);
                     if (questionIndex < maxNumOfQuestions-1) {
                         getNextQuestion();
 
@@ -193,25 +195,19 @@ public class QuizActivity extends AppCompatActivity {
         bPlayAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resetQuiz();
-                visibleEnd(false);
-                visibleQuizPlay(true);
-                getReadyCountDown();
+                startActivity(new Intent(QuizActivity.this,SetupActivity.class));
             }
         });
         //Quiz ends
         bEndQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resetQuiz();
-                visibleEnd(false);
-                visibleQuizSettings(true);
+                startActivity(new Intent(QuizActivity.this,SetupActivity.class));
             }
         });
     }
     //Function for the countdown at the start
     public void getReadyCountDown() {
-
         visibleQuizSettings(false);
         visibleQuizPlay(false);
         visibleGetReadyCountDown(true);
@@ -230,7 +226,7 @@ public class QuizActivity extends AppCompatActivity {
                         if (turn == 1) getReady.setText(R.string.getReady1Player1);
                         if (turn == 2) getReady.setText(R.string.getReady1Player2);
                     }
-                    else getReady.setText("Placeholder"); // should be name
+                    else getReady.setText("user"); // should be name
                 }
                 counter--;
             }
@@ -271,7 +267,6 @@ public class QuizActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             ));
-
            // playerAns.setText(Name);
             correctAns.setText(R.string.correctAnswers);
 
@@ -355,16 +350,13 @@ public class QuizActivity extends AppCompatActivity {
                 } else {
                     textView1.setTextColor(Color.RED);
                 }
-
                 if (player2AnswersArray[i].equals(correct2AnswersArray[i])) {
                     textView2.setTextColor(Color.GREEN);
                 } else {
                     textView2.setTextColor(Color.RED);
                 }
-
                 answerColumn1.addView(textView1);
                 answerColumn2.addView(textView2);
-
             }
         }
     }
@@ -378,19 +370,6 @@ public class QuizActivity extends AppCompatActivity {
         ans2.setText(questions.get(questionIndex).getOptionB());
         ans3.setText(questions.get(questionIndex).getOptionC());
         ans4.setText(questions.get(questionIndex).getOptionD());
-    }
-    //Reset the quiz and all its settings
-    public void resetQuiz() {
-        mProgressbar.setVisibility(View.VISIBLE);
-        questionIndex = 0;
-        turn = 0;
-        resetCounter();
-        player1AnswersArray = new String[10];
-        player2AnswersArray = new String[10];
-        correct1AnswersArray = new String[10];
-        correct2AnswersArray = new String[10];
-        answerColumn1.removeAllViewsInLayout();
-        answerColumn2.removeAllViewsInLayout();
     }
 
     // Resets counter after each question/quiz
@@ -415,8 +394,6 @@ public class QuizActivity extends AppCompatActivity {
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
         // Quiz Start screen
         mStatistics = (Button) findViewById(R.id.button_statistics);
-       // mPlayQuiz = (Button) findViewById(R.id.button_quiz);
-
         // Timer
         mProgressbar=(ProgressBar)findViewById(R.id.progressBar);
 
@@ -437,21 +414,6 @@ public class QuizActivity extends AppCompatActivity {
         answerColumn2 = (LinearLayout) findViewById(R.id.answerColumn2);
         bPlayAgain = (Button) findViewById(R.id.bPlayAgain);
         bEndQuiz = (Button) findViewById(R.id.bEndQuiz);
-
-        // Scoreboard
-        mScoreboard = (Button) findViewById(R.id.btn_scoreboard);
-    }
- // Todo: get name from setupactivity and use this function
-    // If true, shows a message to logged in user.
-    public void visibleMenu(Boolean b) {
-        if (b) {
-            mWelcomeUser.setVisibility(View.VISIBLE);
-            mStatistics.setVisibility(View.VISIBLE);
-        }
-        else {
-            mWelcomeUser.setVisibility(View.GONE);
-            mStatistics.setVisibility(View.GONE);
-        }
     }
 
     public void visibleQuizSettings(Boolean b) {

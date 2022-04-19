@@ -2,16 +2,18 @@ package com.example.thinkFast.networking;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.thinkFast.Account;
 import com.example.thinkFast.Category;
 import com.example.thinkFast.Question;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -72,7 +74,23 @@ public class NetworkManager {
         );
         mQueue.add(request);
     }
+    public void getAccount(String username, final NetworkCallback<List<Account>> callback){
+        String url = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("accounts")
+             //   .appendPath(String.valueOf(username))
+                .build().toString();
 
+        StringRequest request = new StringRequest(
+                Request.Method.GET, url, response -> {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Account>>(){}.getType();
+            List<Account> questionsByCat = gson.fromJson(response, listType);
+            callback.onSuccess(questionsByCat);
+        }, error -> callback.onFailure(error.toString())
+        );
+        mQueue.add(request);
+    }
     // Return a list of all categories from backend db.
     public void getCategories(NetworkCallback<List<Category>> callback) {
         StringRequest request = new StringRequest(
