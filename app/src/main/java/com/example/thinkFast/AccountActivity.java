@@ -31,13 +31,6 @@ public class AccountActivity extends BaseActivity {
     public static final String pWord = "phoneKey";
     SharedPreferences sharedpreferences;
 
-
-    // Dummy data - user and admin
-    private Account[] mAccounts = new Account[]{
-            new Account("user", "123", "api@hi.is", "User", false),
-            new Account("admin", "1234", "admin@hi.is", "Admin", true),
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +70,6 @@ public class AccountActivity extends BaseActivity {
                 if(mUsername.getText().toString().isEmpty() && mEmail.getText().toString().isEmpty() &&mName.getText().toString().isEmpty()&& mEmail.getText().toString().isEmpty()){
                     Toast.makeText(AccountActivity.this, "Please enter all values", Toast.LENGTH_SHORT).show();
                     return;
-                    //mAccounts=saveAccount(mAccounts.length,mAccounts,new Account(mUsername.getText().toString(),mPassword.getText().toString(),mName.getText().toString(),mEmail.getText().toString(),false));
-                    //startActivity(new Intent(AccountActivity.this, SetupActivity.class));
                 }
                 postAccount(mUsername.getText().toString(), mPassword.getText().toString(),mEmail.getText().toString(), mName.getText().toString());
             }
@@ -108,9 +99,10 @@ public class AccountActivity extends BaseActivity {
                     startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                 } else {
                     Intent in = new Intent(AccountActivity.this, SetupActivity.class);
+                    in.putExtra("wasLoggedIn",false);
                     startActivity(in);
                 }
-                Toast.makeText(AccountActivity.this, "hello " + responseFromAPI.getUsername(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AccountActivity.this, "Hello " + responseFromAPI.getUsername(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -160,13 +152,4 @@ public class AccountActivity extends BaseActivity {
         });
     }
 
-    // Helper function to save account in dummy data array
-    public static Account[] saveAccount(int n, Account accounts[], Account acc) {
-        int i;
-        Account newArray[] = new Account[n + 1];
-        for (i = 0; i < n; i++)
-            newArray[i] = accounts[i];
-        newArray[n] = acc;
-        return newArray;
-    }
 }

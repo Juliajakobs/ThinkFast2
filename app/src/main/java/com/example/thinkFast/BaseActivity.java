@@ -35,16 +35,25 @@ public class BaseActivity extends AppCompatActivity {
                 switch(item.getItemId())
                 {
                     case R.id.account:
-                        Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"Should have a username"));
                         if(sharedpreferences.getString(AccountActivity.uName,"null")!="null"){
-                            startActivity(new Intent(BaseActivity.this, SetupActivity.class));
+                            //startActivity(new Intent(BaseActivity.this, SetupActivity.class));
+                            Intent in = new Intent(BaseActivity.this, SetupActivity.class);
+                            in.putExtra("wasLoggedIn",false);
+                            startActivity(in);
                         }
                         else   startActivity(new Intent(BaseActivity.this, AccountActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
                     case R.id.quiz:
                         // Only perform if logged in
                         if(sharedpreferences.getString(AccountActivity.uName,"null")!="null"){
-                            startActivity(new Intent(BaseActivity.this, SetupActivity.class));
+                          //  startActivity(new Intent(BaseActivity.this, SetupActivity.class));
+                            Intent in = new Intent(BaseActivity.this, SetupActivity.class);
+                            in.putExtra("wasLoggedIn",true);
+                            startActivity(in);
+
                         }
+                        else startActivity(new Intent(BaseActivity.this,AccountActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.scoreboard:
@@ -65,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
         editor.clear();
         editor.commit();
         Log.d(TAG,"SharedPrefs: " + sharedpreferences.getString(AccountActivity.uName,"null"));
-        // Beina á forsíðu
+        // Redirect to login account page
         startActivity(new Intent(BaseActivity.this,AccountActivity.class));
     }
 }
