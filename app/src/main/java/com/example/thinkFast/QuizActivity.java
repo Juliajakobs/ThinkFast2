@@ -195,7 +195,10 @@ public class QuizActivity extends BaseActivity {
         bPlayAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(QuizActivity.this,SetupActivity.class));
+                //startActivity(new Intent(QuizActivity.this,SetupActivity.class));
+                Intent in = new Intent(QuizActivity.this, SetupActivity.class);
+                in.putExtra("wasLoggedIn",true);
+                startActivity(in);
             }
         });
         //Quiz ends
