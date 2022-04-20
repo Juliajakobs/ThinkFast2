@@ -4,11 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_account.xml" value="0.1796875" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_admin.xml" value="0.165" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_admin.xml" value="0.1" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_button.xml" value="0.1796875" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_login.xml" value="0.1796875" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_quiz.xml" value="0.1796875" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_scoreboard.xml" value="0.1796875" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_setup.xml" value="0.1796875" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/activity_statistics.xml" value="0.335" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/HelloWorld/app/src/main/res/layout/content_scrolling.xml" value="0.1796875" />

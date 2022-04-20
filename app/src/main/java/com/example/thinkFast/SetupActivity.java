@@ -153,6 +153,15 @@ public class SetupActivity extends BaseActivity {
                 }
             }
         });
+        //Listener for button that opens statistics
+        mStatistics = (Button) findViewById(R.id.button_statistics);
+        mStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SetupActivity.this, StatisticsActivity.class));
+            }
+        });
+
         // Listener for Log out
         bLogOutHeader.setOnClickListener(new View.OnClickListener() {
             @Override

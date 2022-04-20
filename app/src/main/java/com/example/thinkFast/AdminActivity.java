@@ -21,11 +21,12 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class AdminActivity extends AppCompatActivity {
-    private Button mDeleteButton;
-    private Button mStatistics;
+public class AdminActivity extends BaseActivity {
+    private static final String TAG = "AdminActivity";
     private List<Question> questions;
     private TextView textView;
+    private Button bLogOutHeader;
+
 
 
     //Changes the view to admin view
@@ -33,41 +34,10 @@ public class AdminActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        //Initializing the textview and making it scrollable
+        //Initializing the textview
         TextView yourTextView = (TextView) findViewById(R.id.textView3);
-        yourTextView.setMovementMethod(new ScrollingMovementMethod());
         //The layout
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.admin_layout);
-        textView = (TextView) findViewById(R.id.textView3);
-
-        //Should add a button by each question- not finished
-        int buttonX = 735;
-        int buttonY = 305;
-        //Mig langar að gera forlykkjuna utan um allar spurningarnar í db - hvernig?
-        for(int i = 0; i<10; i++){
-        Button mDelete = new Button(this);
-            mDelete.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
-            mDelete.setText(getString(R.string.delete));
-            mDelete.setX(buttonX);
-            //Láta þetta inn í texviewið frekar og miða við stærðina á því einhvernveginn?
-            mDelete.setY(buttonY + i * 160);
-            //Þetta virkar en veit ekki hvort þetta megi lol og þetta er ljótt
-            //mDelete.setBackgroundColor(getResources().getColor(R.color.purple_500));
-
-            mDelete.setTag("deleteButton " + (i + 1));
-            //Should delete question from db- should connect to the tag rather than every button? to know
-            //which question is being deleted-not complete- need db
-            mDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Should delete selected question from database
-                    Toast.makeText(AdminActivity.this, R.string.delete, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        //add button to the layout
-        layout.addView(mDelete);}
-
         //Gets questions from database and displays them
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getQuestions(new NetworkCallback<List<Question>>() {
@@ -76,6 +46,7 @@ public class AdminActivity extends AppCompatActivity {
                 String multiLineText = "";
                 questions = result;
                 for(int i =0; i<questions.size(); i++ ) {
+
                     String question = questions.get(i).getQuestionText();
                     multiLineText = multiLineText + question + "\n" + "\n";
                     yourTextView.setText(multiLineText);
@@ -88,16 +59,57 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
-        //Placeholder basically
-        mStatistics = (Button) findViewById(R.id.button_statistics);
-        mStatistics.setOnClickListener(new View.OnClickListener() {
+
+
+        //Adds a delete button by each question
+        int buttonX = 735;
+        int buttonY = 305;
+        //Harðkóðaður fjöldinn af spurningum
+        for(int i = 0; i<50; i++){
+        Button mDelete = new Button(this);
+            mDelete.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
+            mDelete.setText(getString(R.string.delete));
+            mDelete.setX(buttonX);
+            //Positioning the buttons-want to do it so it corresponds to question size
+            mDelete.setY(buttonY + i * 160);
+            mDelete.setTag("deleteButton " + (i + 1));
+            //Should delete question from db- should connect to the tag rather than every button? to know
+            //which question is being deleted-not complete- need db
+            int finalI = i;
+            mDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    networkManager.getQuestions(new NetworkCallback<List<Question>>() {
+                        @Override
+                        public void onSuccess(List<Question> result) {
+                            questions = result;
+                            Object tag =  mDelete.getTag();
+                            long id = questions.get(finalI).getID();
+                            Log.d("lol", "þetta er tag" + tag);
+                        }
+
+                        @Override
+                        public void onFailure(String errorString) {
+                            Log.e("lol", "Failed to get questions: " + errorString);
+                        }
+                    });
+                    //Should delete selected question from database
+                    Toast.makeText(AdminActivity.this, R.string.delete, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        //add button to the layout
+        layout.addView(mDelete);
+        }
+        // Listener for log out button
+        bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminActivity.this, StatisticsActivity.class));
+                Log.d(TAG,"Logging out admin");
+                logout();
             }
         });
-        //Delete button - not complete
-
 
     }
 }

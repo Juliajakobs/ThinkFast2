@@ -3,14 +3,18 @@ package com.example.thinkFast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class StatisticsActivity extends AppCompatActivity {
+public class StatisticsActivity extends BaseActivity {
+    private static final String TAG = "StatisticsActivity";
     private TextView mGamesPlayed;
     private TextView mAnsweredQuestions;
     private TextView mAnsweredCorrectly;
     private String Name;
-
+    private Button bLogOutHeader;
 
     //Dummy data
     private Account[] mAccounts = new Account[]{
@@ -48,7 +52,15 @@ public class StatisticsActivity extends AppCompatActivity {
             mAnsweredCorrectly.setText("...answered " + mStats[0].getAnsweredCorrectly() + " questions correctly!");
         }
 
-
+        // Listener for log out button
+        bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
+        bLogOutHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"Logging out");
+                logout();
+            }
+        });
 
     }
 }
