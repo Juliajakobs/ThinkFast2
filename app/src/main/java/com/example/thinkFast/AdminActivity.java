@@ -34,10 +34,13 @@ public class AdminActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
         //Initializing the textview
         TextView yourTextView = (TextView) findViewById(R.id.textView3);
+
         //The layout
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.admin_layout);
+
         //Gets questions from database and displays them
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getQuestions(new NetworkCallback<List<Question>>() {
@@ -46,7 +49,6 @@ public class AdminActivity extends BaseActivity {
                 String multiLineText = "";
                 questions = result;
                 for(int i =0; i<questions.size(); i++ ) {
-
                     String question = questions.get(i).getQuestionText();
                     multiLineText = multiLineText + question + "\n" + "\n";
                     yourTextView.setText(multiLineText);
@@ -69,11 +71,13 @@ public class AdminActivity extends BaseActivity {
         Button mDelete = new Button(this);
             mDelete.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
             mDelete.setText(getString(R.string.delete));
-            mDelete.setX(buttonX);
             //Positioning the buttons-want to do it so it corresponds to question size
+            mDelete.setX(buttonX);
             mDelete.setY(buttonY + i * 160);
-            mDelete.setTag("deleteButton " + (i + 1));
-            //Should delete question from db- should connect to the tag rather than every button? to know
+            //Adding a tag to each button
+            mDelete.setTag(i + 1);
+
+            //Should delete selected question from db- should connect to the tag rather than every button? to know
             //which question is being deleted-not complete- need db
             int finalI = i;
             mDelete.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +88,10 @@ public class AdminActivity extends BaseActivity {
                         public void onSuccess(List<Question> result) {
                             questions = result;
                             Object tag =  mDelete.getTag();
-                            long id = questions.get(finalI).getID();
-                            Log.d("lol", "þetta er tag" + tag);
+                            Integer IntTag = Integer.parseInt(tag.toString());
+                            Log.d("lol", "þetta er tag " + IntTag);
+                            //Delete question corresponding to tag
+
                         }
 
                         @Override
@@ -93,7 +99,6 @@ public class AdminActivity extends BaseActivity {
                             Log.e("lol", "Failed to get questions: " + errorString);
                         }
                     });
-                    //Should delete selected question from database
                     Toast.makeText(AdminActivity.this, R.string.delete, Toast.LENGTH_SHORT).show();
                 }
             });
