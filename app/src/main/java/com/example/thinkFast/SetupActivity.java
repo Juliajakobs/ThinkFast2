@@ -56,10 +56,10 @@ public class SetupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-        // Bottom navigation
-        bottomNavigation();
         Bundle extras = getIntent().getExtras();
         wasLoggedIn= extras.getBoolean("wasLoggedIn");
+        // Bottom navigation
+        bottomNavigation(wasLoggedIn ? R.id.quiz : R.id.account);
         //More initialization
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
         mStatistics = (Button) findViewById(R.id.button_statistics);
@@ -115,7 +115,7 @@ public class SetupActivity extends BaseActivity {
             }
 
         });
-    // Listener to start setting up a quiz - where to choose number of players and category
+        // Listener to start setting up a quiz - where to choose number of players and category
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

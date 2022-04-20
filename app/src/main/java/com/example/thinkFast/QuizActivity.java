@@ -70,7 +70,7 @@ public class QuizActivity extends BaseActivity {
         setContentView(R.layout.activity_quiz);
 
         // Bottom navigation
-        bottomNavigation();
+        bottomNavigation(R.id.quiz);
         //All findView connections are in this function
         setFindView();
         // Quiz starts after countdown (ready - set - start quiz)

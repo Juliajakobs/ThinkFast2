@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,11 +24,11 @@ public class BaseActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
     }
 
-    public void bottomNavigation(){
+    public void bottomNavigation(@IdRes int id){
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
-        // Set Account selected
-        bottomNavigationView.setSelectedItemId(R.id.account);
+        // Set appropriate as selected
+        bottomNavigationView.setSelectedItemId(id);
         // Perform item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
