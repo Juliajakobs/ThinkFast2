@@ -13,8 +13,15 @@ import android.widget.TextView;
 
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
+import com.example.thinkFast.networking.RetrofitAPI;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QuizActivity extends BaseActivity {
     private static final String TAG = "QuizActivity";
@@ -182,6 +189,7 @@ public class QuizActivity extends BaseActivity {
                             getReadyCountDown();
                         }
                         else {
+                            postScore(getAccount(),player1Score);
                             visibleQuizPlay(false);
                             visibleEnd(true);
                             showAnswers();
@@ -461,6 +469,39 @@ public class QuizActivity extends BaseActivity {
         } else {
             getReady.setVisibility(View.GONE);
         }
+    }
+    private void postScore(Account account, int userScore){
+        Log.d(TAG,"what is the score: "+userScore+" username: "+account.getUsername()+" password: "+account.getPassword()+" name: "+account.getName()+"email: "+account.getEmail()+" admin: "+account.isAdmin());
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://quiz-app-b.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
+        Scores score = new Scores(account, userScore);
+        Call<Scores> call = retrofitAPI.saveScore(score);
+
+        call.enqueue(new Callback<Scores>() {
+            @Override
+            public void onResponse(Call<Scores> call, Response<Scores> response) {
+                Scores responseFromAPI = response.body();
+                //String responseString = "Response Code : " + response.code() + "username: "+ responseFromAPI.getUsername();
+               Log.d(TAG, "Score: "+ responseFromAPI);
+            }
+
+            @Override
+            public void onFailure(Call<Scores> call, Throwable t) {
+                Log.d(TAG, "error: "+ t.getMessage());
+            }
+        });
+    }
+
+    private Account getAccount(){
+       String userName = sharedpreferences.getString(AccountActivity.uName,"null");
+       String password = sharedpreferences.getString(AccountActivity.pWord,"null");
+       String email = "";
+       String name = "";
+       Account account = new Account(userName,password,email,name,false);
+       return account;
     }
 }
 

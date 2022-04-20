@@ -109,10 +109,10 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="@string/login"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email"
-            android:textColor="@color/white"/>
+            app:layout_constraintTop_toBottomOf="@+id/email" />
 
         <Button
             android:id="@+id/sign_up"
@@ -120,9 +120,9 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="@string/sign_up"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login"
-            android:textColor="@color/white"/>
+            app:layout_constraintTop_toBottomOf="@+id/login" />
 
     </LinearLayout>
 

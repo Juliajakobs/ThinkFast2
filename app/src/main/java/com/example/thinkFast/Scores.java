@@ -1,7 +1,11 @@
 package com.example.thinkFast;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Scores {
+    @SerializedName("account")
     private Account account;
+    @SerializedName("score")
     private int score;
 
     //Constructor for scores

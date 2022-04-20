@@ -65,8 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/play_quiz"
-            android:visibility="visible"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/button_statistics"
@@ -74,9 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/statistics"
+            android:textColor="@color/white"
             android:visibility="visible"
-            tools:ignore="DuplicateSpeakableTextCheck"
-            android:textColor="@color/white"/>
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
 
         <RadioGroup
@@ -150,8 +150,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/play_quiz"
-            android:visibility="gone"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/getReadyCountDown"

@@ -30,6 +30,8 @@ public class AccountActivity extends BaseActivity {
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String uName = "nameKey";
     public static final String pWord = "phoneKey";
+    public static final String email = "email";
+    public static final String name = "name";
     SharedPreferences sharedpreferences;
 
     @Override
@@ -90,10 +92,12 @@ public class AccountActivity extends BaseActivity {
             public void onResponse(Call<Account> call, Response<Account> response) {
                 Account responseFromAPI = response.body();
                 Log.d(TAG, "user logged in: "+ responseFromAPI.getUsername());
-
+                // Save account in preferences
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString(uName, mUsername.getText().toString());
                 editor.putString(pWord, mPassword.getText().toString());
+                editor.putString(email,mEmail.getText().toString());
+                editor.putString(name,mName.getText().toString());
                 editor.commit();
 
                 if(mUsername.getText().toString().equals("admin")){
@@ -147,7 +151,6 @@ public class AccountActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 // Set name and ID of categories and player
-                Log.d("AccountActivity","Logging out");
                 logout();
             }
         });

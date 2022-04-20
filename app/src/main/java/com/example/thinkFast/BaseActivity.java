@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class BaseActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
         // Set Account selected
         bottomNavigationView.setSelectedItemId(R.id.account);
+
         // Perform item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -41,7 +43,7 @@ public class BaseActivity extends AppCompatActivity {
                             in.putExtra("wasLoggedIn",false);
                             startActivity(in);
                         }
-                        else   startActivity(new Intent(BaseActivity.this, AccountActivity.class));
+                        else startActivity(new Intent(BaseActivity.this, AccountActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.quiz:
@@ -53,7 +55,10 @@ public class BaseActivity extends AppCompatActivity {
                             startActivity(in);
 
                         }
-                        else startActivity(new Intent(BaseActivity.this,AccountActivity.class));
+                        else {
+                            startActivity(new Intent(BaseActivity.this,AccountActivity.class));
+                            Toast.makeText(BaseActivity.this, "You need to login in to play quiz",Toast.LENGTH_SHORT).show();
+                        }
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.scoreboard:
