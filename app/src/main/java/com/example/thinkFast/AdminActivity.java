@@ -17,12 +17,15 @@ import android.widget.Toast;
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
     private Button mDeleteButton;
     private Button mStatistics;
     private List<Question> questions;
+    private TextView textView;
 
 
     //Changes the view to admin view
@@ -35,6 +38,7 @@ public class AdminActivity extends AppCompatActivity {
         yourTextView.setMovementMethod(new ScrollingMovementMethod());
         //The layout
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.admin_layout);
+        textView = (TextView) findViewById(R.id.textView3);
 
         //Should add a button by each question- not finished
         int buttonX = 735;

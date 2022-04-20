@@ -84,7 +84,7 @@ public class SetupActivity extends BaseActivity {
         //bLogout =(Button) findViewById(R.id.bLogout);
 
         //Creating a random welcome message for user
-        int max = 4;
+        int max = 6;
         int min = 1;
         int range = max - min + 1;
         int random = (int) (Math.random()* range) + min;
@@ -97,6 +97,10 @@ public class SetupActivity extends BaseActivity {
             case 3: mWelcomeUser.setText(username + " are you ready to ruuumble?");
                 break;
             case 4: mWelcomeUser.setText("Get your thinking hat on "  + username + "!");
+                break;
+            case 5: mWelcomeUser.setText(username + " are you sure you are ready to think fast?");
+                break;
+            case 6: mWelcomeUser.setText("Time to delve into your thinking pool " + username +"!");
         }
         //Calling the networkManager to access the chosen category
         NetworkManager networkManager = NetworkManager.getInstance(this);

@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/header"
+        layout="@layout/activity_header"
         android:layout_width="0dp"
 
         android:layout_height="wrap_content"

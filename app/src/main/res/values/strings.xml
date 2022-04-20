@@ -33,7 +33,6 @@
     <string name="p2">Player 2</string>
     <string name="stats">Since joining Think Fast you have... </string>
     <string name="questionsInDB">Questions currently in the database:</string>
-    </resources>
     <string name="icon_account">Account</string>
     <string name="icon_quiz">Quiz</string>
     <string name="icon_scoreboard">Scoreboard</string>
