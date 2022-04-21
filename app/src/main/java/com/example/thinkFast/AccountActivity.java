@@ -96,7 +96,6 @@ public class AccountActivity extends BaseActivity {
                 editor.commit();
 
                 if(mUsername.getText().toString().equals("admin")){
-                    Log.d(TAG, "þetta er að keyra");
                     startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                 } else {
                     Intent in = new Intent(AccountActivity.this, SetupActivity.class);
