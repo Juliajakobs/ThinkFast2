@@ -105,5 +105,16 @@ public class NetworkManager {
         mQueue.add(stringRequest);
     }
 
-
+    // Return a list of all categories from backend db.
+    public void getscores(NetworkCallback<List<String>> callback) {
+        StringRequest request = new StringRequest(
+                Request.Method.GET, BASE_URL + "topscoresAPI", response -> {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<String>>(){}.getType();
+            List<String> scores = gson.fromJson(response, listType);
+            callback.onSuccess(scores);
+        }, error -> callback.onFailure(error.toString())
+        );
+        mQueue.add(request);
+    }
  }
