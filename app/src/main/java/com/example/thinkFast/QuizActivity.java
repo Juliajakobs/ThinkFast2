@@ -259,7 +259,6 @@ public class QuizActivity extends BaseActivity {
 
     public void playQuiz() {
         questionIndex = 0;
-
         // Make text reflect the right question
         questionText.setText(questions.get(questionIndex).getQuestionText());
         ans1.setText(questions.get(questionIndex).getOptionA());
@@ -490,32 +489,8 @@ public class QuizActivity extends BaseActivity {
         }
     }
     private void postScore(Account account, int userScore){
-      /*  Log.d(TAG,"what is the score: "+userScore+" username: "+account.getUsername()+" password: "+account.getPassword()+" name: "+account.getName()+"email: "+account.getEmail()+" admin: "+account.isAdmin());
-        Retrofit retrofit = new Retrofit.Builder()
-              //  .baseUrl("https://quiz-app-b.herokuapp.com/")
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-        Scores score = new Scores(account, userScore);
-        Call<Scores> call = retrofitAPI.saveScore(score);
-
-        call.enqueue(new Callback<Scores>() {
-            @Override
-            public void onResponse(Call<Scores> call, Response<Scores> response) {
-                Scores responseFromAPI = response.body();
-                //String responseString = "Response Code : " + response.code() + "username: "+ responseFromAPI.getUsername();
-               Log.d(TAG, "Score: "+ responseFromAPI);
-            }
-
-            @Override
-            public void onFailure(Call<Scores> call, Throwable t) {
-                Log.d(TAG, "error: "+ t.getMessage());
-            }
-        });*/
         String score = Integer.toString(userScore);
         networkManager.postScore(account.getUsername(),score);
-
     }
 
     private Account getAccount(){

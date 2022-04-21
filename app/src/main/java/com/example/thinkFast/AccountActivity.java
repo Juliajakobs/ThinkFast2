@@ -81,7 +81,8 @@ public class AccountActivity extends BaseActivity {
 
     private void loginAccount(String username, String password) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://quiz-app-b.herokuapp.com/")
+               // .baseUrl("https://quiz-app-b.herokuapp.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
@@ -120,7 +121,8 @@ public class AccountActivity extends BaseActivity {
 
     private void postAccount(String username, String password, String email, String name) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://quiz-app-b.herokuapp.com/")
+              //  .baseUrl("https://quiz-app-b.herokuapp.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);

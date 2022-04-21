@@ -28,14 +28,11 @@ public class BaseActivity extends AppCompatActivity {
     public void bottomNavigation(@IdRes int id){
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
-<<<<<<< HEAD
         // Set Account selected
         bottomNavigationView.setSelectedItemId(R.id.account);
 
-=======
         // Set appropriate as selected
         bottomNavigationView.setSelectedItemId(id);
->>>>>>> 62215d8f9602b51e727ac4e2b428e9758236c4bd
         // Perform item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
