@@ -32,12 +32,16 @@ public class SetupActivity extends BaseActivity {
     private RadioButton rbCategory2;
     private RadioButton rbCategory3;
     private RadioButton rbCategory4;
+    private RadioGroup rgNumQuestions;
+    private RadioButton rbNumQuestions5;
+    private RadioButton rbNumQuestions10;
     private Button bPlay;
     private Button bLogOutHeader;
 
-    //Initializing the selected category and number of players
+    //Initializing the selected category, number of players and questions
     private int selCategory = -1;
     private int selPlayers = -1;
+    private int selNumQuestions = -1;
 
     //ID's for the category radio buttons
     private static final int RB1_ID = 0;
@@ -47,6 +51,9 @@ public class SetupActivity extends BaseActivity {
     //ID's for one player or two player
     private static final int RBP1_ID = 1;
     private static final int RBP2_ID = 2;
+    //ID's for number of questions
+    private static final int RBNQ5_ID = 5;
+    private static final int RBNQ10_ID = 10;
     private boolean wasLoggedIn;
     //Initializing a list for the categories
     private List<Category> categories;
@@ -56,15 +63,17 @@ public class SetupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-        // Bottom navigation
-        bottomNavigation();
         Bundle extras = getIntent().getExtras();
         wasLoggedIn= extras.getBoolean("wasLoggedIn");
+        // Bottom navigation
+        bottomNavigation(wasLoggedIn ? R.id.quiz : R.id.account);
+
         //More initialization
         mPlayQuiz = (Button) findViewById(R.id.button_quiz);
         mStatistics = (Button) findViewById(R.id.button_statistics);
         bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
         mWelcomeUser = (TextView) findViewById(R.id.velkominn_user);
+
         rgCategory = (RadioGroup) findViewById(R.id.rg_categories);
         rbCategory1 = (RadioButton) findViewById(R.id.rb_c1);
         rbCategory1.setId(RB1_ID);
@@ -77,7 +86,15 @@ public class SetupActivity extends BaseActivity {
 
         rgPlayerNum = (RadioGroup) findViewById(R.id.rg_players);
         rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
+        rbPlayer1.setId(RBP1_ID);
         rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
+        rbPlayer2.setId(RBP2_ID);
+
+        rgNumQuestions = (RadioGroup) findViewById(R.id.rg_numOfQuestions);
+        rbNumQuestions5 = (RadioButton) findViewById(R.id.rb_nq5);
+        rbNumQuestions5.setId(RBNQ5_ID);
+        rbNumQuestions10 = (RadioButton) findViewById(R.id.rb_nq10);
+        rbNumQuestions10.setId(RBNQ10_ID);
 
         // CountDown for getting ready
         getReady = (TextView) findViewById(R.id.getReadyCountDown);
@@ -85,6 +102,7 @@ public class SetupActivity extends BaseActivity {
         //bLogout =(Button) findViewById(R.id.bLogout);
         Log.d(TAG,"was logged in: "+wasLoggedIn);
         if(wasLoggedIn)displayQuizSettings();
+
         //Creating a random welcome message for user
         int max = 6;
         int min = 1;
@@ -119,8 +137,7 @@ public class SetupActivity extends BaseActivity {
             }
 
         });
-
-    // Listener to start setting up a quiz - where to choose number of players and category
+        // Listener to start setting up a quiz - where to choose number of players and category
         mPlayQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,30 +146,35 @@ public class SetupActivity extends BaseActivity {
         });
 
         // Listener for button that starts quiz
-        // Will start QuizActivity if a category and number of players has been selected.
+        // Will start QuizActivity if a category and number of players and questions have been selected.
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Get int of selected radio button from radio group
                 selCategory = rgCategory.getCheckedRadioButtonId();
                 selPlayers = rgPlayerNum.getCheckedRadioButtonId();
+                selNumQuestions = rgNumQuestions.getCheckedRadioButtonId();
                 // Missing input handling
                 if(selCategory == -1) Toast.makeText(getApplicationContext(),
                         "You have to choose a category", Toast.LENGTH_SHORT).show();
-                else if(selPlayers == -1) Toast.makeText(getApplicationContext(),
+                if(selPlayers == -1) Toast.makeText(getApplicationContext(),
                         "You have to choose the number of players", Toast.LENGTH_SHORT).show();
+                if(selNumQuestions == -1) Toast.makeText(getApplicationContext(),
+                        "You have to choose the number of questions", Toast.LENGTH_SHORT).show();
                 // Start quiz
-                else if(selCategory !=-1 && selPlayers !=-1)  {
+                else if(selCategory !=-1 && selPlayers !=-1 && selNumQuestions !=-1)  {
                     mStatistics.setVisibility(View.GONE);
                     mPlayQuiz.setVisibility(View.GONE);
                     Intent in = new Intent(SetupActivity.this, QuizActivity.class);
                     in.putExtra("categoryID",selCategory);
                     in.putExtra("selPlayers",selPlayers);
+                    in.putExtra("selNumQuestions", selNumQuestions);
                     startActivity(in);
-                    Log.d(TAG,"category: "+selCategory+" players: "+selPlayers);
+                    Log.d(TAG,"category: "+selCategory+" players: "+selPlayers+" Number of Questions: "+selNumQuestions);
                 }
             }
         });
+
         //Listener for button that opens statistics
         mStatistics = (Button) findViewById(R.id.button_statistics);
         mStatistics.setOnClickListener(new View.OnClickListener() {
@@ -181,11 +203,6 @@ public class SetupActivity extends BaseActivity {
     }
 
     public void displayQuizSettings(){
-        rbPlayer1=(RadioButton)findViewById(R.id.rg_p1);
-        rbPlayer1.setId(RBP1_ID);
-        rbPlayer2=(RadioButton)findViewById(R.id.rg_p2);
-        rbPlayer2.setId(RBP2_ID);
-
         //rbCategory1.setText(categories.get(0).getCategoryName()); // Entertainment
         rbCategory1.setText("Entertainment");
         //rbCategory2.setText(categories.get(1).getCategoryName()); // General Knowledge
@@ -194,8 +211,10 @@ public class SetupActivity extends BaseActivity {
         rbCategory3.setText("Geography");
         //rbCategory4.setText(categories.get(3).getCategoryName()); // Sports
         rbCategory4.setText("Sports");
+
         rgPlayerNum.setVisibility(View.VISIBLE);
         rgCategory.setVisibility(View.VISIBLE);
+        rgNumQuestions.setVisibility(View.VISIBLE);
         bPlay.setVisibility(View.VISIBLE);
         mPlayQuiz.setVisibility(View.GONE);
         mStatistics.setVisibility(View.GONE);

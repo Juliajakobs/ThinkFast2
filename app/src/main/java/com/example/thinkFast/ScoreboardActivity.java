@@ -25,7 +25,7 @@ public class ScoreboardActivity extends BaseActivity {
         setContentView(R.layout.activity_scoreboard);
 
         // Bottom navigation
-        bottomNavigation();
+        bottomNavigation(R.id.scoreboard);
 
         mTextView_scores = (TextView) findViewById(R.id.textView_scores);
         mTextView_names = (TextView) findViewById(R.id.textView_names);

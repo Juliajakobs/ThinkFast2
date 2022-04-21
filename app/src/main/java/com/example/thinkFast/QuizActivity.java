@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ public class QuizActivity extends BaseActivity {
     private TextView mWelcomeUser;
     private Button bPlay;
     // Question and answers
+    private TextView endScore;
     private TextView questionText;
     private Button ans1;
     private Button ans2;
@@ -36,7 +38,7 @@ public class QuizActivity extends BaseActivity {
     private int counter;
 
     //Maximum number of questions
-    private final int maxNumOfQuestions = 5;
+    private int maxNumOfQuestions;
     //Arrays that hold the players answers
     private String[] player1AnswersArray = new String[10];
     private String[] player2AnswersArray = new String[10];
@@ -70,7 +72,7 @@ public class QuizActivity extends BaseActivity {
         setContentView(R.layout.activity_quiz);
 
         // Bottom navigation
-        bottomNavigation();
+        bottomNavigation(R.id.quiz);
         //All findView connections are in this function
         setFindView();
         // Quiz starts after countdown (ready - set - start quiz)
@@ -79,6 +81,7 @@ public class QuizActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         c_id = extras.getInt("categoryID");
         selPlayers = extras.getInt("selPlayers");
+        maxNumOfQuestions = extras.getInt("selNumQuestions");
 
         //Calling networkManager to get questions from DB
         NetworkManager networkManager = NetworkManager.getInstance(this);
@@ -184,6 +187,11 @@ public class QuizActivity extends BaseActivity {
                         else {
                             visibleQuizPlay(false);
                             visibleEnd(true);
+                            if (selPlayers == 2) {
+                                endScore.setText(getResources().getString(R.string.scoreFor2, player1Score, player2Score));
+                            } else {
+                                endScore.setText(getResources().getString(R.string.scoreFor1, player1Score));
+                            }
                             showAnswers();
                         }
                     }
@@ -229,7 +237,7 @@ public class QuizActivity extends BaseActivity {
                         if (turn == 1) getReady.setText(R.string.getReady1Player1);
                         if (turn == 2) getReady.setText(R.string.getReady1Player2);
                     }
-                    else getReady.setText("user"); // should be name
+                    else getReady.setText(sharedpreferences.getString(AccountActivity.uName, "null")); // should be name
                 }
                 counter--;
             }
@@ -258,23 +266,29 @@ public class QuizActivity extends BaseActivity {
     //Function that displays the players answers vs the correct answers at the end
     public void showAnswers() {
         Log.d(TAG,"selPlayers: "+selPlayers);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
         if (selPlayers == 1) {
             TextView playerAns = new TextView(this);
             TextView correctAns = new TextView(this);
 
-            playerAns.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
-            correctAns.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
-           // playerAns.setText(Name);
+            playerAns.setLayoutParams(param);
+            correctAns.setLayoutParams(param);
+
+            playerAns.setText(sharedpreferences.getString(AccountActivity.uName, "null"));
             correctAns.setText(R.string.correctAnswers);
+
+            playerAns.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            correctAns.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
             playerAns.setTextColor(Color.BLACK);
             correctAns.setTextColor(Color.BLACK);
+
+            playerAns.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            correctAns.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
             answerColumn1.addView(playerAns);
             answerColumn2.addView(correctAns);
@@ -284,16 +298,15 @@ public class QuizActivity extends BaseActivity {
                 TextView textView1 = new TextView(this);
                 TextView textView2 = new TextView(this);
 
-                textView1.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
-                textView2.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
+                textView1.setLayoutParams(param);
+                textView2.setLayoutParams(param);
+
                 textView1.setText(player1AnswersArray[i]);
                 textView2.setText(correct1AnswersArray[i]);
+
+                textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
                 //If answer is correct --> then it's green else red
                 if (textView1.getText().toString().equals(textView2.getText().toString())) {
                     textView1.setTextColor(Color.GREEN);
@@ -303,29 +316,32 @@ public class QuizActivity extends BaseActivity {
                     textView2.setTextColor(Color.BLACK);
                 }
 
+                textView1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                textView2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
                 answerColumn1.addView(textView1);
                 answerColumn2.addView(textView2);
             }
-            Log.d("myapp","playerscore: "+player1Score);
+            Log.d("myapp","playerScore: "+player1Score);
         }
         else {
             TextView player1Ans = new TextView(this);
             TextView player2Ans = new TextView(this);
 
-            player1Ans.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
-            player2Ans.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
+            player1Ans.setLayoutParams(param);
+            player2Ans.setLayoutParams(param);
 
             player1Ans.setText(R.string.p1);
             player2Ans.setText(R.string.p2);
 
+            player1Ans.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            player2Ans.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
             player1Ans.setTextColor(Color.BLACK);
             player2Ans.setTextColor(Color.BLACK);
+
+            player1Ans.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            player2Ans.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
             answerColumn1.addView(player1Ans);
             answerColumn2.addView(player2Ans);
@@ -335,18 +351,15 @@ public class QuizActivity extends BaseActivity {
                 TextView textView1 = new TextView(this);
                 TextView textView2 = new TextView(this);
 
-                textView1.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
-                textView2.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
+                textView1.setLayoutParams(param);
+                textView2.setLayoutParams(param);
+
+                textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
                 textView1.setText(player1AnswersArray[i]);
                 textView2.setText(player2AnswersArray[i]);
-                Log.d(TAG,"PLayerarray: "+player1AnswersArray[i]+" correctanswers1: "+correct1AnswersArray[i]);
+                Log.d(TAG,"PlayerArray: "+player1AnswersArray[i]+" correctAnswers1: "+correct1AnswersArray[i]);
                 ////If answer is correct --> then it's green else red
                 if (player1AnswersArray[i].equals(correct1AnswersArray[i])) {
                     textView1.setTextColor(Color.GREEN);
@@ -358,6 +371,11 @@ public class QuizActivity extends BaseActivity {
                 } else {
                     textView2.setTextColor(Color.RED);
                 }
+
+                textView1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                textView2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+
                 answerColumn1.addView(textView1);
                 answerColumn2.addView(textView2);
             }
@@ -412,6 +430,7 @@ public class QuizActivity extends BaseActivity {
         ans4 = (Button) findViewById(R.id.bAns4);
 
         // End screens
+        endScore = (TextView) findViewById(R.id.endScores);
         answerScroll = (ScrollView) findViewById(R.id.answersScroll);
         answerColumn1 = (LinearLayout) findViewById(R.id.answerColumn1);
         answerColumn2 = (LinearLayout) findViewById(R.id.answerColumn2);
@@ -445,10 +464,12 @@ public class QuizActivity extends BaseActivity {
         mProgressbar.setVisibility(View.GONE);
         mCountDownTimer.cancel();
         if (b) {
+            endScore.setVisibility(View.VISIBLE);
             answerScroll.setVisibility(View.VISIBLE);
             bPlayAgain.setVisibility(View.VISIBLE);
             bEndQuiz.setVisibility(View.VISIBLE);
         } else {
+            endScore.setVisibility(View.GONE);
             answerScroll.setVisibility(View.GONE);
             bPlayAgain.setVisibility(View.GONE);
             bEndQuiz.setVisibility(View.GONE);

@@ -35,7 +35,7 @@ public class AccountActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        bottomNavigation();
+        bottomNavigation(R.id.account);
         //Getting the input from user
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
