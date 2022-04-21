@@ -69,12 +69,13 @@ public class AccountActivity extends BaseActivity {
                 mName.setVisibility(View.VISIBLE);
                 mEmail.setVisibility(View.VISIBLE);
                 mLoginButton.setVisibility(View.GONE);
-                //Creating a new account - not complete!
+                //Creating a new account
                 if(mUsername.getText().toString().isEmpty() && mEmail.getText().toString().isEmpty() &&mName.getText().toString().isEmpty()&& mEmail.getText().toString().isEmpty()){
                     Toast.makeText(AccountActivity.this, "Please enter all values", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 postAccount(mUsername.getText().toString(), mPassword.getText().toString(),mEmail.getText().toString(), mName.getText().toString());
+                startActivity(new Intent(AccountActivity.this, AccountActivity.class));
             }
         });
     }
