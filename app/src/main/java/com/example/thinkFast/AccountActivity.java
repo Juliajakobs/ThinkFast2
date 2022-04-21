@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.thinkFast.networking.RetrofitAPI;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +38,7 @@ public class AccountActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        bottomNavigation();
+        bottomNavigation(R.id.account);
         //Getting the input from user
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
@@ -102,6 +101,7 @@ public class AccountActivity extends BaseActivity {
                 editor.commit();
 
                 if(mUsername.getText().toString().equals("admin")){
+                    Log.d(TAG, "þetta er að keyra");
                     startActivity(new Intent(AccountActivity.this, AdminActivity.class));
                 } else {
                     Intent in = new Intent(AccountActivity.this, SetupActivity.class);

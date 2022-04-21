@@ -31,10 +31,17 @@
     <string name="getReady1Player2">Think Fast Player 2!</string>
     <string name="p1">Player 1</string>
     <string name="p2">Player 2</string>
+    <string name="stats">Since joining Think Fast you have... </string>
+    <string name="questionsInDB">Questions currently in the database:</string>
     <string name="icon_account">Account</string>
     <string name="icon_quiz">Quiz</string>
     <string name="icon_scoreboard">Scoreboard</string>
     <string name="LogOut">Log Out</string>
+    <string name="scoreFor1">%1$d</string>
+    <string name="scoreFor2">%1$d : %2$d</string>
+    <string name="NumberOfQuestions">Number of questions</string>
+    <string name="five">5 question game</string>
+    <string name="ten">10 question game</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
