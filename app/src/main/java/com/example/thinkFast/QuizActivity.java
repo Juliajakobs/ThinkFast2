@@ -1,4 +1,5 @@
 package com.example.thinkFast;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,15 +14,8 @@ import android.widget.TextView;
 
 import com.example.thinkFast.networking.NetworkCallback;
 import com.example.thinkFast.networking.NetworkManager;
-import com.example.thinkFast.networking.RetrofitAPI;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QuizActivity extends BaseActivity {
     private static final String TAG = "QuizActivity";
@@ -67,10 +61,11 @@ public class QuizActivity extends BaseActivity {
     private ProgressBar mProgressbar;
     private CountDownTimer mCountDownTimer;
     private int i=0;
+    private NetworkManager networkManager;
 
     //Making a list for the questions in the DB
     private List<Question> questions;
-
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +83,7 @@ public class QuizActivity extends BaseActivity {
         selPlayers = extras.getInt("selPlayers");
 
         //Calling networkManager to get questions from DB
-        NetworkManager networkManager = NetworkManager.getInstance(this);
+         networkManager = NetworkManager.getInstance(this);
         networkManager.getQuestionsByCategory(c_id,new NetworkCallback<List<Question>>() {
             @Override
             public void onSuccess(List<Question> result) {
@@ -101,6 +96,7 @@ public class QuizActivity extends BaseActivity {
                 Log.e(TAG, "Failed to get questions: " + errorString);
             }
         });
+
         // Log out button in header
         bLogOutHeader = (Button)findViewById(R.id.btn_logout_header);
         // Listener for log out button
@@ -471,9 +467,10 @@ public class QuizActivity extends BaseActivity {
         }
     }
     private void postScore(Account account, int userScore){
-        Log.d(TAG,"what is the score: "+userScore+" username: "+account.getUsername()+" password: "+account.getPassword()+" name: "+account.getName()+"email: "+account.getEmail()+" admin: "+account.isAdmin());
+      /*  Log.d(TAG,"what is the score: "+userScore+" username: "+account.getUsername()+" password: "+account.getPassword()+" name: "+account.getName()+"email: "+account.getEmail()+" admin: "+account.isAdmin());
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://quiz-app-b.herokuapp.com/")
+              //  .baseUrl("https://quiz-app-b.herokuapp.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
@@ -492,7 +489,10 @@ public class QuizActivity extends BaseActivity {
             public void onFailure(Call<Scores> call, Throwable t) {
                 Log.d(TAG, "error: "+ t.getMessage());
             }
-        });
+        });*/
+        String score = Integer.toString(userScore);
+        networkManager.postScore(account.getUsername(),score);
+
     }
 
     private Account getAccount(){

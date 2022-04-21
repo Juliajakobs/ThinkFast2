@@ -1,7 +1,6 @@
 package com.example.thinkFast;
 
 import com.google.gson.annotations.SerializedName;
-
 public class Account {
     @SerializedName("username")
     private String mUsername;
@@ -14,7 +13,6 @@ public class Account {
     @SerializedName("isAdmin")
     private Boolean mIsAdmin;
 
-  //  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
   //  List<Scores> scores = new ArrayList<>();
 
   //  @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)

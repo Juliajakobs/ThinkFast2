@@ -2,7 +2,9 @@ package com.example.thinkFast.networking;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -13,11 +15,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NetworkManager {
 
-    private static final String BASE_URL = "https://quiz-app-b.herokuapp.com/";
+    //private static final String BASE_URL = "https://quiz-app-b.herokuapp.com/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
     private static NetworkManager mInstance;
     private static RequestQueue mQueue;
     private Context mContext;
@@ -85,4 +90,18 @@ public class NetworkManager {
         );
         mQueue.add(request);
     }
-}
+    public void postScore(String username, String score){
+       StringRequest stringRequest = new StringRequest(Request.Method.POST,BASE_URL + "saveScore",
+               response -> Log.d("NetworkManager","Success"),
+               error -> Log.d("Networkmanager","Error")){
+           @Override
+           protected Map<String,String>getParams()throws AuthFailureError{
+               Map<String,String> params = new HashMap<>();
+               params.put("score",score);
+               params.put("username",username);
+               return params;
+           }
+       };
+        mQueue.add(stringRequest);
+    }
+ }
