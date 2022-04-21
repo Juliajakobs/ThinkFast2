@@ -32,6 +32,7 @@ public class StatisticsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
+        bottomNavigation(R.id.account);
 
 
         mGamesPlayed = (TextView) findViewById(R.id.games_played);
@@ -61,6 +62,5 @@ public class StatisticsActivity extends BaseActivity {
                 logout();
             }
         });
-
     }
 }
