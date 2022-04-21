@@ -45,19 +45,36 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="horizontal">
-        <TextView
-            android:id="@+id/textView_scores"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:padding="30dp"/>
+
+    <LinearLayout
+        android:id="@+id/scoreColumnName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView_names"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:padding="30dp"/>
+            android:padding="30dp"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/scoreColumnScore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_scores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="30dp"
+            android:textSize="20sp" />
+    </LinearLayout>
+
 </LinearLayout>
     </LinearLayout>
 
