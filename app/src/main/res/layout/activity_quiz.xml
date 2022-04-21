@@ -196,7 +196,7 @@
             android:textAlignment="center"
             android:textSize="48sp"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ScrollView
             android:id="@+id/answersScroll"

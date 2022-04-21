@@ -38,7 +38,7 @@ public class QuizActivity extends BaseActivity {
     private int counter;
 
     //Maximum number of questions
-    private final int maxNumOfQuestions = 5;
+    private int maxNumOfQuestions;
     //Arrays that hold the players answers
     private String[] player1AnswersArray = new String[10];
     private String[] player2AnswersArray = new String[10];
@@ -81,6 +81,7 @@ public class QuizActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         c_id = extras.getInt("categoryID");
         selPlayers = extras.getInt("selPlayers");
+        maxNumOfQuestions = extras.getInt("selNumQuestions");
 
         //Calling networkManager to get questions from DB
         NetworkManager networkManager = NetworkManager.getInstance(this);
